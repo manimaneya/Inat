@@ -827,6 +827,208 @@ input:focus{
     bottom:82px;
   }
 }
+
+/* =========================
+   INAT UPDATE — BEIGE FONCÉ
+========================= */
+:root{
+  --bg:#24150f;
+  --panel:#352019;
+  --panel2:#4a2d22;
+  --text:#fff7eb;
+  --soft:#d4b9a2;
+  --primary:#c98a58;
+  --secondary:#7c4d36;
+  --success:#8fca8b;
+  --danger:#ff7b76;
+  --border:rgba(255,237,215,.14);
+}
+body{
+  background:
+    radial-gradient(circle at 10% 20%,rgba(201,138,88,.14),transparent 25%),
+    radial-gradient(circle at 90% 80%,rgba(124,77,54,.20),transparent 30%),
+    var(--bg);
+}
+body.light{
+  --bg:#f4e7d7;
+  --panel:#fffaf3;
+  --panel2:#f1dfcc;
+  --text:#2b1810;
+  --soft:#806957;
+  --primary:#a96239;
+  --secondary:#6d3f2c;
+  --border:rgba(68,38,23,.12);
+}
+#splash{
+  background:
+    linear-gradient(135deg,rgba(20,8,5,.92),rgba(66,33,22,.78)),
+    radial-gradient(circle at 50% 20%,#6f432e,#100806 70%);
+}
+#splash:after{
+  content:"";
+  position:absolute; inset:0; pointer-events:none;
+  background:linear-gradient(90deg,rgba(0,0,0,.22) 1px,transparent 1px),
+             linear-gradient(rgba(0,0,0,.12) 1px,transparent 1px);
+  background-size:6px 6px;
+  opacity:.18;
+  mix-blend-mode:overlay;
+}
+.earth{box-shadow:inset -30px -15px 45px rgba(0,0,0,.8),0 0 70px rgba(201,138,88,.45)}
+.logo{ text-shadow:0 0 30px var(--primary) }
+.logo span{color:var(--primary)}
+.primary,.new-btn{background:linear-gradient(135deg,#f1c49c,var(--primary));color:#241008}
+.sidebar,.rightbar,.main{background:rgba(47,27,21,.84)}
+.nav button:hover,.nav button.active,.conv.active,.conv:hover{background:rgba(201,138,88,.14)}
+.hero{background:linear-gradient(135deg,rgba(201,138,88,.18),rgba(124,77,54,.22));border-color:rgba(201,138,88,.24)}
+.badge{color:#f1c49c;background:rgba(201,138,88,.13)}
+.card:hover{border-color:rgba(201,138,88,.55)}
+.categories button.active,.avatar,.big-avatar,.floating,.send{background:var(--primary)}
+.cover{background:linear-gradient(135deg,rgba(201,138,88,.24),rgba(124,77,54,.34))}
+.play{background:var(--primary)!important;color:#241008!important}
+.message.me{background:var(--primary);color:#241008}
+#player{background:rgba(36,21,15,.94);border-color:rgba(201,138,88,.35)}
+.player-cover{background:var(--primary);color:#241008}
+
+/* CINEMATIC INTRO */
+.cinematic-line{font-size:11px;letter-spacing:5px;color:#e8c3a0;margin-bottom:12px;opacity:.9}
+.splash-content h2{font-size:clamp(25px,5vw,44px);text-shadow:0 10px 35px rgba(0,0,0,.5)}
+.splash-content{animation:cinemaReveal 1.2s ease both}
+@keyframes cinemaReveal{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:scale(1)}}
+
+/* AUTH */
+.auth-modal,.upload-modal{
+  display:none;position:fixed;inset:0;z-index:8000;
+  align-items:center;justify-content:center;padding:18px;
+  background:rgba(12,6,4,.78);backdrop-filter:blur(12px)
+}
+.auth-card,.upload-card{
+  width:min(470px,100%);max-height:90vh;overflow:auto;
+  padding:28px;border-radius:28px;background:var(--panel);
+  border:1px solid var(--border);box-shadow:0 25px 80px rgba(0,0,0,.45)
+}
+.auth-card h2,.upload-card h2{margin-top:0}
+.auth-tabs{display:flex;gap:8px;margin:18px 0}
+.auth-tabs button{flex:1;padding:12px;border-radius:12px;background:var(--panel2);color:var(--soft)}
+.auth-tabs button.active{background:var(--primary);color:#241008}
+.auth-card select,.upload-card select,.auth-card input,.upload-card input{
+ width:100%;padding:15px;margin:7px 0;border-radius:15px;
+ border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text)
+}
+.auth-note{font-size:12px;color:var(--soft);line-height:1.5}
+.auth-close,.modal-close{float:right;background:transparent;color:var(--text);font-size:22px}
+.phone-row{display:grid;grid-template-columns:150px 1fr;gap:8px}
+
+/* VERTICAL STORIES */
+.story-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.story-feed{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 0 18px}
+.vertical-story{
+  flex:0 0 min(330px,86vw);height:min(590px,72vh);border-radius:28px;
+  overflow:hidden;position:relative;scroll-snap-align:center;background:#160d09;
+  border:1px solid var(--border)
+}
+.vertical-story video,.vertical-story img{
+ width:100%;height:100%;object-fit:cover;display:block
+}
+.story-fallback{width:100%;height:100%;display:grid;place-items:center;font-size:80px;
+ background:linear-gradient(160deg,#6d3f2c,#21110b)}
+.story-overlay{position:absolute;inset:auto 0 0;padding:55px 18px 18px;
+ background:linear-gradient(transparent,rgba(0,0,0,.88));color:white}
+.story-overlay h3,.story-overlay p{margin:5px 0}
+.story-meta{font-size:12px;opacity:.8}
+.story-progress{position:absolute;top:10px;left:10px;right:10px;height:3px;background:rgba(255,255,255,.25);border-radius:5px;overflow:hidden}
+.story-progress i{display:block;width:38%;height:100%;background:#f1c49c}
+.music-progress{width:100%;accent-color:var(--primary)}
+.player-extra{display:flex;align-items:center;gap:8px;min-width:150px}
+.player-extra span{font-size:11px;color:var(--soft);min-width:34px;text-align:center}
+@media(max-width:800px){.phone-row{grid-template-columns:130px 1fr}.player-extra{display:none}.story-feed{margin-right:-10px}}
+
+
+/* =========================
+   INAT START-UP UPDATE V2
+   White + Indigo + Red
+========================= */
+:root{
+  --bg:#f6f7ff;
+  --panel:#ffffff;
+  --panel2:#eef0ff;
+  --text:#15152b;
+  --soft:#70728d;
+  --primary:#4b36d1;
+  --secondary:#e92d4b;
+  --success:#27b88b;
+  --danger:#e92d4b;
+  --border:rgba(43,38,112,.12);
+}
+body{
+  background:
+    radial-gradient(circle at 8% 10%,rgba(75,54,209,.11),transparent 28%),
+    radial-gradient(circle at 90% 80%,rgba(233,45,75,.09),transparent 30%),
+    var(--bg);
+}
+body.light{
+  --bg:#ffffff;
+  --panel:#ffffff;
+  --panel2:#f1f2ff;
+  --text:#15152b;
+  --soft:#70728d;
+  --primary:#4b36d1;
+  --secondary:#e92d4b;
+  --border:rgba(43,38,112,.12);
+}
+.sidebar,.rightbar,.main{background:rgba(255,255,255,.90)}
+body:not(.light) .sidebar,body:not(.light) .rightbar,body:not(.light) .main{background:rgba(255,255,255,.90)}
+#splash{
+ background:radial-gradient(circle at 50% 25%,#32256d 0,#17152e 45%,#070710 100%);
+}
+.primary,.new-btn{
+ background:linear-gradient(135deg,#5b45e7,#3421b7);
+ color:#fff;
+ border-radius:18px;
+ box-shadow:0 12px 28px rgba(75,54,209,.25);
+}
+.secondary{background:#fff;color:var(--primary);border:1px solid rgba(75,54,209,.16)}
+.logo span{color:#ff3b58}
+.logo{text-shadow:0 0 28px rgba(255,59,88,.5)}
+.brand-icon,.avatar,.big-avatar,.player-cover{background:linear-gradient(135deg,#5b45e7,#3421b7);color:#fff}
+.badge{color:#fff;background:linear-gradient(135deg,#4b36d1,#e92d4b)}
+.hero{background:linear-gradient(135deg,rgba(75,54,209,.10),rgba(233,45,75,.07));border-color:rgba(75,54,209,.15)}
+.nav button.active,.nav button:hover,.conv.active,.conv:hover{background:rgba(75,54,209,.08)}
+.categories button.active,.send,.floating{background:var(--primary);color:#fff}
+.message.me{background:linear-gradient(135deg,#5b45e7,#3421b7);color:#fff}
+.cover{background:linear-gradient(135deg,rgba(75,54,209,.17),rgba(233,45,75,.15))}
+.play{background:linear-gradient(135deg,#e92d4b,#ff6078)!important;color:#fff!important}
+.card:hover{border-color:rgba(75,54,209,.35)}
+#player{background:rgba(255,255,255,.96);color:var(--text);border-color:rgba(75,54,209,.16)}
+#player .player-controls button{color:var(--text);background:#f1f2ff}
+
+/* STARTUP 2D + 10 SECOND INTRO */
+.startup-2d{position:relative;width:min(560px,94vw);text-align:center}
+.startup-mark{
+ width:118px;height:118px;margin:0 auto 20px;border-radius:32px;
+ display:grid;place-items:center;font-size:54px;font-weight:900;
+ background:linear-gradient(145deg,#ff4662,#e92d4b);
+ color:white;box-shadow:18px 18px 0 rgba(75,54,209,.55),0 0 45px rgba(233,45,75,.35);
+ animation:startupPulse 2s ease-in-out infinite;
+}
+.startup-bar{height:9px;border-radius:20px;background:rgba(255,255,255,.15);overflow:hidden;margin:25px auto 12px;max-width:430px}
+.startup-bar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#ff3b58,#fff,#5b45e7);animation:startupLoad 10s linear forwards}
+.startup-count{color:#c9c7e8;font-size:13px;letter-spacing:2px}
+@keyframes startupLoad{to{width:100%}}
+@keyframes startupPulse{50%{transform:translateY(-8px) scale(1.04)}}
+.startup-skip{margin-top:20px!important;min-width:220px}
+
+/* ACCOUNT STARTUP CARD */
+.account-card{max-width:780px;margin:0 auto}
+.account-main{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+.account-option{padding:26px;border-radius:24px;border:1px solid var(--border);background:var(--panel);text-align:left}
+.account-option h3{margin:10px 0}
+.account-option .primary{width:100%;margin-top:14px}
+.phone-row{grid-template-columns:160px 1fr}
+.auth-card{background:#fff;color:#15152b}
+.auth-card input,.auth-card select{background:#f6f7ff;color:#15152b}
+.auth-tabs button.active{background:var(--primary);color:#fff}
+@media(max-width:650px){.account-main{grid-template-columns:1fr}.phone-row{grid-template-columns:135px 1fr}}
+
 </style>
 </head>
 
@@ -839,30 +1041,18 @@ input:focus{
   <div class="stars"></div>
 
   <div class="splash-content">
-
-    <div class="earth">🌍</div>
-
-    <div class="logo">
-      <span>I</span>NAT
+    <div class="startup-2d">
+      <div class="startup-mark">I</div>
+      <div class="cinematic-line">INAT START-UP • 2D EXPERIENCE</div>
+      <div class="logo"><span>I</span>NAT</div>
+      <h2>L'inattendu commence ici.</h2>
+      <p>Initialisation de votre espace numérique.</p>
+      <div class="startup-bar"><i></i></div>
+      <div class="startup-count" id="startupCount">DÉMARRAGE • 10</div>
+      <div class="splash-buttons">
+        <button class="primary startup-skip" onclick="finishStartup()">Entrer maintenant</button>
+      </div>
     </div>
-
-    <h2>L'inattendu commence ici.</h2>
-
-    <p>
-      Un espace numérique pour parler, découvrir,
-      écouter, réfléchir et recevoir de l'aide.
-    </p>
-
-    <div class="splash-buttons">
-      <button class="primary" onclick="startApp()">
-        Entrer dans INAT
-      </button>
-
-      <button class="secondary" onclick="startApp()">
-        Découvrir
-      </button>
-    </div>
-
   </div>
 </div>
 
@@ -919,6 +1109,11 @@ input:focus{
         </button>
 
         <button class="navbtn"
+          onclick="openPage('account',this)">
+          📱 Compte
+        </button>
+
+        <button class="navbtn"
           onclick="openPage('profile',this)">
           👤 Profil
         </button>
@@ -972,6 +1167,30 @@ input:focus{
 
     <div class="content">
 
+
+      <!-- ACCOUNT -->
+      <section id="account" class="page">
+        <div class="hero account-card">
+          <span class="badge">COMPTE INAT</span>
+          <h1>Créez votre espace personnel.</h1>
+          <p>Inscription et connexion avec votre numéro de téléphone. Choisissez votre pays et gérez votre session depuis un seul espace.</p>
+          <div class="account-main">
+            <div class="account-option">
+              <div class="emoji">📱</div>
+              <h3>Créer un compte</h3>
+              <p>Nom, pays et numéro de téléphone.</p>
+              <button class="primary" onclick="openAuth();setAuthMode('register')">Créer mon compte</button>
+            </div>
+            <div class="account-option">
+              <div class="emoji">🔐</div>
+              <h3>Se connecter</h3>
+              <p>Retrouvez votre session avec votre numéro.</p>
+              <button class="secondary" onclick="openAuth();setAuthMode('login')">Connexion</button>
+              <button class="secondary" style="margin-top:10px;width:100%;color:var(--danger)" onclick="logout()">🚪 Déconnexion</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- HOME -->
 
@@ -1272,54 +1491,41 @@ input:focus{
 
       <section id="stories" class="page">
 
-        <h1>🎬 Stories</h1>
-
-        <p style="color:var(--soft)">
-          Des histoires courtes et inattendues.
-        </p>
-
-        <div class="grid">
-
-          <div class="card">
-            <div class="emoji">🌍</div>
-            <h3>Le monde demain</h3>
-            <p>
-              Une réflexion sur la manière dont les services
-              pourraient changer dans le futur.
-            </p>
-            <button onclick="showStory('Le monde demain')">
-              Lire la story
-            </button>
+        <div class="section-head">
+          <div>
+            <h1>🎬 Stories</h1>
+            <p style="color:var(--soft)">Des stories verticales en vidéo et image.</p>
           </div>
+          <button class="primary" onclick="openUpload()">＋ Publier</button>
+        </div>
 
-          <div class="card">
-            <div class="emoji">🚀</div>
-            <h3>Une idée en 1986</h3>
-            <p>
-              Et si les meilleurs services de demain
-              avaient commencé avec une simple idée ?
-            </p>
-            <button onclick="showStory('Une idée en 1986')">
-              Lire la story
-            </button>
-          </div>
+        <div class="story-actions">
+          <button class="secondary" onclick="openUpload()">🎥 Upload vidéo</button>
+          <button class="secondary" onclick="openUpload('image')">🖼️ Upload image</button>
+        </div>
 
-          <div class="card">
-            <div class="emoji">💡</div>
-            <h3>L'inattendu</h3>
-            <p>
-              Parfois, la solution arrive d'un endroit
-              que personne ne regarde.
-            </p>
-            <button onclick="showStory('L inattendu')">
-              Lire la story
-            </button>
-          </div>
-
+        <div id="storyFeed" class="story-feed">
+          <article class="vertical-story">
+            <div class="story-fallback">🎬</div>
+            <div class="story-progress"><i></i></div>
+            <div class="story-overlay">
+              <div class="story-meta">@INAT • Story test</div>
+              <h3>Un rendez-vous inattendu</h3>
+              <p>Une histoire commence parfois sans prévenir.</p>
+            </div>
+          </article>
+          <article class="vertical-story">
+            <div class="story-fallback">🌆</div>
+            <div class="story-progress"><i></i></div>
+            <div class="story-overlay">
+              <div class="story-meta">@INAT • Vertical</div>
+              <h3>La nuit change tout</h3>
+              <p>Glissez pour découvrir les autres stories.</p>
+            </div>
+          </article>
         </div>
 
       </section>
-
 
       <!-- READING -->
 
@@ -1575,42 +1781,74 @@ input:focus{
 </div>
 
 
+
+<!-- AUTH -->
+<div id="authModal" class="auth-modal">
+  <div class="auth-card">
+    <button class="auth-close" onclick="closeAuth()">×</button>
+    <h2>Bienvenue sur INAT</h2>
+    <p style="color:var(--soft)">Créez votre espace avec votre numéro de téléphone.</p>
+    <div class="auth-tabs">
+      <button id="registerTab" class="active" onclick="setAuthMode('register')">Créer un compte</button>
+      <button id="loginTab" onclick="setAuthMode('login')">Connexion</button>
+    </div>
+    <input id="authName" placeholder="Votre nom">
+    <div class="phone-row">
+      <select id="countrySelect" onchange="updateDialCode()">
+        <option value="CI" data-code="+225">🇨🇮 Côte d’Ivoire (+225)</option>
+        <option value="SN" data-code="+221">🇸🇳 Sénégal (+221)</option>
+        <option value="ML" data-code="+223">🇲🇱 Mali (+223)</option>
+        <option value="BF" data-code="+226">🇧🇫 Burkina Faso (+226)</option>
+        <option value="GN" data-code="+224">🇬🇳 Guinée (+224)</option>
+        <option value="FR" data-code="+33">🇫🇷 France (+33)</option>
+        <option value="US" data-code="+1">🇺🇸 États-Unis (+1)</option>
+        <option value="OTHER" data-code="+">🌍 Autre pays</option>
+      </select>
+      <input id="phoneInput" type="tel" inputmode="tel" placeholder="Numéro de téléphone">
+    </div>
+    <input id="dialCode" readonly value="+225">
+    <button class="primary" style="width:100%;margin-top:12px" onclick="submitAuth()">Continuer</button>
+    <p class="auth-note">Mode démonstration local : le numéro est enregistré uniquement dans ce navigateur. Pour une vraie connexion par SMS, il faudra connecter Firebase Authentication ou un serveur.</p>
+  </div>
+</div>
+
+<!-- STORY UPLOAD -->
+<div id="uploadModal" class="upload-modal">
+  <div class="upload-card">
+    <button class="modal-close" onclick="closeUpload()">×</button>
+    <h2>Publier une story</h2>
+    <input id="storyCaption" maxlength="120" placeholder="Titre ou légende">
+    <input id="storyFile" type="file" accept="video/*,image/*" onchange="previewStoryUpload()">
+    <div id="storyPreview" style="margin:14px 0;color:var(--soft)">Choisissez une vidéo ou une image verticale.</div>
+    <button class="primary" style="width:100%" onclick="publishStory()">Publier la story</button>
+  </div>
+</div>
+
+
 <!-- PLAYER -->
 
 <div id="player">
-
-  <div class="player-cover"
-    id="playerEmoji">
-    🎵
-  </div>
+  <div class="player-cover" id="playerEmoji">🎵</div>
 
   <div class="player-info">
-
-    <strong id="playerTitle">
-      Aucun morceau
-    </strong><br>
-
-    <small id="playerCategory">
-      Sélectionnez une musique
-    </small>
-
+    <strong id="playerTitle">Aucun morceau</strong><br>
+    <small id="playerCategory">Sélectionnez une musique</small>
+    <div class="player-extra">
+      <span id="currentTime">0:00</span>
+      <input id="musicProgress" class="music-progress" type="range" min="0" max="100" value="0" oninput="seekMusic(this.value)">
+      <span id="durationTime">0:00</span>
+    </div>
   </div>
 
   <div class="player-controls">
-
-    <button onclick="togglePlay()"
-      id="playButton">
-      ⏸
-    </button>
-
-    <button onclick="closePlayer()">
-      ✕
-    </button>
-
+    <button onclick="previousTrack()">⏮</button>
+    <button onclick="togglePlay()" id="playButton">▶</button>
+    <button onclick="nextTrack()">⏭</button>
+    <button onclick="closePlayer()">✕</button>
   </div>
-
 </div>
 
+<audio id="audioPlayer" preload="metadata"></audio>
 
 <!-- MOBILE NAV -->
 
@@ -1637,6 +1875,11 @@ input:focus{
   </button>
 
   <button class="mobilebtn"
+    onclick="mobilePage('account',this)">
+    📱<br>Compte
+  </button>
+
+  <button class="mobilebtn"
     onclick="mobilePage('profile',this)">
     👤<br>Profil
   </button>
@@ -1652,19 +1895,35 @@ input:focus{
 <script>
 
 /* =========================
+   START-UP 2D — 10 SECONDS
+========================= */
+let startupSeconds=10;
+let startupTimer=setInterval(function(){
+  startupSeconds--;
+  const count=document.getElementById("startupCount");
+  if(count) count.textContent="DÉMARRAGE • "+Math.max(0,startupSeconds);
+  if(startupSeconds<=0){
+    clearInterval(startupTimer);
+    finishStartup();
+  }
+},1000);
+
+function finishStartup(){
+  clearInterval(startupTimer);
+  document.getElementById("splash").style.display="none";
+  document.getElementById("app").style.display=window.innerWidth<=800?"block":"grid";
+  openPage(localStorage.getItem("inatAccount")?"home":"account");
+}
+
+/* =========================
    START APP
 ========================= */
 
 function startApp(){
-
+  clearInterval(startupTimer);
   document.getElementById("splash").style.display="none";
-
-  document.getElementById("app").style.display="grid";
-
-  if(window.innerWidth <= 800){
-    document.getElementById("app").style.display="block";
-  }
-
+  document.getElementById("app").style.display=window.innerWidth<=800?"block":"grid";
+  openPage(localStorage.getItem("inatAccount")?"home":"account");
 }
 
 
@@ -1854,65 +2113,97 @@ function escapeHTML(text){
 
 
 /* =========================
-   MUSIC
+   MUSIC — COMPLETE PLAYER
 ========================= */
 
+const playlist=[
+  {title:"Afro Horizon",category:"Afro Beat",emoji:"🌍",genre:"afro",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"},
+  {title:"Night Slow",category:"Slow",emoji:"🌙",genre:"slow",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"},
+  {title:"Future Street",category:"Hip-Hop / Rap",emoji:"🔥",genre:"hiphop",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"},
+  {title:"Midnight Love",category:"RNB",emoji:"💜",genre:"rnb",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"},
+  {title:"Blue Jazz",category:"Jazz",emoji:"🎷",genre:"jazz",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"},
+  {title:"Island Vibe",category:"Reggae",emoji:"🟢",genre:"reggae",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"},
+  {title:"Pop Motion",category:"Pop",emoji:"✨",genre:"pop",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"}
+];
+
+let currentTrack=0;
+const audioPlayer=document.getElementById("audioPlayer");
+
 function filterMusic(category,button){
-
-  document.querySelectorAll(".categories button")
-    .forEach(function(btn){
-      btn.classList.remove("active");
-    });
-
+  document.querySelectorAll(".categories button").forEach(btn=>btn.classList.remove("active"));
   button.classList.add("active");
+  document.querySelectorAll(".music-card").forEach(card=>{
+    card.style.display=(category==="all"||card.dataset.category===category)?"block":"none";
+  });
+}
 
-  document.querySelectorAll(".music-card")
-    .forEach(function(card){
-
-      if(
-        category==="all" ||
-        card.dataset.category===category
-      ){
-        card.style.display="block";
-      }else{
-        card.style.display="none";
-      }
-
-    });
-
+function findTrack(title,category,emoji){
+  let i=playlist.findIndex(t=>t.title===title);
+  if(i===-1){
+    i=playlist.length;
+    playlist.push({title,category,emoji,src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"});
+  }
+  return i;
 }
 
 function playMusic(title,category,emoji){
+  currentTrack=findTrack(title,category,emoji);
+  loadTrack(currentTrack,true);
+}
 
+function loadTrack(index,autoplay=false){
+  const track=playlist[index];
   document.getElementById("player").style.display="flex";
-
-  document.getElementById("playerTitle").textContent=title;
-
-  document.getElementById("playerCategory").textContent=category;
-
-  document.getElementById("playerEmoji").textContent=emoji;
-
-  document.getElementById("playButton").textContent="⏸";
-
+  document.getElementById("playerTitle").textContent=track.title;
+  document.getElementById("playerCategory").textContent=track.category;
+  document.getElementById("playerEmoji").textContent=track.emoji;
+  if(audioPlayer.src!==track.src) audioPlayer.src=track.src;
+  if(autoplay){
+    audioPlayer.play().then(()=>document.getElementById("playButton").textContent="⏸").catch(()=>{
+      document.getElementById("playButton").textContent="▶";
+    });
+  }
 }
 
 function togglePlay(){
+  if(!audioPlayer.src) loadTrack(currentTrack,true);
+  else if(audioPlayer.paused) audioPlayer.play();
+  else audioPlayer.pause();
+}
 
-  const btn=document.getElementById("playButton");
+function previousTrack(){
+  currentTrack=(currentTrack-1+playlist.length)%playlist.length;
+  loadTrack(currentTrack,true);
+}
 
-  btn.textContent=
-    btn.textContent==="▶"
-      ? "⏸"
-      : "▶";
-
+function nextTrack(){
+  currentTrack=(currentTrack+1)%playlist.length;
+  loadTrack(currentTrack,true);
 }
 
 function closePlayer(){
-
+  audioPlayer.pause();
   document.getElementById("player").style.display="none";
-
 }
 
+function seekMusic(value){
+  if(audioPlayer.duration) audioPlayer.currentTime=(value/100)*audioPlayer.duration;
+}
+
+function formatTime(sec){
+  if(!isFinite(sec)) return "0:00";
+  const m=Math.floor(sec/60), s=Math.floor(sec%60);
+  return m+":"+(s<10?"0":"")+s;
+}
+
+audioPlayer.addEventListener("play",()=>document.getElementById("playButton").textContent="⏸");
+audioPlayer.addEventListener("pause",()=>document.getElementById("playButton").textContent="▶");
+audioPlayer.addEventListener("loadedmetadata",()=>document.getElementById("durationTime").textContent=formatTime(audioPlayer.duration));
+audioPlayer.addEventListener("timeupdate",()=>{
+  document.getElementById("currentTime").textContent=formatTime(audioPlayer.currentTime);
+  document.getElementById("musicProgress").value=audioPlayer.duration?(audioPlayer.currentTime/audioPlayer.duration)*100:0;
+});
+audioPlayer.addEventListener("ended",nextTrack);
 
 /* =========================
    IDEAS
@@ -2163,12 +2454,93 @@ function logout(){
 
 
 /* =========================
+   AUTH — LOCAL DEMO
+========================= */
+let authMode="register";
+
+function openAuth(){document.getElementById("authModal").style.display="flex";autoSelectCountry();}
+function closeAuth(){document.getElementById("authModal").style.display="none";}
+function setAuthMode(mode){
+  authMode=mode;
+  document.getElementById("registerTab").classList.toggle("active",mode==="register");
+  document.getElementById("loginTab").classList.toggle("active",mode==="login");
+  document.getElementById("authName").style.display=mode==="register"?"block":"none";
+}
+function autoSelectCountry(){
+  const guessed=(Intl.DateTimeFormat().resolvedOptions().locale.split("-")[1]||"CI").toUpperCase();
+  const select=document.getElementById("countrySelect");
+  if([...select.options].some(o=>o.value===guessed)) select.value=guessed;
+  updateDialCode();
+}
+function updateDialCode(){
+  const select=document.getElementById("countrySelect");
+  document.getElementById("dialCode").value=select.options[select.selectedIndex].dataset.code||"+";
+}
+function submitAuth(){
+  const phone=document.getElementById("phoneInput").value.replace(/\s+/g,"");
+  const name=document.getElementById("authName").value.trim()||"Utilisateur INAT";
+  if(!phone || phone.length<5){alert("Entrez un numéro de téléphone valide.");return;}
+  const account={name:name,phone:document.getElementById("dialCode").value+phone,country:document.getElementById("countrySelect").value};
+  if(authMode==="register") localStorage.setItem("inatAccount",JSON.stringify(account));
+  const saved=JSON.parse(localStorage.getItem("inatAccount")||"null");
+  if(authMode==="login" && (!saved || saved.phone!==account.phone)){alert("Aucun compte local trouvé avec ce numéro.");return;}
+  localStorage.setItem("inatName",authMode==="login"?saved.name:account.name);
+  loadProfile();
+  closeAuth();
+  startApp();
+}
+function checkAccountUI(){
+  const account=JSON.parse(localStorage.getItem("inatAccount")||"null");
+  if(account) document.getElementById("profileName").textContent=account.name;
+}
+
+/* =========================
+   VERTICAL STORIES UPLOAD
+========================= */
+let selectedStoryURL=null, selectedStoryType=null;
+function openUpload(type){
+  document.getElementById("uploadModal").style.display="flex";
+  if(type==="image") document.getElementById("storyFile").accept="image/*";
+  else document.getElementById("storyFile").accept="video/*,image/*";
+}
+function closeUpload(){document.getElementById("uploadModal").style.display="none";}
+function previewStoryUpload(){
+  const file=document.getElementById("storyFile").files[0];
+  const preview=document.getElementById("storyPreview");
+  if(!file)return;
+  if(selectedStoryURL)URL.revokeObjectURL(selectedStoryURL);
+  selectedStoryURL=URL.createObjectURL(file);
+  selectedStoryType=file.type.startsWith("video")?"video":"image";
+  preview.innerHTML=selectedStoryType==="video"
+    ? `<video src="${selectedStoryURL}" controls muted style="width:100%;max-height:360px;border-radius:18px"></video>`
+    : `<img src="${selectedStoryURL}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px">`;
+}
+function publishStory(){
+  const file=document.getElementById("storyFile").files[0];
+  if(!file||!selectedStoryURL){alert("Choisissez une vidéo ou une image.");return;}
+  const caption=document.getElementById("storyCaption").value.trim()||"Nouvelle story INAT";
+  const story=document.createElement("article");
+  story.className="vertical-story";
+  const media=selectedStoryType==="video"
+    ? `<video src="${selectedStoryURL}" controls playsinline></video>`
+    : `<img src="${selectedStoryURL}" alt="Story publiée">`;
+  story.innerHTML=`${media}<div class="story-progress"><i></i></div><div class="story-overlay"><div class="story-meta">@Vous • Maintenant</div><h3>${escapeHTML(caption)}</h3><p>Story publiée en mode test.</p></div>`;
+  document.getElementById("storyFeed").prepend(story);
+  document.getElementById("storyCaption").value="";
+  document.getElementById("storyFile").value="";
+  closeUpload();
+}
+
+
+/* =========================
    INITIALISATION
 ========================= */
 
 renderSituations();
 
 loadProfile();
+checkAccountUI();
+autoSelectCountry();
 
 </script>
 
