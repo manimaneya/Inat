@@ -1,0 +1,46 @@
+# INAT 🚀
+
+## Une plateforme moderne de contenu, musique et stories
+
+**INAT** est une interface web moderne inspirée d'une start-up numérique. L'application permet de découvrir du contenu, écouter de la musique, publier des stories verticales et créer un compte avec un numéro de téléphone.
+
+L'interface utilise une identité visuelle moderne basée sur les couleurs :
+
+- ⚪ Blanc
+- 🟣 Indigo
+- 🔴 Rouge
+
+---
+
+# ✨ Fonctionnalités
+
+## 🎞️ Démarrage 2D
+
+INAT possède un écran de démarrage animé.
+
+Fonctionnalités :
+
+- Animation 2D
+- Logo INAT
+- Barre de chargement
+- Compte à rebours
+- Durée de démarrage : **10 secondes**
+- Bouton **Entrer maintenant**
+- Style moderne de start-up
+
+---
+
+# 👤 Compte utilisateur
+
+L'utilisateur peut créer un compte avec :
+
+- Nom
+- Pays
+- Indicatif téléphonique
+- Numéro de téléphone
+
+Exemple :
+
+```text
+🇨🇮 Côte d'Ivoire (+225)
+Numéro : 07 XX XX XX XX
