@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>INAT — Agent de Service</title>
+    <!-- Font Awesome pour icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ============================================================
+           INAT — STYLES COMPLETS
+           Couleurs : Bleu nuit (#0b1a2e), Cyan doux (#4fc3f7)
+           ============================================================ */
+
+        /* ---------- RESET & VARIABLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0b1a2e;
+            --primary-light: #1a3050;
+            --secondary: #4fc3f7;
+            --secondary-dark: #0288d1;
+            --bg: #f0f4f8;
+            --bg-white: #ffffff;
+            --text: #122030;
+            --text-light: #4a5a6a;
+            --text-lighter: #8a9aa8;
+            --border: #dce4ec;
+            --shadow: 0 6px 24px rgba(11, 26, 46, 0.08);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --transition: 0.25s ease;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --sidebar-width: 240px;
+            --right-panel-width: 260px;
+            --topbar-height: 60px;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a1118;
+            --bg-white: #141c26;
+            --text: #eaf0f8;
+            --text-light: #a0b4c8;
+            --text-lighter: #5a6e82;
+            --border: #26303a;
+            --shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ---------- SCROLLBAR ---------- */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* ---------- SPLASH / TERRE ---------- */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #050a12;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease, visibility 1s ease;
+            font-family: var(--font);
+        }
+        #splash.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Conteneur Terre */
+        .earth-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
+        }
+        .earth {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #1a5276, #0a2a3a);
+            box-shadow: 0 0 80px rgba(79, 195, 247, 0.15), inset -20px -20px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            animation: earthRotate 20s linear infinite;
+        }
+        .earth::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        /* Continents simplifiés */
+        .earth .continent {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(46, 125, 50, 0.6);
+            box-shadow: inset -2px -2px 8px rgba(0, 0, 0, 0.3);
+        }
+        .earth .c1 {
+            width: 60px;
+            height: 40px;
+            top: 40px;
+            left: 30px;
+            transform: rotate(-10deg);
+            border-radius: 40% 20% 40% 20%;
+        }
+        .earth .c2 {
+            width: 50px;
+            height: 50px;
+            top: 80px;
+            left: 80px;
+            border-radius: 30% 40% 30% 40%;
+        }
+        .earth .c3 {
+            width: 40px;
+            height: 30px;
+            top: 130px;
+            left: 40px;
+            border-radius: 20% 50% 20% 50%;
+        }
+        .earth .c4 {
+            width: 70px;
+            height: 35px;
+            top: 20px;
+            left: 100px;
+            border-radius: 30% 20% 50% 30%;
+        }
+        .earth .c5 {
+            width: 30px;
+            height: 40px;
+            top: 140px;
+            left: 120px;
+            border-radius: 50% 20% 50% 20%;
+        }
+        /* Lumières nocturnes (villes) */
+        .earth .city {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffdd77;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #ffdd77;
+            animation: cityGlow 2s ease-in-out infinite alternate;
+        }
+        .earth .city:nth-child(10) {
+            top: 60px;
+            left: 50px;
+        }
+        .earth .city:nth-child(11) {
+            top: 100px;
+            left: 130px;
+        }
+        .earth .city:nth-child(12) {
+            top: 150px;
+            left: 70px;
+        }
+        .earth .city:nth-child(13) {
+            top: 30px;
+            left: 150px;
+        }
+        .earth .city:nth-child(14) {
+            top: 120px;
+            left: 20px;
+        }
+        .earth .city:nth-child(15) {
+            top: 170px;
+            left: 140px;
+        }
+
+        @keyframes earthRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes cityGlow {
+            0% {
+                opacity: 0.4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Halo */
+        .halo {
+            position: absolute;
+            inset: -20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 195, 247, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: haloPulse 3s ease-in-out infinite alternate;
+        }
+        @keyframes haloPulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+        }
+
+        /* Étoiles */
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 2s) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            0% {
+                opacity: 0.2;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Texte de l'écran Terre */
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+        }
+        .splash-content .logo-big {
+            font-size: 3.6rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            text-shadow: 0 0 50px rgba(79, 195, 247, 0.2);
+        }
+        .splash-content .logo-big span {
+            color: var(--secondary);
+        }
+        .splash-content .sub {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-top: 6px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        .splash-content .sub2 {
+            font-size: 0.95rem;
+            opacity: 0.5;
+            margin-top: 4px;
+            font-weight: 300;
+        }
+        .splash-content .btn-enter {
+            margin-top: 28px;
+            background: var(--secondary);
+            border: none;
+            color: #fff;
+            padding: 12px 48px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            box-shadow: 0 4px 20px rgba(79, 195, 247, 0.25);
+        }
+        .splash-content .btn-enter:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 30px rgba(79, 195, 247, 0.4);
+        }
+        .splash-content .btn-skip {
+            margin-top: 14px;
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all var(--transition);
+        }
+        .splash-content .btn-skip:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ---------- APPLICATION ---------- */
+        #app {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: var(--bg);
+        }
+        #app.active {
+            display: flex;
+        }
+
+        /* ---------- LAYOUT GLOBAL ---------- */
+        .app-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* ---------- SIDEBAR ---------- */
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            background: var(--bg-white);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 16px 14px;
+            height: 100%;
+            overflow-y: auto;
+            transition: background var(--transition), border var(--transition);
+            flex-shrink: 0;
+        }
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 14px;
+        }
+        .sidebar .brand span {
+            color: var(--secondary-dark);
+        }
+        .sidebar .brand i {
+            font-size: 1.4rem;
+            color: var(--secondary-dark);
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 0.92rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: all var(--transition);
+            margin-bottom: 2px;
+            font-family: var(--font);
+            text-align: left;
+        }
+        .sidebar .nav-item:hover {
+            background: rgba(79, 195, 247, 0.08);
+            color: var(--text);
+        }
+        .sidebar .nav-item.active {
+            background: rgba(79, 195, 247, 0.12);
+            color: var(--secondary-dark);
+            font-weight: 600;
+        }
+        .sidebar .nav-item i {
+            width: 22px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .sidebar .nav-item .badge {
+            margin-left: auto;
+            background: var(--secondary);
+            color: #fff;
+            font-size: 0.65rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .sidebar .nav-item.primary-btn {
+            background: var(--primary);
+            color: #fff;
+            justify-content: center;
+            font-weight: 600;
+            padding: 12px;
+            margin: 6px 0 14px;
+            border-radius: var(--radius-sm);
+        }
+        .sidebar .nav-item.primary-btn:hover {
+            background: var(--primary-light);
+            transform: scale(1.02);
+        }
+        .sidebar .nav-item.primary-btn i {
+            color: #fff;
+        }
+
+        .sidebar .footer {
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            font-size: 0.7rem;
+            color: var(--text-lighter);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .sidebar .footer .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 6px 0;
+            text-align: left;
+            font-family: var(--font);
+        }
+        .sidebar .footer .theme-toggle:hover {
+            color: var(--text);
+        }
+
+        /* ---------- MAIN CONTENT ---------- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+            background: var(--bg);
+            min-width: 0;
+        }
+
+        /* Topbar */
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            height: var(--topbar-height);
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            transition: background var(--transition), border var(--transition);
+        }
+        .topbar .left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .topbar .left .agent-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .topbar .left .agent-status .dot {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+        .topbar .right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .topbar .right button {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: all var(--transition);
+        }
+        .topbar .right button:hover {
+            background: rgba(79, 195, 247, 0.08);
+            color: var(--text);
+        }
+        .topbar .right .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border-radius: 30px;
+            padding: 4px 14px;
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+        }
+        .topbar .right .search-box input {
+            border: none;
+            background: transparent;
+            padding: 6px 8px;
+            font-size: 0.85rem;
+            color: var(--text);
+            outline: none;
+            width: 120px;
+            font-family: var(--font);
+        }
+        .topbar .right .search-box input::placeholder {
+            color: var(--text-lighter);
+        }
+        .topbar .right .search-box:focus-within {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
+        }
+
+        /* Page container */
+        .page-container {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            padding: 20px 24px 100px 24px;
+            animation: fadePage 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadePage {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---------- RIGHT PANEL ---------- */
+        .right-panel {
+            width: var(--right-panel-width);
+            min-width: var(--right-panel-width);
+            background: var(--bg-white);
+            border-left: 1px solid var(--border);
+            padding: 20px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+            transition: background var(--transition), border var(--transition);
+            flex-shrink: 0;
+        }
+        .right-panel .panel-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-lighter);
+            font-weight: 600;
+        }
+        .right-panel .situation-card {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            border-left: 4px solid var(--secondary);
+        }
+        .right-panel .situation-card .label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        .right-panel .situation-card .value {
+            font-weight: 600;
+            font-size: 1rem;
+            margin: 4px 0 6px;
+        }
+        .right-panel .situation-card .status-badge {
+            display: inline-block;
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            background: #ffb74d;
+            color: #fff;
+        }
+        .right-panel .situation-card .status-badge.resolved {
+            background: #81c784;
+        }
+        .right-panel .situation-card .status-badge.new {
+            background: var(--secondary);
+        }
+        .right-panel .progress-wrap {
+            margin-top: 6px;
+        }
+        .right-panel .progress-wrap .steps {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        .right-panel .progress-wrap .steps .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            flex-shrink: 0;
+        }
+        .right-panel .progress-wrap .steps .dot.done {
+            background: var(--secondary);
+        }
+        .right-panel .progress-wrap .steps .dot.active {
+            background: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.25);
+        }
+        .right-panel .next-action {
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+        }
+        .right-panel .next-action .label {
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+        .right-panel .next-action .value {
+            font-weight: 500;
+            margin: 4px 0 10px;
+            font-size: 0.95rem;
+        }
+        .right-panel .next-action .btn-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .right-panel .next-action .btn-group button {
+            padding: 6px 16px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            font-size: 0.8rem;
+        }
+        .right-panel .next-action .btn-group .primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .right-panel .next-action .btn-group .primary:hover {
+            background: var(--primary-light);
+        }
+        .right-panel .next-action .btn-group .outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+        }
+        .right-panel .next-action .btn-group .outline:hover {
+            background: var(--border);
+        }
+
+        /* ---------- CONVERSATION (page accueil) ---------- */
+        .conv-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 100%;
+        }
+        .conv-container .conv-header {
+            margin-bottom: 12px;
+        }
+        .conv-container .conv-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        .conv-container .conv-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        .conv-messages {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 4px;
+            margin-bottom: 10px;
+        }
+        .conv-messages .msg {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: var(--radius);
+            line-height: 1.6;
+            font-size: 0.92rem;
+            animation: fadeIn 0.25s ease;
+        }
+        .conv-messages .msg.inat {
+            align-self: flex-start;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+        }
+        .conv-messages .msg.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: #fff;
+            border-bottom-right-radius: 4px;
+        }
+        .conv-messages .msg .steps-list {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .conv-messages .msg .steps-list .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            padding: 4px 0;
+        }
+        .conv-messages .msg .steps-list .step .num {
+            background: var(--secondary);
+            color: #fff;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .conv-messages .msg .btn-step {
+            margin-top: 12px;
+            background: var(--secondary);
+            color: #fff;
+            border: none;
+            padding: 8px 24px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            font-size: 0.85rem;
+        }
+        .conv-messages .msg .btn-step:hover {
+            background: var(--secondary-dark);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .conv-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 0 4px 0;
+            border-top: 1px solid var(--border);
+            flex-shrink: 0;
+            background: var(--bg);
+            transition: border var(--transition);
+        }
+        .conv-input input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: var(--bg-white);
+            color: var(--text);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all var(--transition);
+            font-family: var(--font);
+        }
+        .conv-input input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
+        }
+        .conv-input .action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 50%;
+            transition: all var(--transition);
+        }
+        .conv-input .action-btn:hover {
+            background: rgba(79, 195, 247, 0.08);
+            color: var(--text);
+        }
+        .conv-input .send-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .conv-input .send-btn:hover {
+            background: var(--primary-light);
+            transform: scale(1.05);
+        }
+
+        /* ---------- CARDS GRID ---------- */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 14px;
+            margin-top: 10px;
+        }
+        .card-grid .card {
+            background: var(--bg-white);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+            cursor: default;
+        }
+        .card-grid .card:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+        .card-grid .card .card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .card-grid .card .card-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin: 4px 0 10px;
+        }
+        .card-grid .card .card-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            color: var(--text-light);
+        }
+        .card-grid .card .card-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* ---------- SECTION TITLES ---------- */
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 18px;
+            margin-bottom: 6px;
+        }
+        .section-sub {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        /* ---------- MUSIC PLAYER (mini) ---------- */
+        .mini-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border);
+            padding: 8px 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 50;
+            transition: background var(--transition), border var(--transition);
+        }
+        .mini-player.active {
+            display: flex;
+        }
+        .mini-player .info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .mini-player .info .cover {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+        .mini-player .info .details {
+            font-size: 0.85rem;
+        }
+        .mini-player .info .details .title {
+            font-weight: 500;
+        }
+        .mini-player .info .details .artist {
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+        .mini-player .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mini-player .controls button {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: all var(--transition);
+        }
+        .mini-player .controls button:hover {
+            background: rgba(79, 195, 247, 0.1);
+        }
+
+        /* ---------- MODAL ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            max-width: 520px;
+            width: 100%;
+            padding: 28px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal h2 {
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+        }
+        .modal p {
+            color: var(--text-light);
+            margin-bottom: 14px;
+        }
+        .modal textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.92rem;
+            resize: vertical;
+            min-height: 90px;
+            outline: none;
+            transition: border var(--transition);
+        }
+        .modal textarea:focus {
+            border-color: var(--secondary);
+        }
+        .modal .options-row {
+            display: flex;
+            gap: 8px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+        .modal .options-row button {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            color: var(--text);
+        }
+        .modal .options-row button:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .modal .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            justify-content: flex-end;
+        }
+        .modal .modal-actions button {
+            padding: 8px 28px;
+            border-radius: var(--radius-sm);
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+        }
+        .modal .modal-actions .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .modal .modal-actions .btn-primary:hover {
+            background: var(--primary-light);
+        }
+        .modal .modal-actions .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+        }
+        .modal .modal-actions .btn-outline:hover {
+            background: var(--border);
+        }
+
+        /* ---------- MOBILE NAV ---------- */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border);
+            padding: 6px 0 env(safe-area-inset-bottom);
+            justify-content: space-around;
+            z-index: 60;
+            transition: background var(--transition), border var(--transition);
+        }
+        .mobile-nav button {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.3rem;
+            padding: 4px 8px;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .mobile-nav button.active {
+            color: var(--secondary-dark);
+        }
+        .mobile-nav button span {
+            font-size: 0.6rem;
+        }
+        .mobile-fab {
+            display: none;
+            position: fixed;
+            bottom: 72px;
+            right: 18px;
+            background: var(--primary);
+            color: #fff;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.8rem;
+            box-shadow: 0 6px 24px rgba(11, 26, 46, 0.3);
+            cursor: pointer;
+            z-index: 55;
+            transition: all var(--transition);
+            align-items: center;
+            justify-content: center;
+        }
+        .mobile-fab:hover {
+            transform: scale(1.05);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 1024px) {
+            :root {
+                --sidebar-width: 200px;
+                --right-panel-width: 220px;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .sidebar {
+                display: none !important;
+            }
+            .right-panel {
+                display: none !important;
+            }
+            .main-content {
+                width: 100%;
+            }
+            .topbar {
+                padding: 0 16px;
+                height: 52px;
+            }
+            .topbar .right .search-box {
+                display: none;
+            }
+            .page {
+                padding: 14px 16px 80px 16px;
+            }
+            .mobile-nav {
+                display: flex !important;
+            }
+            .mobile-fab {
+                display: flex !important;
+            }
+            .conv-input {
+                padding-bottom: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar .left .agent-status span {
+                font-size: 0.75rem;
+            }
+            .conv-messages .msg {
+                max-width: 92%;
+                font-size: 0.88rem;
+                padding: 10px 14px;
+            }
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .splash-content .logo-big {
+                font-size: 2.8rem;
+            }
+            .earth-container {
+                width: 150px;
+                height: 150px;
+            }
+            .earth {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        /* ---------- UTILITIES ---------- */
+        .demo-badge {
+            font-size: 0.7rem;
+            color: var(--text-lighter);
+            background: var(--bg);
+            padding: 2px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 6px;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .flex-1 {
+            flex: 1;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .gap-12 {
+            gap: 12px;
+        }
+
+        /* Scroll horizontal pour catégories */
+        .scroll-categories {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 6px 0 12px 0;
+            scrollbar-width: thin;
+        }
+        .scroll-categories .cat-btn {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            color: var(--text);
+        }
+        .scroll-categories .cat-btn:hover,
+        .scroll-categories .cat-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* Musique cards */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 14px;
+            margin-top: 8px;
+        }
+        .music-grid .music-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .music-grid .music-card:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-3px);
+        }
+        .music-grid .music-card .cover-art {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--secondary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 2.4rem;
+            margin-bottom: 8px;
+        }
+        .music-grid .music-card .track-title {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .music-grid .music-card .track-artist {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        .music-grid .music-card .play-btn {
+            margin-top: 8px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 4px 20px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all var(--transition);
+        }
+        .music-grid .music-card .play-btn:hover {
+            background: var(--primary-light);
+        }
+
+        /* ---------- STORY CARD ---------- */
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        .story-grid .story-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .story-grid .story-card:hover {
+            box-shadow: var(--shadow);
+        }
+        .story-grid .story-card .story-icon {
+            font-size: 2.4rem;
+            margin-bottom: 4px;
+        }
+        .story-grid .story-card .story-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ---------- DISCLAIMER ---------- */
+        .disclaimer {
+            font-size: 0.7rem;
+            color: var(--text-lighter);
+            padding: 8px 0 4px;
+            border-top: 1px solid var(--border);
+            margin-top: 12px;
+        }
+
+        /* ---------- NOTIFICATIONS ---------- */
+        .notif-list .notif-item {
+            background: var(--bg-white);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            border-left: 4px solid var(--secondary);
+            border: 1px solid var(--border);
+            border-left-width: 4px;
+            margin-bottom: 8px;
+        }
+        .notif-list .notif-item .time {
+            font-size: 0.7rem;
+            color: var(--text-lighter);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    SPLASH — ÉCRAN TERRE
+    ============================================================ -->
+    <div id="splash">
+        <!-- Étoiles -->
+        <div class="stars" id="stars"></div>
+
+        <div class="earth-container">
+            <div class="halo"></div>
+            <div class="earth">
+                <div class="continent c1"></div>
+                <div class="continent c2"></div>
+                <div class="continent c3"></div>
+                <div class="continent c4"></div>
+                <div class="continent c5"></div>
+                <div class="city"></div>
+                <div class="city"></div>
+                <div class="city"></div>
+                <div class="city"></div>
+                <div class="city"></div>
+                <div class="city"></div>
+            </div>
+        </div>
+
+        <div class="splash-content">
+            <div class="logo-big">IN<span>AT</span></div>
+            <div class="sub">Quand l'inattendu arrive.</div>
+            <div class="sub2">Nous sommes là pour vous aider à avancer.</div>
+            <button class="btn-enter" onclick="enterApp()">Entrer dans INAT</button>
+            <button class="btn-skip" onclick="enterApp()">Passer</button>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    APPLICATION
+    ============================================================ -->
+    <div id="app">
+
+        <div class="app-layout">
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar" id="sidebar">
+                <div class="brand">
+                    <i class="fas fa-compass"></i> IN<span>AT</span>
+                </div>
+
+                <button class="nav-item primary-btn" onclick="openNewSituation()">
+                    <i class="fas fa-plus"></i> Nouveau problème
+                </button>
+
+                <button class="nav-item active" data-page="home" onclick="navigateTo('home')">
+                    <i class="fas fa-home"></i> Accueil
+                </button>
+                <button class="nav-item" data-page="situations" onclick="navigateTo('situations')">
+                    <i class="fas fa-folder"></i> Situations
+                </button>
+                <button class="nav-item" data-page="services" onclick="navigateTo('services')">
+                    <i class="fas fa-tools"></i> Services
+                </button>
+                <button class="nav-item" data-page="entertainment" onclick="navigateTo('entertainment')">
+                    <i class="fas fa-music"></i> Divertissement
+                </button>
+                <button class="nav-item" data-page="messages" onclick="navigateTo('messages')">
+                    <i class="fas fa-comment-dots"></i> Messages
+                    <span class="badge">2</span>
+                </button>
+                <button class="nav-item" data-page="notifications" onclick="navigateTo('notifications')">
+                    <i class="fas fa-bell"></i> Notifications
+                    <span class="badge">3</span>
+                </button>
+                <button class="nav-item" data-page="account" onclick="navigateTo('account')">
+                    <i class="fas fa-user-circle"></i> Compte
+                </button>
+
+                <div class="footer">
+                    <button class="theme-toggle" onclick="toggleTheme()">
+                        <i class="fas fa-moon"></i> Mode sombre
+                    </button>
+                    <span>INAT • 2026</span>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+
+                <!-- TOPBAR -->
+                <header class="topbar">
+                    <div class="left">
+                        <div class="agent-status">
+                            <span class="dot"></span>
+                            <span>INAT Agent</span>
+                            <span style="font-size:0.75rem;color:var(--text-lighter);">● Disponible</span>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="search-box">
+                            <i class="fas fa-search" style="color:var(--text-lighter);font-size:0.8rem;"></i>
+                            <input type="text" placeholder="Rechercher...">
+                        </div>
+                        <button onclick="navigateTo('notifications')" title="Notifications">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                        <button onclick="navigateTo('account')" title="Compte">
+                            <i class="fas fa-user-circle"></i>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- PAGE CONTAINER -->
+                <div class="page-container">
+
+                    <!-- HOME (conversation) -->
+                    <div class="page active" id="page-home">
+                        <div class="conv-container">
+                            <div class="conv-header">
+                                <h2>Que s'est-il passé ?</h2>
+                                <p>Expliquez la situation avec vos propres mots.</p>
+                            </div>
+                            <div class="conv-messages" id="messageContainer">
+                                <!-- Messages injectés par JS -->
+                            </div>
+                            <div class="conv-input">
+                                <button class="action-btn" title="Parler"><i class="fas fa-microphone"></i></button>
+                                <button class="action-btn" title="Ajouter"><i class="fas fa-paperclip"></i></button>
+                                <button class="action-btn" title="Photo"><i class="fas fa-camera"></i></button>
+                                <button class="action-btn" title="Localisation"><i class="fas fa-map-marker-alt"></i></button>
+                                <input type="text" id="messageInput" placeholder="Décrivez votre situation..." onkeydown="if(event.key==='Enter') sendMessage()">
+                                <button class="send-btn" onclick="sendMessage()"><i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SITUATIONS -->
+                    <div class="page" id="page-situations">
+                        <h2><i class="fas fa-folder"></i> Mes situations</h2>
+                        <p class="section-sub">Suivez l'évolution de vos dossiers.</p>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px;">
+                            <span style="background:var(--secondary);color:#fff;padding:2px 14px;border-radius:20px;font-size:0.75rem;">Nouveau</span>
+                            <span style="background:#ffb74d;color:#fff;padding:2px 14px;border-radius:20px;font-size:0.75rem;">En cours</span>
+                            <span style="background:var(--border);color:var(--text-light);padding:2px 14px;border-radius:20px;font-size:0.75rem;">En attente</span>
+                            <span style="background:#81c784;color:#fff;padding:2px 14px;border-radius:20px;font-size:0.75rem;">Résolu</span>
+                        </div>
+                        <div class="card-grid">
+                            <div class="card">
+                                <div class="card-title">📱 Téléphone perdu</div>
+                                <div class="card-desc">En cours • 2h</div>
+                                <button class="card-btn" onclick="selectDemoSituation('Téléphone perdu')">Ouvrir</button>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">📦 Colis non reçu</div>
+                                <div class="card-desc">Nouveau • 1j</div>
+                                <button class="card-btn" onclick="selectDemoSituation('Colis non reçu')">Ouvrir</button>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">🏠 Panne électrique</div>
+                                <div class="card-desc">Résolu • 3j</div>
+                                <button class="card-btn" onclick="selectDemoSituation('Panne électrique')">Ouvrir</button>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">🚗 Accident mineur</div>
+                                <div class="card-desc">En attente • 5j</div>
+                                <button class="card-btn" onclick="selectDemoSituation('Accident mineur')">Ouvrir</button>
+                            </div>
+                        </div>
+                        <div class="demo-badge">⚠️ Données de démonstration</div>
+                    </div>
+
+                    <!-- SERVICES -->
+                    <div class="page" id="page-services">
+                        <h2><i class="fas fa-tools"></i> Trouver le bon service</h2>
+                        <p class="section-sub">Catégories pour vous orienter.</p>
+                        <div class="card-grid">
+                            <div class="card"><div class="card-title">📱 Appareil perdu</div><div class="card-desc">Téléphone, tablette...</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">📦 Colis / livraison</div><div class="card-desc">Suivi, réclamation</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">🏠 Maison</div><div class="card-desc">Panne, travaux</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">🚗 Transport</div><div class="card-desc">VTC, covoiturage</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">📄 Documents / démarches</div><div class="card-desc">Administratif</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">💼 Travail</div><div class="card-desc">Problèmes pro</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">✈️ Voyage</div><div class="card-desc">Retards, bagages</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">🛒 Achat</div><div class="card-desc">Litiges, remboursements</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">💳 Services financiers</div><div class="card-desc">Banque, assurance</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                            <div class="card"><div class="card-title">👤 Autre</div><div class="card-desc">Situation diverse</div><button class="card-btn" onclick="navigateTo('home')">Ouvrir</button></div>
+                        </div>
+                        <div class="demo-badge">⚠️ Services de démonstration</div>
+                    </div>
+
+                    <!-- ENTERTAINMENT -->
+                    <div class="page" id="page-entertainment">
+                        <h2><i class="fas fa-music"></i> Divertissement</h2>
+                        <p class="section-sub">Un moment pour vous.</p>
+
+                        <!-- Navigation sous-onglets -->
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px;">
+                            <button class="cat-btn active" style="background:var(--primary);color:#fff;border:none;padding:6px 20px;border-radius:30px;cursor:pointer;font-family:var(--font);" onclick="showEntertainmentTab('music')">🎵 Musique</button>
+                            <button class="cat-btn" style="background:var(--bg-white);border:1px solid var(--border);padding:6px 20px;border-radius:30px;cursor:pointer;font-family:var(--font);color:var(--text);" onclick="showEntertainmentTab('stories')">📱 Stories</button>
+                            <button class="cat-btn" style="background:var(--bg-white);border:1px solid var(--border);padding:6px 20px;border-radius:30px;cursor:pointer;font-family:var(--font);color:var(--text);" onclick="showEntertainmentTab('reading')">📖 Lecture</button>
+                            <button class="cat-btn" style="background:var(--bg-white);border:1px solid var(--border);padding:6px 20px;border-radius:30px;cursor:pointer;font-family:var(--font);color:var(--text);" onclick="showEntertainmentTab('others')">✨ Autres</button>
+                        </div>
+
+                        <!-- Contenu Musique -->
+                        <div id="ent-music">
+                            <p style="color:var(--text-light);margin-bottom:6px;">Veux-tu écouter de la musique ? 🎧</p>
+                            <button style="background:var(--secondary);color:#fff;border:none;padding:8px 28px;border-radius:30px;font-weight:600;cursor:pointer;font-family:var(--font);" onclick="alert('Lecteur musical ouvert (démo)')">Oui, écouter</button>
+                            <button style="background:transparent;border:1px solid var(--border);padding:8px 28px;border-radius:30px;cursor:pointer;font-family:var(--font);color:var(--text);margin-left:8px;">Plus tard</button>
+
+                            <div class="scroll-categories" style="margin-top:14px;">
+                                <button class="cat-btn active">Tous</button>
+                                <button class="cat-btn">Slow</button>
+                                <button class="cat-btn">Pop</button>
+                                <button class="cat-btn">Hip-Hop</button>
+                                <button class="cat-btn">R&B</button>
+                                <button class="cat-btn">Jazz</button>
+                                <button class="cat-btn">Reggae</button>
+                                <button class="cat-btn">Afro</button>
+                                <button class="cat-btn">Afrobeat</button>
+                                <button class="cat-btn">Amapiano</button>
+                                <button class="cat-btn">Chill</button>
+                                <button class="cat-btn">Rock</button>
+                                <button class="cat-btn">Gospel</button>
+                                <button class="cat-btn">Soul</button>
+                            </div>
+
+                            <div class="music-grid" id="musicGrid">
+                                <!-- injecté par JS -->
+                            </div>
+                            <div class="demo-badge">🎵 Morceaux de démonstration</div>
+                        </div>
+
+                        <!-- Contenu Stories -->
+                        <div id="ent-stories" style="display:none;">
+                            <p class="section-sub">Découvrez des histoires courtes.</p>
+                            <div class="story-grid">
+                                <div class="story-card"><div class="story-icon">🌍</div><div class="story-label">Monde</div></div>
+                                <div class="story-card"><div class="story-icon">🎵</div><div class="story-label">Musique</div></div>
+                                <div class="story-card"><div class="story-icon">😂</div><div class="story-label">Humour</div></div>
+                                <div class="story-card"><div class="story-icon">🧠</div><div class="story-label">Science</div></div>
+                                <div class="story-card"><div class="story-icon">📚</div><div class="story-label">Éducation</div></div>
+                                <div class="story-card"><div class="story-icon">⚽</div><div class="story-label">Sport</div></div>
+                                <div class="story-card"><div class="story-icon">🎬</div><div class="story-label">Cinéma</div></div>
+                                <div class="story-card"><div class="story-icon">🌍</div><div class="story-label">Afrique</div></div>
+                                <div class="story-card"><div class="story-icon">✈️</div><div class="story-label">Voyage</div></div>
+                                <div class="story-card"><div class="story-icon">💡</div><div class="story-label">Technologie</div></div>
+                                <div class="story-card"><div class="story-icon">🎨</div><div class="story-label">Culture</div></div>
+                                <div class="story-card"><div class="story-icon">🍔</div><div class="story-label">Cuisine</div></div>
+                                <div class="story-card"><div class="story-icon">❤️</div><div class="story-label">Inspiration</div></div>
+                                <div class="story-card"><div class="story-icon">📰</div><div class="story-label">Actualités</div></div>
+                            </div>
+                            <div class="demo-badge">📱 Stories de démonstration</div>
+                        </div>
+
+                        <!-- Contenu Lecture -->
+                        <div id="ent-reading" style="display:none;">
+                            <p class="section-sub">📖 Articles et livres.</p>
+                            <div class="card-grid">
+                                <div class="card"><div class="card-title">📖 L'art de la sérénité</div><div class="card-desc">Auteur: INAT • 8 min</div><button class="card-btn">Lire</button></div>
+                                <div class="card"><div class="card-title">🧠 Comprendre l'inattendu</div><div class="card-desc">Auteur: INAT • 5 min</div><button class="card-btn">Lire</button></div>
+                                <div class="card"><div class="card-title">🌍 Voyage et découverte</div><div class="card-desc">Auteur: INAT • 10 min</div><button class="card-btn">Lire</button></div>
+                                <div class="card"><div class="card-title">💡 Innovation quotidienne</div><div class="card-desc">Auteur: INAT • 6 min</div><button class="card-btn">Lire</button></div>
+                            </div>
+                            <div class="demo-badge">📖 Contenu de démonstration</div>
+                        </div>
+
+                        <!-- Contenu Autres -->
+                        <div id="ent-others" style="display:none;">
+                            <p class="section-sub">✨ Exploration & détente.</p>
+                            <div class="card-grid">
+                                <div class="card"><div class="card-title">🎨 Art</div><div class="card-desc">Découvrir</div><button class="card-btn">Ouvrir</button></div>
+                                <div class="card"><div class="card-title">🧩 Jeux</div><div class="card-desc">Détente</div><button class="card-btn">Ouvrir</button></div>
+                                <div class="card"><div class="card-title">🧘 Relaxation</div><div class="card-desc">Méditation</div><button class="card-btn">Ouvrir</button></div>
+                                <div class="card"><div class="card-title">🌌 Astronomie</div><div class="card-desc">Explorer</div><button class="card-btn">Ouvrir</button></div>
+                                <div class="card"><div class="card-title">🗺️ Découverte</div><div class="card-desc">Inspiration</div><button class="card-btn">Ouvrir</button></div>
+                            </div>
+                            <div class="demo-badge">✨ Contenu de démonstration</div>
+                        </div>
+                    </div>
+
+                    <!-- MESSAGES -->
+                    <div class="page" id="page-messages">
+                        <h2><i class="fas fa-comment-dots"></i> Messagerie</h2>
+                        <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+                            <div style="background:var(--bg-white);border-radius:var(--radius-sm);padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                                <div><strong>🤖 INAT Agent</strong> <span style="color:var(--text-light);font-size:0.75rem;">● Disponible</span><br><span style="font-size:0.8rem;color:var(--text-light);">"Votre situation est en cours..."</span></div>
+                                <span style="font-size:0.7rem;color:var(--text-lighter);">12:30</span>
+                            </div>
+                            <div style="background:var(--bg-white);border-radius:var(--radius-sm);padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                                <div><strong>🧑 Support INAT</strong> <span style="color:var(--text-light);font-size:0.75rem;">● En ligne</span><br><span style="font-size:0.8rem;color:var(--text-light);">"Nous avons bien reçu votre demande."</span></div>
+                                <span style="font-size:0.7rem;color:var(--text-lighter);">11:15</span>
+                            </div>
+                            <div style="background:var(--bg-white);border-radius:var(--radius-sm);padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                                <div><strong>🛠 Professionnel</strong> <span style="color:var(--text-light);font-size:0.75rem;">● Absent</span><br><span style="font-size:0.8rem;color:var(--text-light);">"Réparation terminée."</span></div>
+                                <span style="font-size:0.7rem;color:var(--text-lighter);">hier</span>
+                            </div>
+                        </div>
+                        <div class="demo-badge">💬 Messages de démonstration</div>
+                    </div>
+
+                    <!-- NOTIFICATIONS -->
+                    <div class="page" id="page-notifications">
+                        <h2><i class="fas fa-bell"></i> Notifications</h2>
+                        <div class="notif-list" style="margin-top:8px;">
+                            <div class="notif-item"><strong>Prochaine étape disponible</strong><br>Votre situation "Téléphone perdu" a été mise à jour.<div class="time">Il y a 10 min</div></div>
+                            <div class="notif-item"><strong>Information nécessaire</strong><br>Veuillez préciser la marque de votre téléphone.<div class="time">Il y a 1h</div></div>
+                            <div class="notif-item"><strong>Découvrez INAT Détente</strong><br>De la musique pour vous détendre.<div class="time">Il y a 2h</div></div>
+                        </div>
+                        <div class="demo-badge">🔔 Notifications de démonstration</div>
+                    </div>
+
+                    <!-- ACCOUNT -->
+                    <div class="page" id="page-account">
+                        <h2><i class="fas fa-user-circle"></i> Compte</h2>
+                        <div style="display:flex;align-items:center;gap:16px;margin:12px 0;">
+                            <div style="width:56px;height:56px;border-radius:50%;background:var(--secondary);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;">👤</div>
+                            <div><strong>Alexandre Martin</strong><br><span style="color:var(--text-light);">alexandre@email.com</span><br><span style="color:var(--text-light);">+33 6 12 34 56 78</span></div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:4px;max-width:320px;">
+                            <button class="nav-item" style="padding:10px 14px;justify-content:flex-start;"><i class="fas fa-user"></i> Profil</button>
+                            <button class="nav-item" style="padding:10px 14px;justify-content:flex-start;"><i class="fas fa-lock"></i> Sécurité</button>
+                            <button class="nav-item" style="padding:10px 14px;justify-content:flex-start;"><i class="fas fa-shield-alt"></i> Confidentialité</button>
+                            <button class="nav-item" style="padding:10px 14px;justify-content:flex-start;"><i class="fas fa-bell"></i> Notifications</button>
+                            <button class="nav-item" style="padding:10px 14px;justify-content:flex-start;"><i class="fas fa-globe"></i> Langue</button>
+                            <button class="nav-item" style="padding:10px 14px;justify-content:flex-start;" onclick="toggleTheme()"><i class="fas fa-moon"></i> Mode sombre</button>
+                            <button class="nav-item" style="padding:10px 14px;justify-content:flex-start;color:#e74c3c;"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+                        </div>
+                    </div>
+
+                </div><!-- /page-container -->
+            </div><!-- /main-content -->
+
+            <!-- RIGHT PANEL -->
+            <aside class="right-panel" id="rightPanel">
+                <div class="panel-title">Suivi de la situation</div>
+
+                <div class="situation-card">
+                    <div class="label">SITUATION</div>
+                    <div class="value" id="situationTitle">Téléphone perdu</div>
+                    <div class="status-badge" id="situationStatus">🟡 En cours</div>
+                </div>
+
+                <div>
+                    <div class="panel-title">Progression</div>
+                    <div class="progress-wrap">
+                        <div class="steps">
+                            <span class="dot done"></span>
+                            <span class="dot done"></span>
+                            <span class="dot active"></span>
+                            <span class="dot"></span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-lighter);margin-top:2px;">
+                            <span>Sécuriser</span>
+                            <span>Localiser</span>
+                            <span>Contacter</span>
+                            <span>Remplacer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-action">
+                    <div class="label">PROCHAINE ACTION</div>
+                    <div class="value" id="nextAction">Sécuriser les comptes importants</div>
+                    <div class="btn-group">
+                        <button class="primary" onclick="alert('Action simulée : sécurisation des comptes.')">Continuer</button>
+                        <button class="outline" onclick="alert('Modification simulée.')">Modifier</button>
+                        <button class="outline" onclick="alert('Situation fermée (démo).')">Fermer</button>
+                    </div>
+                </div>
+
+                <div style="font-size:0.7rem;color:var(--text-lighter);border-top:1px solid var(--border);padding-top:12px;margin-top:auto;">
+                    ⚠️ Démonstration — Aucune action réelle effectuée.
+                </div>
+            </aside>
+
+        </div><!-- /app-layout -->
+
+        <!-- MINI PLAYER -->
+        <div class="mini-player" id="miniPlayer">
+            <div class="info">
+                <div class="cover"><i class="fas fa-music"></i></div>
+                <div class="details">
+                    <div class="title" id="miniTrackTitle">African Night</div>
+                    <div class="artist" id="miniTrackArtist">INAT Demo</div>
+                </div>
+            </div>
+            <div class="controls">
+                <button onclick="alert('⏮ Précédent (démo)')"><i class="fas fa-step-backward"></i></button>
+                <button id="miniPlayBtn" onclick="toggleMiniPlay()"><i class="fas fa-play"></i></button>
+                <button onclick="alert('⏭ Suivant (démo)')"><i class="fas fa-step-forward"></i></button>
+            </div>
+        </div>
+
+        <!-- MOBILE NAV -->
+        <nav class="mobile-nav">
+            <button class="active" onclick="navigateTo('home')"><i class="fas fa-home"></i><span>Accueil</span></button>
+            <button onclick="navigateTo('situations')"><i class="fas fa-folder"></i><span>Situations</span></button>
+            <button onclick="navigateTo('services')"><i class="fas fa-tools"></i><span>Services</span></button>
+            <button onclick="navigateTo('entertainment')"><i class="fas fa-music"></i><span>Divert.</span></button>
+            <button onclick="navigateTo('account')"><i class="fas fa-user"></i><span>Compte</span></button>
+        </nav>
+
+        <!-- MOBILE FAB -->
+        <button class="mobile-fab" onclick="openNewSituation()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+    </div><!-- /app -->
+
+    <!-- ============================================================
+    MODAL : NOUVELLE SITUATION
+    ============================================================ -->
+    <div class="modal-overlay" id="newSituationModal">
+        <div class="modal">
+            <h2>➕ Que s'est-il passé ?</h2>
+            <p>Expliquez la situation avec vos propres mots.</p>
+            <textarea id="situationText" placeholder="Exemple : J'ai perdu mon téléphone..."></textarea>
+            <div class="options-row">
+                <button><i class="fas fa-microphone"></i> Voix</button>
+                <button><i class="fas fa-camera"></i> Photo</button>
+                <button><i class="fas fa-paperclip"></i> Document</button>
+                <button><i class="fas fa-map-marker-alt"></i> Localisation</button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-outline" onclick="closeNewSituation()">Annuler</button>
+                <button class="btn-primary" onclick="submitSituation()">Analyser ma situation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    JAVASCRIPT COMPLET
+    ============================================================ -->
+    <script>
+        // ------------------------------------------------------------
+        // 1. SPLASH / ÉTOILES
+        // ------------------------------------------------------------
+        (function createStars() {
+            const container = document.getElementById('stars');
+            for (let i = 0; i < 120; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--duration', (1.5 + Math.random() * 2.5) + 's');
+                star.style.width = (1 + Math.random() * 2) + 'px';
+                star.style.height = star.style.width;
+                container.appendChild(star);
+            }
+        })();
+
+        function enterApp() {
+            document.getElementById('splash').classList.add('hide');
+            document.getElementById('app').classList.add('active');
+            initConversation();
+            loadMusicTracks();
+            // Mini player par défaut
+            document.getElementById('miniPlayer').classList.add('active');
+        }
+
+        // ------------------------------------------------------------
+        // 2. THEME
+        // ------------------------------------------------------------
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            if (current === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        // ------------------------------------------------------------
+        // 3. NAVIGATION
+        // ------------------------------------------------------------
+        let currentPage = 'home';
+
+        function navigateTo(page) {
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            const target = document.getElementById('page-' + page);
+            if (target) target.classList.add('active');
+
+            document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.remove('active'));
+            const navBtn = document.querySelector(`.sidebar .nav-item[data-page="${page}"]`);
+            if (navBtn) navBtn.classList.add('active');
+
+            document.querySelectorAll('.mobile-nav button').forEach(el => el.classList.remove('active'));
+            const mobileMap = { home: 0, situations: 1, services: 2, entertainment: 3, account: 4 };
+            const mobileBtns = document.querySelectorAll('.mobile-nav button');
+            if (mobileMap[page] !== undefined && mobileBtns[mobileMap[page]]) {
+                mobileBtns[mobileMap[page]].classList.add('active');
+            }
+
+            currentPage = page;
+            // Si on va sur entertainment, charger le bon onglet
+            if (page === 'entertainment') {
+                showEntertainmentTab('music');
+            }
+        }
+
+        // ------------------------------------------------------------
+        // 4. CONVERSATION
+        // ------------------------------------------------------------
+        function initConversation() {
+            const container = document.getElementById('messageContainer');
+            container.innerHTML = '';
+            addMessage('inat', `Bonjour 👋<br>Je suis <strong>INAT</strong>.<br>Que s'est-il passé ?`);
+        }
+
+        function addMessage(sender, text) {
+            const container = document.getElementById('messageContainer');
+            const div = document.createElement('div');
+            div.className = 'msg ' + sender;
+            div.innerHTML = text;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return;
+            addMessage('user', text);
+            input.value = '';
+
+            // Simulation réponse INAT
+            setTimeout(() => {
+                const lower = text.toLowerCase();
+                let response = '';
+                if (lower.includes('perdu') && (lower.includes('téléphone') || lower.includes('portable') || lower
+                        .includes('iphone'))) {
+                    response =
+                        `Je comprends. Commençons par identifier les actions prioritaires.<br><br>` +
+                        `<div class="steps-list">` +
+                        `<div class="step"><span class="num">1</span> Sécuriser les comptes importants.</div>` +
+                        `<div class="step"><span class="num">2</span> Vérifier les possibilités de localisation.</div>` +
+                        `<div class="step"><span class="num">3</span> Contacter les services concernés.</div>` +
+                        `<div class="step"><span class="num">4</span> Examiner les options de remplacement.</div>` +
+                        `</div>` +
+                        `<button class="btn-step" onclick="alert('Prochaines étapes (démo)')">Voir les prochaines étapes</button>`;
+                    document.getElementById('situationTitle').textContent = 'Téléphone perdu';
+                    document.getElementById('nextAction').textContent = 'Sécuriser les comptes importants';
+                    document.getElementById('situationStatus').textContent = '🟡 En cours';
+                } else if (lower.includes('colis') || lower.includes('livraison')) {
+                    response =
+                        `Je comprends. Vérifions ensemble.<br><br>` +
+                        `<div class="steps-list">` +
+                        `<div class="step"><span class="num">1</span> Vérifier le suivi du colis.</div>` +
+                        `<div class="step"><span class="num">2</span> Contacter le service client.</div>` +
+                        `<div class="step"><span class="num">3</span> Déclarer le problème si nécessaire.</div>` +
+                        `</div>`;
+                    document.getElementById('situationTitle').textContent = 'Colis non reçu';
+                    document.getElementById('nextAction').textContent = 'Vérifier le suivi';
+                    document.getElementById('situationStatus').textContent = '🔵 Nouveau';
+                } else if (lower.includes('panne') || lower.includes('électricité')) {
+                    response =
+                        `Je comprends. Une panne peut être stressante.<br><br>` +
+                        `<div class="steps-list">` +
+                        `<div class="step"><span class="num">1</span> Vérifier si le problème est général.</div>` +
+                        `<div class="step"><span class="num">2</span> Contacter un professionnel agréé.</div>` +
+                        `<div class="step"><span class="num">3</span> Prendre rendez-vous.</div>` +
+                        `</div>`;
+                    document.getElementById('situationTitle').textContent = 'Panne électrique';
+                    document.getElementById('nextAction').textContent = 'Contacter un électricien';
+                    document.getElementById('situationStatus').textContent = '🟢 Résolu';
+                } else {
+                    response =
+                        `Merci pour ces informations. Je vais vous aider.<br><br>` +
+                        `<div class="steps-list">` +
+                        `<div class="step"><span class="num">1</span> Analyser les faits décrits.</div>` +
+                        `<div class="step"><span class="num">2</span> Identifier les options possibles.</div>` +
+                        `<div class="step"><span class="num">3</span> Proposer un plan d'action.</div>` +
+                        `</div>`;
+                    document.getElementById('situationTitle').textContent = text.substring(0, 30) + (text.length > 30 ?
+                        '...' : '');
+                    document.getElementById('nextAction').textContent = 'Suivre les étapes recommandées';
+                    document.getElementById('situationStatus').textContent = '🔵 Nouveau';
+                }
+                addMessage('inat', response);
+            }, 600);
+        }
+
+        // ------------------------------------------------------------
+        // 5. SITUATION DEMO
+        // ------------------------------------------------------------
+        function selectDemoSituation(title) {
+            navigateTo('home');
+            document.getElementById('situationTitle').textContent = title;
+            document.getElementById('nextAction').textContent = 'Consulter les options';
+            document.getElementById('situationStatus').textContent = '🟡 En cours';
+            addMessage('user', 'Je souhaite parler de : ' + title);
+            setTimeout(() => {
+                addMessage('inat',
+                    `Je comprends. Nous allons nous concentrer sur "${title}".<br><br>` +
+                    `<div class="steps-list">` +
+                    `<div class="step"><span class="num">1</span> Analyser la situation.</div>` +
+                    `<div class="step"><span class="num">2</span> Identifier les actions prioritaires.</div>` +
+                    `<div class="step"><span class="num">3</span> Proposer des solutions.</div>` +
+                    `</div>`
+                );
+            }, 400);
+        }
+
+        // ------------------------------------------------------------
+        // 6. MODAL NOUVELLE SITUATION
+        // ------------------------------------------------------------
+        function openNewSituation() {
+            document.getElementById('newSituationModal').classList.add('open');
+            document.getElementById('situationText').value = '';
+            document.getElementById('situationText').focus();
+        }
+
+        function closeNewSituation() {
+            document.getElementById('newSituationModal').classList.remove('open');
+        }
+
+        function submitSituation() {
+            const text = document.getElementById('situationText').value.trim();
+            if (!text) { alert('Veuillez décrire ce qui s\'est passé.'); return; }
+            closeNewSituation();
+            navigateTo('home');
+            document.getElementById('messageInput').value = text;
+            sendMessage();
+            // Ajouter à la sidebar
+            const sidebar = document.querySelector('.sidebar .nav-item.primary-btn');
+            const newItem = document.createElement('div');
+            newItem.style.cssText =
+                'padding:8px 14px;border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.85rem;margin-top:4px;border-left:3px solid var(--secondary);background:var(--bg);';
+            newItem.innerHTML =
+                `<div style="font-weight:500;">📌 ${text.substring(0,25)}${text.length>25?'...':''}</div><div style="font-size:0.7rem;color:var(--text-light);">Nouveau • à l'instant</div>`;
+            newItem.onclick = function() { selectDemoSituation(text.substring(0, 30)); };
+            sidebar.parentNode.insertBefore(newItem, sidebar.nextSibling);
+        }
+
+        // ------------------------------------------------------------
+        // 7. ENTERTAINMENT TABS
+        // ------------------------------------------------------------
+        function showEntertainmentTab(tab) {
+            document.querySelectorAll('#page-entertainment .cat-btn').forEach(b => {
+                b.style.background = 'var(--bg-white)';
+                b.style.color = 'var(--text)';
+                b.style.border = '1px solid var(--border)';
+            });
+            // Trouver les boutons dans l'en-tête
+            const btns = document.querySelectorAll('#page-entertainment > div:first-child .cat-btn');
+            const map = { music: 0, stories: 1, reading: 2, others: 3 };
+            if (map[tab] !== undefined && btns[map[tab]]) {
+                btns[map[tab]].style.background = 'var(--primary)';
+                btns[map[tab]].style.color = '#fff';
+                btns[map[tab]].style.border = 'none';
+            }
+
+            document.getElementById('ent-music').style.display = tab === 'music' ? 'block' : 'none';
+            document.getElementById('ent-stories').style.display = tab === 'stories' ? 'block' : 'none';
+            document.getElementById('ent-reading').style.display = tab === 'reading' ? 'block' : 'none';
+            document.getElementById('ent-others').style.display = tab === 'others' ? 'block' : 'none';
+        }
+
+        // ------------------------------------------------------------
+        // 8. MUSIQUE
+        // ------------------------------------------------------------
+        const musicTracks = [
+            { title: 'Horizon', artist: 'INAT Demo', genre: 'Slow', emoji: '🌅' },
+            { title: 'After Rain', artist: 'INAT Demo', genre: 'R&B', emoji: '🌧️' },
+            { title: 'African Night', artist: 'INAT Demo', genre: 'Afro', emoji: '🌍' },
+            { title: 'Future', artist: 'INAT Demo', genre: 'Chill', emoji: '🚀' },
+            { title: 'Sunrise', artist: 'INAT Demo', genre: 'Pop', emoji: '☀️' },
+            { title: 'Deep Soul', artist: 'INAT Demo', genre: 'Soul', emoji: '🎵' },
+        ];
+
+        function loadMusicTracks() {
+            const grid = document.getElementById('musicGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            musicTracks.forEach((track, index) => {
+                const card = document.createElement('div');
+                card.className = 'music-card';
+                card.innerHTML = `
+                    <div class="cover-art">${track.emoji}</div>
+                    <div class="track-title">${track.title}</div>
+                    <div class="track-artist">${track.artist} • ${track.genre}</div>
+                    <button class="play-btn" onclick="playTrack(${index})"><i class="fas fa-play"></i> Écouter</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        let currentTrackIndex = -1;
+        let isPlaying = false;
+
+        function playTrack(index) {
+            const track = musicTracks[index];
+            currentTrackIndex = index;
+            document.getElementById('miniTrackTitle').textContent = track.title;
+            document.getElementById('miniTrackArtist').textContent = track.artist;
+            document.getElementById('miniPlayer').classList.add('active');
+            isPlaying = true;
+            document.getElementById('miniPlayBtn').innerHTML = '<i class="fas fa-pause"></i>';
+            // Simuler la lecture
+            alert('🎵 Lecture : ' + track.title + ' par ' + track.artist + ' (démo)');
+        }
+
+        function toggleMiniPlay() {
+            if (currentTrackIndex === -1) {
+                playTrack(0);
+                return;
+            }
+            isPlaying = !isPlaying;
+            document.getElementById('miniPlayBtn').innerHTML = isPlaying ?
+                '<i class="fas fa-pause"></i>' :
+                '<i class="fas fa-play"></i>';
+            if (isPlaying) {
+                alert('▶ Lecture reprise (démo)');
+            } else {
+                alert('⏸ Pause (démo)');
+            }
+        }
+
+        // ------------------------------------------------------------
+        // 9. FONCTION IA (future)
+        // ------------------------------------------------------------
+        function analyzeSituation(text) {
+            // Architecture préparée pour une future IA
+            return {
+                category: 'Général',
+                steps: ['Comprendre', 'Identifier', 'Proposer'],
+                priority: 'normal',
+                nextAction: 'Fournir plus de détails'
+            };
+        }
+
+        // ------------------------------------------------------------
+        // 10. KEYBOARD SHORTCUTS
+        // ------------------------------------------------------------
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeNewSituation();
+        });
+
+        // ------------------------------------------------------------
+        // 11. DEMO URGENCE (alerte)
+        // ------------------------------------------------------------
+        // Détection de mots d'urgence dans la conversation (simulé)
+        const originalSend = sendMessage;
+        sendMessage = function() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const urgent = ['urgence', 'danger', 'attaque', 'blessé', 'saigne', 'feu', 'incendie', 'accident grave'];
+            if (urgent.some(w => text.toLowerCase().includes(w))) {
+                alert(
+                    '🚨 Cette situation peut nécessiter une assistance urgente. Contactez immédiatement les services d\'urgence appropriés de votre pays.');
+            }
+            originalSend.call(this);
+        };
+
+        console.log('✅ INAT prêt — Architecture IA prête avec analyzeSituation()');
+    </script>
+
+</body>
+</html>
