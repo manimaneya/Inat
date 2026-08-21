@@ -2,2545 +2,1333 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>INAT — L'inattendu commence ici</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#1746d1">
+<title>INAT — Situations • Stories • Musique</title>
 
 <style>
 :root{
-  --bg:#050816;
-  --panel:#0d1530;
-  --panel2:#121d3d;
-  --text:#f5f8ff;
-  --soft:#98a6c8;
-  --primary:#00d9ff;
-  --secondary:#765cff;
-  --success:#22e6a8;
-  --danger:#ff5876;
-  --border:rgba(255,255,255,.1);
-}
-
-body.light{
-  --bg:#edf3ff;
-  --panel:#ffffff;
-  --panel2:#f3f6ff;
-  --text:#08101f;
-  --soft:#64708b;
-  --border:rgba(0,0,0,.09);
+  --blue:#1746d1;
+  --blue2:#2868ff;
+  --dark:#050816;
+  --dark2:#0b1228;
+  --white:#fff;
+  --muted:#9da8c7;
+  --card:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.12);
+  --green:#22d69b;
+  --red:#ff4d67;
 }
 
 *{
   box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
-
-html{
-  scroll-behavior:smooth;
+  margin:0;
+  padding:0;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
   background:
-    radial-gradient(circle at 10% 20%,rgba(0,217,255,.1),transparent 25%),
-    radial-gradient(circle at 90% 80%,rgba(118,92,255,.13),transparent 30%),
-    var(--bg);
-  color:var(--text);
+    radial-gradient(circle at 50% -10%,#173b9b 0,#07102b 35%,#03050d 80%);
+  color:white;
+  min-height:100vh;
   overflow-x:hidden;
-  transition:.3s;
 }
 
-button,input,textarea{
-  font:inherit;
-}
+/* =========================
+   INTRO CINÉMATIQUE 3D
+========================= */
 
-button{
-  cursor:pointer;
-  border:none;
-}
-
-/* SPLASH */
-
-#splash{
+#intro{
   position:fixed;
   inset:0;
   z-index:9999;
+  background:#02030a;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  background:radial-gradient(circle,#101b43,#02040d 70%);
+  transition:opacity 1.2s,visibility 1.2s;
 }
 
-.stars{
+#intro.hide{
+  opacity:0;
+  visibility:hidden;
+}
+
+.intro-stars{
   position:absolute;
   inset:0;
-  background-image:
-    radial-gradient(white 1px,transparent 1px),
-    radial-gradient(#76dfff 1px,transparent 1px);
-  background-size:55px 55px,120px 120px;
-  opacity:.6;
-  animation:stars 20s linear infinite;
+  background:
+    radial-gradient(circle at 20% 30%,rgba(42,92,255,.4),transparent 2px),
+    radial-gradient(circle at 80% 60%,rgba(255,255,255,.5),transparent 2px);
+  background-size:90px 90px,130px 130px;
+  animation:stars 8s linear infinite;
 }
 
 @keyframes stars{
-  to{transform:translateY(-100px);}
+  from{transform:scale(1) rotate(0)}
+  to{transform:scale(1.3) rotate(3deg)}
 }
 
-.splash-content{
+.cinema{
   position:relative;
   z-index:2;
   text-align:center;
-  padding:20px;
+  perspective:1000px;
 }
 
-.earth{
-  width:190px;
-  height:190px;
-  margin:auto auto 25px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:95px;
-  background:
-    radial-gradient(circle at 30% 25%,#5ce5ff,#126ba3 45%,#071529 75%);
-  box-shadow:
-    inset -30px -15px 45px rgba(0,0,0,.8),
-    0 0 70px rgba(0,217,255,.45);
-  animation:earthFloat 5s ease-in-out infinite;
+.inat3d{
+  font-size:clamp(70px,22vw,180px);
+  font-weight:1000;
+  letter-spacing:18px;
+  color:#fff;
+  text-shadow:
+    0 2px 0 #a9bfff,
+    0 5px 0 #5379ed,
+    0 10px 25px rgba(0,0,0,.9),
+    0 0 35px #2868ff;
+  transform:rotateX(15deg) rotateY(-12deg);
+  animation:logoCinema 3s ease-in-out infinite alternate;
 }
 
-@keyframes earthFloat{
-  50%{transform:translateY(-15px) rotate(5deg);}
+@keyframes logoCinema{
+  from{
+    transform:rotateX(18deg) rotateY(-18deg) scale(.9);
+  }
+  to{
+    transform:rotateX(-8deg) rotateY(15deg) scale(1.04);
+  }
 }
 
-.logo{
-  font-size:60px;
-  font-weight:900;
-  letter-spacing:8px;
-  text-shadow:0 0 30px var(--primary);
+.intro-line{
+  height:2px;
+  width:0;
+  margin:22px auto;
+  background:linear-gradient(90deg,transparent,#fff,#2868ff,transparent);
+  animation:lineIn 2s forwards 1s;
 }
 
-.logo span{
-  color:var(--primary);
+@keyframes lineIn{
+  to{width:75vw}
 }
 
-.splash-content p{
-  color:#aebbd8;
-  max-width:500px;
-  line-height:1.6;
+.intro-text{
+  font-size:14px;
+  letter-spacing:5px;
+  color:#b8c8ff;
+  text-transform:uppercase;
+  opacity:0;
+  animation:textIn 2s forwards 1.4s;
 }
 
-.primary{
-  padding:14px 22px;
-  border-radius:15px;
-  background:linear-gradient(135deg,#8bf4ff,var(--primary));
-  color:#031018;
+@keyframes textIn{
+  to{opacity:1}
+}
+
+.intro-start{
+  margin-top:35px;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(23,70,209,.3);
+  color:white;
+  padding:14px 28px;
+  border-radius:50px;
   font-weight:bold;
-  box-shadow:0 10px 30px rgba(0,217,255,.25);
+  cursor:pointer;
+  opacity:0;
+  animation:textIn 1s forwards 2.2s;
 }
 
-.secondary{
-  padding:14px 22px;
-  border-radius:15px;
-  background:rgba(255,255,255,.08);
-  border:1px solid var(--border);
-  color:var(--text);
-}
-
-.splash-buttons{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:25px;
-}
-
-/* APPLICATION */
+/* =========================
+   APP
+========================= */
 
 #app{
   display:none;
   min-height:100vh;
-  grid-template-columns:240px 1fr 280px;
-  gap:16px;
-  padding:16px;
 }
 
-.sidebar,
-.rightbar,
-.main{
-  background:rgba(10,17,40,.78);
-  border:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  border-radius:28px;
-}
-
-body.light .sidebar,
-body.light .rightbar,
-body.light .main{
-  background:rgba(255,255,255,.8);
-}
-
-.sidebar{
-  padding:20px 12px;
+header{
   position:sticky;
-  top:16px;
-  height:calc(100vh - 32px);
+  top:0;
+  z-index:100;
+  padding:13px 16px;
+  backdrop-filter:blur(20px);
+  background:rgba(3,6,17,.78);
+  border-bottom:1px solid var(--line);
+}
+
+.header-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 .brand{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:8px 12px 25px;
-  font-weight:900;
-  font-size:24px;
-  letter-spacing:4px;
 }
 
-.brand-icon{
+.logo-mini{
   width:42px;
   height:42px;
   border-radius:14px;
   display:grid;
   place-items:center;
-  color:#031018;
-  background:linear-gradient(135deg,#fff,var(--primary));
+  font-weight:1000;
+  font-size:20px;
+  color:white;
+  background:linear-gradient(135deg,#1746d1,#5b7fff);
+  box-shadow:0 8px 25px rgba(23,70,209,.45);
+  transform:rotate(-6deg);
+  animation:pivot 4s ease-in-out infinite;
 }
 
-.new-btn{
-  width:100%;
-  padding:14px;
-  border-radius:15px;
-  margin-bottom:15px;
-  background:linear-gradient(135deg,#7cf0ff,var(--primary));
+@keyframes pivot{
+  0%,100%{transform:rotate(-6deg) rotateY(0)}
+  50%{transform:rotate(6deg) rotateY(180deg)}
+}
+
+.brand strong{
+  font-size:21px;
+  letter-spacing:2px;
+}
+
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#fff,#7395ff);
+  color:#143aab;
+  display:grid;
+  place-items:center;
   font-weight:bold;
 }
 
-.nav{
+/* =========================
+   NAV
+========================= */
+
+nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:500;
+  height:72px;
+  background:rgba(4,8,20,.94);
+  backdrop-filter:blur(18px);
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.nav-btn{
+  border:0;
+  background:none;
+  color:#8e9abc;
   display:flex;
   flex-direction:column;
-  gap:5px;
-}
-
-.nav button{
-  text-align:left;
-  padding:14px;
-  border-radius:14px;
-  color:var(--soft);
-  background:transparent;
-  transition:.2s;
-}
-
-.nav button:hover,
-.nav button.active{
-  color:var(--text);
-  background:rgba(0,217,255,.1);
-  transform:translateX(3px);
-}
-
-.version{
-  position:absolute;
-  bottom:20px;
-  left:0;
-  width:100%;
-  text-align:center;
-  color:var(--soft);
-  font-size:12px;
-}
-
-/* MAIN */
-
-.main{
-  min-width:0;
-  overflow:hidden;
-}
-
-.topbar{
-  height:72px;
-  display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:0 22px;
-  border-bottom:1px solid var(--border);
+  gap:4px;
+  font-size:11px;
+  cursor:pointer;
 }
 
-.top-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.nav-btn span:first-child{
+  font-size:22px;
 }
 
-.online{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:var(--success);
-  box-shadow:0 0 10px var(--success);
+.nav-btn.active{
+  color:#fff;
 }
 
-.top-actions{
-  display:flex;
-  gap:8px;
+.nav-btn.active span:first-child{
+  filter:drop-shadow(0 0 8px #2868ff);
 }
 
-.icon-btn{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  background:rgba(255,255,255,.07);
-  border:1px solid var(--border);
-  color:var(--text);
-}
+/* =========================
+   PAGES
+========================= */
 
-.content{
-  padding:25px;
-  padding-bottom:110px;
+main{
+  max-width:850px;
+  margin:auto;
+  padding:20px 15px 100px;
 }
 
 .page{
   display:none;
-  animation:fade .3s;
+  animation:pageIn .35s ease;
 }
 
 .page.active{
   display:block;
 }
 
-@keyframes fade{
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
 }
 
-/* HERO */
+.title{
+  font-size:30px;
+  margin:10px 0 6px;
+}
+
+.subtitle{
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+/* =========================
+   BOUTONS MODERNES
+========================= */
+
+.btn{
+  border:0;
+  cursor:pointer;
+  color:white;
+  font-weight:bold;
+  padding:13px 18px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#1746d1,#2868ff);
+  box-shadow:0 9px 25px rgba(23,70,209,.25);
+  transition:.2s;
+}
+
+.btn:active{
+  transform:scale(.94);
+}
+
+.btn.secondary{
+  background:rgba(255,255,255,.08);
+  border:1px solid var(--line);
+  box-shadow:none;
+}
+
+.btn.green{
+  background:linear-gradient(135deg,#159b70,#24dca2);
+}
+
+.btn.red{
+  background:linear-gradient(135deg,#bd2947,#ff526e);
+}
+
+/* =========================
+   HOME
+========================= */
 
 .hero{
-  padding:45px;
-  border-radius:30px;
   min-height:330px;
-  position:relative;
-  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:30px 20px;
   background:
-    linear-gradient(135deg,
-    rgba(0,217,255,.15),
-    rgba(118,92,255,.15));
-  border:1px solid rgba(0,217,255,.18);
+    linear-gradient(145deg,rgba(23,70,209,.3),rgba(255,255,255,.03)),
+    radial-gradient(circle at 80% 20%,rgba(67,113,255,.3),transparent 35%);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  overflow:hidden;
+  position:relative;
 }
 
 .hero:after{
-  content:"🌍";
+  content:"INAT";
   position:absolute;
-  right:5%;
-  bottom:-35px;
-  font-size:180px;
-  opacity:.25;
-}
-
-.badge{
-  display:inline-block;
-  color:var(--primary);
-  background:rgba(0,217,255,.1);
-  padding:8px 12px;
-  border-radius:50px;
-  font-size:12px;
-  font-weight:bold;
+  right:-30px;
+  bottom:-60px;
+  font-size:160px;
+  font-weight:1000;
+  color:rgba(255,255,255,.025);
+  transform:rotate(-15deg);
 }
 
 .hero h1{
-  font-size:clamp(30px,5vw,52px);
-  margin:18px 0 8px;
+  font-size:clamp(40px,12vw,75px);
+  position:relative;
+  z-index:2;
 }
 
 .hero p{
-  color:var(--soft);
-  max-width:600px;
-  line-height:1.7;
-}
-
-.hero-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:25px;
-}
-
-/* CARDS */
-
-.section{
-  margin-top:40px;
-}
-
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:18px;
-}
-
-.section-head h2{
-  margin:0;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-  gap:15px;
-}
-
-.card{
-  padding:20px;
-  border-radius:22px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  transition:.25s;
-}
-
-.card:hover{
-  transform:translateY(-5px);
-  border-color:rgba(0,217,255,.4);
-  box-shadow:0 15px 40px rgba(0,0,0,.2);
-}
-
-.card .emoji{
-  font-size:35px;
-}
-
-.card h3{
-  margin:15px 0 8px;
-}
-
-.card p{
-  color:var(--soft);
-  line-height:1.5;
-  font-size:14px;
-}
-
-.card button{
-  width:100%;
-  padding:11px;
-  margin-top:10px;
-  border-radius:12px;
-  color:var(--primary);
-  background:rgba(0,217,255,.09);
-}
-
-/* FORM */
-
-textarea,
-input{
-  width:100%;
-  border-radius:16px;
-  padding:15px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.05);
-  color:var(--text);
-  outline:none;
-}
-
-textarea{
-  min-height:200px;
-  resize:vertical;
-}
-
-textarea:focus,
-input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(0,217,255,.08);
-}
-
-/* MUSIC */
-
-.categories{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:10px 0;
-}
-
-.categories button{
-  white-space:nowrap;
-  padding:10px 15px;
-  border-radius:30px;
-  background:rgba(255,255,255,.06);
-  color:var(--soft);
-  border:1px solid var(--border);
-}
-
-.categories button.active{
-  background:var(--primary);
-  color:#031018;
-}
-
-.music-card{
+  color:#bbc6e5;
+  max-width:500px;
+  line-height:1.6;
+  margin:15px 0 25px;
   position:relative;
+  z-index:2;
 }
 
-.cover{
-  height:160px;
-  border-radius:18px;
+/* =========================
+   STORY
+========================= */
+
+.story-row{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  padding:5px 0 20px;
+}
+
+.story{
+  min-width:72px;
+  text-align:center;
+  font-size:11px;
+  color:#b4bed8;
+}
+
+.story-ring{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  padding:3px;
+  background:linear-gradient(135deg,#1746d1,#63a1ff,#fff);
+  margin:auto auto 5px;
+}
+
+.story-inner{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  background:#101a39;
   display:grid;
   place-items:center;
-  font-size:65px;
-  background:linear-gradient(135deg,rgba(0,217,255,.2),rgba(118,92,255,.25));
-}
-
-.play{
-  width:50px!important;
-  height:50px;
-  border-radius:50%!important;
-  position:absolute;
-  right:18px;
-  top:135px;
-  background:var(--primary)!important;
-  color:#031018!important;
-}
-
-/* MESSAGE */
-
-.messages{
-  display:grid;
-  grid-template-columns:240px 1fr;
-  min-height:580px;
-  border:1px solid var(--border);
-  border-radius:25px;
   overflow:hidden;
 }
 
-.conversations{
-  border-right:1px solid var(--border);
-  padding:12px;
-}
-
-.conv{
+.story-inner img,
+.story-inner video{
   width:100%;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  text-align:left;
-  padding:12px;
-  background:transparent;
-  color:var(--text);
-  border-radius:14px;
+  height:100%;
+  object-fit:cover;
 }
 
-.conv.active,
-.conv:hover{
-  background:rgba(0,217,255,.08);
-}
-
-.avatar{
-  width:42px;
-  height:42px;
-  flex:none;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:var(--primary);
-  color:#031018;
-  font-weight:bold;
-}
-
-.chat{
-  display:flex;
-  flex-direction:column;
-}
-
-.chat-header{
-  padding:18px;
-  border-bottom:1px solid var(--border);
-}
-
-.chat-body{
-  flex:1;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.message{
-  max-width:75%;
-  padding:13px 15px;
-  line-height:1.5;
-  border-radius:18px;
-  background:rgba(255,255,255,.07);
-}
-
-.message.me{
-  align-self:flex-end;
-  background:var(--primary);
-  color:#031018;
-}
-
-.chat-input{
-  display:flex;
-  gap:8px;
-  padding:12px;
-  border-top:1px solid var(--border);
-}
-
-.chat-input input{
-  flex:1;
-}
-
-.send{
-  width:52px;
-  border-radius:15px;
-  background:var(--primary);
-}
-
-/* PROFILE */
-
-.profile-box{
-  display:flex;
-  align-items:center;
-  gap:18px;
-  padding:25px;
-  border:1px solid var(--border);
-  border-radius:25px;
-  background:var(--panel);
-}
-
-.big-avatar{
-  width:75px;
-  height:75px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  font-size:28px;
-  font-weight:bold;
-  color:#031018;
-  background:var(--primary);
-}
-
-.settings{
-  margin-top:20px;
-}
-
-.setting{
-  display:flex;
-  align-items:center;
-  gap:12px;
+.add-story{
   width:100%;
-  padding:18px;
-  margin-bottom:10px;
-  border-radius:17px;
-  text-align:left;
-  color:var(--text);
-  background:var(--panel);
-  border:1px solid var(--border);
-}
-
-/* RIGHT */
-
-.rightbar{
-  padding:18px;
-  position:sticky;
-  top:16px;
-  height:calc(100vh - 32px);
-}
-
-.agent-card{
+  margin:10px 0 20px;
   padding:20px;
+  border:1px dashed #5274d8;
+  background:rgba(23,70,209,.08);
   border-radius:22px;
-  background:linear-gradient(135deg,rgba(0,217,255,.1),rgba(118,92,255,.12));
-  border:1px solid var(--border);
 }
 
-.agent-card h3{
-  margin-top:15px;
+.file-input{
+  display:none;
 }
 
-.agent-card p{
-  color:var(--soft);
+.upload-label{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+}
+
+/* =========================
+   SITUATIONS + IA
+========================= */
+
+.ai-card{
+  border-radius:25px;
+  padding:20px;
+  background:linear-gradient(145deg,rgba(23,70,209,.2),rgba(255,255,255,.05));
+  border:1px solid rgba(66,104,220,.35);
+}
+
+textarea{
+  width:100%;
+  min-height:130px;
+  resize:vertical;
+  border:1px solid var(--line);
+  outline:none;
+  border-radius:18px;
+  background:rgba(0,0,0,.22);
+  color:white;
+  padding:15px;
+  margin:12px 0;
+  font-size:15px;
+}
+
+.solution{
+  display:none;
+  margin-top:18px;
+  padding:18px;
+  border-radius:18px;
+  background:rgba(0,0,0,.2);
+  border-left:4px solid var(--blue2);
   line-height:1.6;
 }
 
-/* PLAYER */
-
-#player{
-  display:none;
-  position:fixed;
-  z-index:500;
-  bottom:18px;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(700px,calc(100% - 30px));
-  align-items:center;
-  gap:12px;
-  padding:10px 15px;
-  border-radius:22px;
-  background:rgba(8,15,35,.9);
-  border:1px solid rgba(0,217,255,.2);
-  backdrop-filter:blur(20px);
+.situation{
+  margin-top:15px;
+  padding:17px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:var(--card);
 }
 
-.player-cover{
-  width:48px;
-  height:48px;
-  border-radius:14px;
+/* =========================
+   MUSIQUE
+========================= */
+
+.music-card{
+  padding:25px 20px;
+  border-radius:28px;
+  background:
+    linear-gradient(145deg,#0e2e9b,#06112d);
+  border:1px solid rgba(90,130,255,.35);
+  box-shadow:0 20px 50px rgba(0,0,0,.3);
+}
+
+.cover{
+  width:190px;
+  height:190px;
+  margin:5px auto 25px;
+  border-radius:28px;
   display:grid;
   place-items:center;
-  background:var(--primary);
+  font-size:55px;
+  font-weight:1000;
+  background:
+    radial-gradient(circle at 30% 20%,#83a1ff,#1746d1 45%,#050b20 90%);
+  box-shadow:0 15px 50px rgba(0,0,0,.5);
 }
 
-.player-info{
-  flex:1;
+.music-title{
+  text-align:center;
+  font-size:22px;
+  font-weight:bold;
 }
 
-.player-info small{
-  color:var(--soft);
+.music-artist{
+  text-align:center;
+  color:#aab8e2;
+  margin:6px 0 20px;
 }
 
-.player-controls button{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  color:var(--text);
-  background:rgba(255,255,255,.08);
+.progress{
+  width:100%;
+  accent-color:#2868ff;
 }
 
-/* MOBILE NAV */
-
-.mobile-nav{
-  display:none;
+.time{
+  display:flex;
+  justify-content:space-between;
+  color:#a9b6da;
+  font-size:12px;
+  margin-top:6px;
 }
 
-.floating{
-  display:none;
+.music-controls{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:15px;
+  margin-top:20px;
 }
 
-/* RESPONSIVE */
-
-@media(max-width:1150px){
-  #app{
-    grid-template-columns:220px 1fr;
-  }
-
-  .rightbar{
-    display:none;
-  }
+.music-btn{
+  width:52px;
+  height:52px;
+  border:0;
+  border-radius:18px;
+  background:#1746d1;
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(23,70,209,.35);
 }
 
-@media(max-width:800px){
+.music-btn.main{
+  width:66px;
+  height:66px;
+  border-radius:23px;
+  background:#2868ff;
+  font-size:25px;
+}
 
-  body{
-    padding-bottom:75px;
-  }
-
-  #app{
-    display:block;
-    padding:0;
-  }
-
-  .sidebar{
-    display:none;
-  }
-
-  .main{
-    border:none;
-    border-radius:0;
-    background:transparent!important;
-  }
-
-  .content{
-    padding:18px 14px 120px;
-  }
-
-  .topbar{
-    padding:0 15px;
-  }
-
-  .mobile-nav{
-    position:fixed;
-    left:8px;
-    right:8px;
-    bottom:8px;
-    z-index:1000;
-    display:flex;
-    justify-content:space-around;
-    padding:8px;
-    border-radius:23px;
-    background:rgba(7,14,32,.93);
-    border:1px solid var(--border);
-    backdrop-filter:blur(20px);
-  }
-
-  .mobile-nav button{
-    background:transparent;
-    color:var(--soft);
-    padding:5px 8px;
-    font-size:10px;
-  }
-
-  .mobile-nav button.active{
-    color:var(--primary);
-  }
-
-  .floating{
-    display:grid;
-    place-items:center;
-    position:fixed;
-    right:20px;
-    bottom:90px;
-    z-index:900;
-    width:58px;
-    height:58px;
-    border-radius:20px;
-    background:var(--primary);
-    color:#031018;
-    font-size:28px;
-  }
-
-  .hero{
-    padding:30px 22px;
-  }
-
-  .hero:after{
-    font-size:100px;
-  }
-
-  .messages{
-    grid-template-columns:1fr;
-  }
-
-  .conversations{
-    display:flex;
-    overflow-x:auto;
-    border-right:none;
-    border-bottom:1px solid var(--border);
-  }
-
-  .conv{
-    min-width:190px;
-  }
-
-  #player{
-    bottom:82px;
-  }
+.music-upload{
+  margin-top:20px;
+  text-align:center;
 }
 
 /* =========================
-   INAT UPDATE — BEIGE FONCÉ
+   FEED
 ========================= */
-:root{
-  --bg:#24150f;
-  --panel:#352019;
-  --panel2:#4a2d22;
-  --text:#fff7eb;
-  --soft:#d4b9a2;
-  --primary:#c98a58;
-  --secondary:#7c4d36;
-  --success:#8fca8b;
-  --danger:#ff7b76;
-  --border:rgba(255,237,215,.14);
-}
-body{
-  background:
-    radial-gradient(circle at 10% 20%,rgba(201,138,88,.14),transparent 25%),
-    radial-gradient(circle at 90% 80%,rgba(124,77,54,.20),transparent 30%),
-    var(--bg);
-}
-body.light{
-  --bg:#f4e7d7;
-  --panel:#fffaf3;
-  --panel2:#f1dfcc;
-  --text:#2b1810;
-  --soft:#806957;
-  --primary:#a96239;
-  --secondary:#6d3f2c;
-  --border:rgba(68,38,23,.12);
-}
-#splash{
-  background:
-    linear-gradient(135deg,rgba(20,8,5,.92),rgba(66,33,22,.78)),
-    radial-gradient(circle at 50% 20%,#6f432e,#100806 70%);
-}
-#splash:after{
-  content:"";
-  position:absolute; inset:0; pointer-events:none;
-  background:linear-gradient(90deg,rgba(0,0,0,.22) 1px,transparent 1px),
-             linear-gradient(rgba(0,0,0,.12) 1px,transparent 1px);
-  background-size:6px 6px;
-  opacity:.18;
-  mix-blend-mode:overlay;
-}
-.earth{box-shadow:inset -30px -15px 45px rgba(0,0,0,.8),0 0 70px rgba(201,138,88,.45)}
-.logo{ text-shadow:0 0 30px var(--primary) }
-.logo span{color:var(--primary)}
-.primary,.new-btn{background:linear-gradient(135deg,#f1c49c,var(--primary));color:#241008}
-.sidebar,.rightbar,.main{background:rgba(47,27,21,.84)}
-.nav button:hover,.nav button.active,.conv.active,.conv:hover{background:rgba(201,138,88,.14)}
-.hero{background:linear-gradient(135deg,rgba(201,138,88,.18),rgba(124,77,54,.22));border-color:rgba(201,138,88,.24)}
-.badge{color:#f1c49c;background:rgba(201,138,88,.13)}
-.card:hover{border-color:rgba(201,138,88,.55)}
-.categories button.active,.avatar,.big-avatar,.floating,.send{background:var(--primary)}
-.cover{background:linear-gradient(135deg,rgba(201,138,88,.24),rgba(124,77,54,.34))}
-.play{background:var(--primary)!important;color:#241008!important}
-.message.me{background:var(--primary);color:#241008}
-#player{background:rgba(36,21,15,.94);border-color:rgba(201,138,88,.35)}
-.player-cover{background:var(--primary);color:#241008}
 
-/* CINEMATIC INTRO */
-.cinematic-line{font-size:11px;letter-spacing:5px;color:#e8c3a0;margin-bottom:12px;opacity:.9}
-.splash-content h2{font-size:clamp(25px,5vw,44px);text-shadow:0 10px 35px rgba(0,0,0,.5)}
-.splash-content{animation:cinemaReveal 1.2s ease both}
-@keyframes cinemaReveal{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:scale(1)}}
+.post{
+  padding:18px;
+  border-radius:24px;
+  background:var(--card);
+  border:1px solid var(--line);
+  margin-bottom:15px;
+}
 
-/* AUTH */
-.auth-modal,.upload-modal{
-  display:none;position:fixed;inset:0;z-index:8000;
-  align-items:center;justify-content:center;padding:18px;
-  background:rgba(12,6,4,.78);backdrop-filter:blur(12px)
+.post-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
-.auth-card,.upload-card{
-  width:min(470px,100%);max-height:90vh;overflow:auto;
-  padding:28px;border-radius:28px;background:var(--panel);
-  border:1px solid var(--border);box-shadow:0 25px 80px rgba(0,0,0,.45)
-}
-.auth-card h2,.upload-card h2{margin-top:0}
-.auth-tabs{display:flex;gap:8px;margin:18px 0}
-.auth-tabs button{flex:1;padding:12px;border-radius:12px;background:var(--panel2);color:var(--soft)}
-.auth-tabs button.active{background:var(--primary);color:#241008}
-.auth-card select,.upload-card select,.auth-card input,.upload-card input{
- width:100%;padding:15px;margin:7px 0;border-radius:15px;
- border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text)
-}
-.auth-note{font-size:12px;color:var(--soft);line-height:1.5}
-.auth-close,.modal-close{float:right;background:transparent;color:var(--text);font-size:22px}
-.phone-row{display:grid;grid-template-columns:150px 1fr;gap:8px}
 
-/* VERTICAL STORIES */
-.story-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-.story-feed{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:8px 0 18px}
-.vertical-story{
-  flex:0 0 min(330px,86vw);height:min(590px,72vh);border-radius:28px;
-  overflow:hidden;position:relative;scroll-snap-align:center;background:#160d09;
-  border:1px solid var(--border)
+.post-avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#2868ff,#fff);
+  display:grid;
+  place-items:center;
+  color:#123aa5;
+  font-weight:bold;
 }
-.vertical-story video,.vertical-story img{
- width:100%;height:100%;object-fit:cover;display:block
-}
-.story-fallback{width:100%;height:100%;display:grid;place-items:center;font-size:80px;
- background:linear-gradient(160deg,#6d3f2c,#21110b)}
-.story-overlay{position:absolute;inset:auto 0 0;padding:55px 18px 18px;
- background:linear-gradient(transparent,rgba(0,0,0,.88));color:white}
-.story-overlay h3,.story-overlay p{margin:5px 0}
-.story-meta{font-size:12px;opacity:.8}
-.story-progress{position:absolute;top:10px;left:10px;right:10px;height:3px;background:rgba(255,255,255,.25);border-radius:5px;overflow:hidden}
-.story-progress i{display:block;width:38%;height:100%;background:#f1c49c}
-.music-progress{width:100%;accent-color:var(--primary)}
-.player-extra{display:flex;align-items:center;gap:8px;min-width:150px}
-.player-extra span{font-size:11px;color:var(--soft);min-width:34px;text-align:center}
-@media(max-width:800px){.phone-row{grid-template-columns:130px 1fr}.player-extra{display:none}.story-feed{margin-right:-10px}}
 
+.post p{
+  margin:15px 0;
+  line-height:1.6;
+  color:#d8def0;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+}
+
+.action{
+  border:0;
+  background:rgba(255,255,255,.07);
+  color:#dbe4ff;
+  padding:9px 13px;
+  border-radius:13px;
+}
 
 /* =========================
-   INAT START-UP UPDATE V2
-   White + Indigo + Red
+   MODAL
 ========================= */
-:root{
-  --bg:#f6f7ff;
-  --panel:#ffffff;
-  --panel2:#eef0ff;
-  --text:#15152b;
-  --soft:#70728d;
-  --primary:#4b36d1;
-  --secondary:#e92d4b;
-  --success:#27b88b;
-  --danger:#e92d4b;
-  --border:rgba(43,38,112,.12);
-}
-body{
-  background:
-    radial-gradient(circle at 8% 10%,rgba(75,54,209,.11),transparent 28%),
-    radial-gradient(circle at 90% 80%,rgba(233,45,75,.09),transparent 30%),
-    var(--bg);
-}
-body.light{
-  --bg:#ffffff;
-  --panel:#ffffff;
-  --panel2:#f1f2ff;
-  --text:#15152b;
-  --soft:#70728d;
-  --primary:#4b36d1;
-  --secondary:#e92d4b;
-  --border:rgba(43,38,112,.12);
-}
-.sidebar,.rightbar,.main{background:rgba(255,255,255,.90)}
-body:not(.light) .sidebar,body:not(.light) .rightbar,body:not(.light) .main{background:rgba(255,255,255,.90)}
-#splash{
- background:radial-gradient(circle at 50% 25%,#32256d 0,#17152e 45%,#070710 100%);
-}
-.primary,.new-btn{
- background:linear-gradient(135deg,#5b45e7,#3421b7);
- color:#fff;
- border-radius:18px;
- box-shadow:0 12px 28px rgba(75,54,209,.25);
-}
-.secondary{background:#fff;color:var(--primary);border:1px solid rgba(75,54,209,.16)}
-.logo span{color:#ff3b58}
-.logo{text-shadow:0 0 28px rgba(255,59,88,.5)}
-.brand-icon,.avatar,.big-avatar,.player-cover{background:linear-gradient(135deg,#5b45e7,#3421b7);color:#fff}
-.badge{color:#fff;background:linear-gradient(135deg,#4b36d1,#e92d4b)}
-.hero{background:linear-gradient(135deg,rgba(75,54,209,.10),rgba(233,45,75,.07));border-color:rgba(75,54,209,.15)}
-.nav button.active,.nav button:hover,.conv.active,.conv:hover{background:rgba(75,54,209,.08)}
-.categories button.active,.send,.floating{background:var(--primary);color:#fff}
-.message.me{background:linear-gradient(135deg,#5b45e7,#3421b7);color:#fff}
-.cover{background:linear-gradient(135deg,rgba(75,54,209,.17),rgba(233,45,75,.15))}
-.play{background:linear-gradient(135deg,#e92d4b,#ff6078)!important;color:#fff!important}
-.card:hover{border-color:rgba(75,54,209,.35)}
-#player{background:rgba(255,255,255,.96);color:var(--text);border-color:rgba(75,54,209,.16)}
-#player .player-controls button{color:var(--text);background:#f1f2ff}
 
-/* STARTUP 2D + 10 SECOND INTRO */
-.startup-2d{position:relative;width:min(560px,94vw);text-align:center}
-.startup-mark{
- width:118px;height:118px;margin:0 auto 20px;border-radius:32px;
- display:grid;place-items:center;font-size:54px;font-weight:900;
- background:linear-gradient(145deg,#ff4662,#e92d4b);
- color:white;box-shadow:18px 18px 0 rgba(75,54,209,.55),0 0 45px rgba(233,45,75,.35);
- animation:startupPulse 2s ease-in-out infinite;
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(8px);
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
-.startup-bar{height:9px;border-radius:20px;background:rgba(255,255,255,.15);overflow:hidden;margin:25px auto 12px;max-width:430px}
-.startup-bar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#ff3b58,#fff,#5b45e7);animation:startupLoad 10s linear forwards}
-.startup-count{color:#c9c7e8;font-size:13px;letter-spacing:2px}
-@keyframes startupLoad{to{width:100%}}
-@keyframes startupPulse{50%{transform:translateY(-8px) scale(1.04)}}
-.startup-skip{margin-top:20px!important;min-width:220px}
 
-/* ACCOUNT STARTUP CARD */
-.account-card{max-width:780px;margin:0 auto}
-.account-main{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
-.account-option{padding:26px;border-radius:24px;border:1px solid var(--border);background:var(--panel);text-align:left}
-.account-option h3{margin:10px 0}
-.account-option .primary{width:100%;margin-top:14px}
-.phone-row{grid-template-columns:160px 1fr}
-.auth-card{background:#fff;color:#15152b}
-.auth-card input,.auth-card select{background:#f6f7ff;color:#15152b}
-.auth-tabs button.active{background:var(--primary);color:#fff}
-@media(max-width:650px){.account-main{grid-template-columns:1fr}.phone-row{grid-template-columns:135px 1fr}}
+.modal-box{
+  width:min(500px,100%);
+  background:#0a1229;
+  border:1px solid var(--line);
+  border-radius:25px;
+  padding:25px;
+}
 
+.close{
+  float:right;
+  border:0;
+  background:none;
+  color:white;
+  font-size:25px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(min-width:800px){
+  nav{
+    left:50%;
+    transform:translateX(-50%);
+    max-width:700px;
+    border-radius:25px 25px 0 0;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<!-- ================= SPLASH ================= -->
+<!-- ================= INTRO ================= -->
 
-<div id="splash">
+<section id="intro">
+  <div class="intro-stars"></div>
 
-  <div class="stars"></div>
+  <div class="cinema">
+    <div class="intro-text">Une histoire commence...</div>
+    <div class="intro-line"></div>
 
-  <div class="splash-content">
-    <div class="startup-2d">
-      <div class="startup-mark">I</div>
-      <div class="cinematic-line">INAT START-UP • 2D EXPERIENCE</div>
-      <div class="logo"><span>I</span>NAT</div>
-      <h2>L'inattendu commence ici.</h2>
-      <p>Initialisation de votre espace numérique.</p>
-      <div class="startup-bar"><i></i></div>
-      <div class="startup-count" id="startupCount">DÉMARRAGE • 10</div>
-      <div class="splash-buttons">
-        <button class="primary startup-skip" onclick="finishStartup()">Entrer maintenant</button>
-      </div>
+    <div class="inat3d">INAT</div>
+
+    <div class="intro-text">
+      Des situations. Des rencontres. Des solutions.
     </div>
-  </div>
-</div>
 
+    <button class="intro-start" onclick="startINAT()">
+      ENTRER DANS INAT
+    </button>
+  </div>
+</section>
 
 <!-- ================= APP ================= -->
 
 <div id="app">
 
-  <!-- SIDEBAR -->
-
-  <aside class="sidebar">
-
-    <div>
-
-      <div class="brand">
-        <div class="brand-icon">I</div>
-        INAT
-      </div>
-
-      <button class="new-btn" onclick="openPage('create')">
-        ＋ Nouvelle situation
-      </button>
-
-      <nav class="nav">
-
-        <button class="active navbtn"
-          onclick="openPage('home',this)">
-          🏠 Accueil
-        </button>
-
-        <button class="navbtn"
-          onclick="openPage('situations',this)">
-          ⚡ Situations
-        </button>
-
-        <button class="navbtn"
-          onclick="openPage('music',this)">
-          🎵 Musique
-        </button>
-
-        <button class="navbtn"
-          onclick="openPage('stories',this)">
-          🎬 Stories
-        </button>
-
-        <button class="navbtn"
-          onclick="openPage('reading',this)">
-          📖 Lecture
-        </button>
-
-        <button class="navbtn"
-          onclick="openPage('messages',this)">
-          💬 Messages
-        </button>
-
-        <button class="navbtn"
-          onclick="openPage('account',this)">
-          📱 Compte
-        </button>
-
-        <button class="navbtn"
-          onclick="openPage('profile',this)">
-          👤 Profil
-        </button>
-
-      </nav>
-
+<header>
+  <div class="header-row">
+    <div class="brand">
+      <div class="logo-mini">I</div>
+      <strong>INAT</strong>
     </div>
 
-    <div class="version">
-      INAT • Version 1.0
-    </div>
-
-  </aside>
-
-
-  <!-- MAIN -->
-
-  <main class="main">
-
-    <header class="topbar">
-
-      <div class="top-title">
-        <div class="online"></div>
-        <div>
-          <strong>Agent de service INAT</strong><br>
-          <small style="color:var(--soft)">Disponible</small>
-        </div>
-      </div>
-
-      <div class="top-actions">
-
-        <button class="icon-btn"
-          onclick="toggleTheme()">
-          🌙
-        </button>
-
-        <button class="icon-btn"
-          onclick="openPage('messages')">
-          💬
-        </button>
-
-        <button class="icon-btn"
-          onclick="openPage('profile')">
-          👤
-        </button>
-
-      </div>
-
-    </header>
-
-
-    <div class="content">
-
-
-      <!-- ACCOUNT -->
-      <section id="account" class="page">
-        <div class="hero account-card">
-          <span class="badge">COMPTE INAT</span>
-          <h1>Créez votre espace personnel.</h1>
-          <p>Inscription et connexion avec votre numéro de téléphone. Choisissez votre pays et gérez votre session depuis un seul espace.</p>
-          <div class="account-main">
-            <div class="account-option">
-              <div class="emoji">📱</div>
-              <h3>Créer un compte</h3>
-              <p>Nom, pays et numéro de téléphone.</p>
-              <button class="primary" onclick="openAuth();setAuthMode('register')">Créer mon compte</button>
-            </div>
-            <div class="account-option">
-              <div class="emoji">🔐</div>
-              <h3>Se connecter</h3>
-              <p>Retrouvez votre session avec votre numéro.</p>
-              <button class="secondary" onclick="openAuth();setAuthMode('login')">Connexion</button>
-              <button class="secondary" style="margin-top:10px;width:100%;color:var(--danger)" onclick="logout()">🚪 Déconnexion</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- HOME -->
-
-      <section id="home" class="page active">
-
-        <div class="hero">
-
-          <span class="badge">
-            NOUVELLE GÉNÉRATION DE SERVICE
-          </span>
-
-          <h1>
-            Bienvenue dans l'inattendu.
-          </h1>
-
-          <p>
-            INAT vous permet d'exprimer une situation,
-            d'échanger avec un agent, de découvrir des idées,
-            de lire et d'écouter de la musique.
-          </p>
-
-          <div class="hero-actions">
-
-            <button class="primary"
-              onclick="openPage('create')">
-              Commencer maintenant
-            </button>
-
-            <button class="secondary"
-              onclick="openPage('music')">
-              🎵 Écouter
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div class="section">
-
-          <div class="section-head">
-            <h2>Que voulez-vous faire ?</h2>
-          </div>
-
-          <div class="grid">
-
-            <div class="card">
-              <div class="emoji">⚡</div>
-              <h3>Une situation</h3>
-              <p>
-                Expliquez simplement ce qui vous arrive.
-              </p>
-              <button onclick="openPage('create')">
-                Commencer
-              </button>
-            </div>
-
-            <div class="card">
-              <div class="emoji">💬</div>
-              <h3>Parler</h3>
-              <p>
-                Discutez directement dans votre espace INAT.
-              </p>
-              <button onclick="openPage('messages')">
-                Ouvrir
-              </button>
-            </div>
-
-            <div class="card">
-              <div class="emoji">🎵</div>
-              <h3>Musique</h3>
-              <p>
-                Slow, Pop, Hip-Hop, RNB, Jazz et Afro.
-              </p>
-              <button onclick="openPage('music')">
-                Écouter
-              </button>
-            </div>
-
-            <div class="card">
-              <div class="emoji">📖</div>
-              <h3>Lecture</h3>
-              <p>
-                Découvrez des histoires et réflexions.
-              </p>
-              <button onclick="openPage('reading')">
-                Lire
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="section">
-
-          <div class="section-head">
-            <h2>Pour vous divertir</h2>
-          </div>
-
-          <div class="grid">
-
-            <div class="card">
-              <div class="emoji">🌙</div>
-              <h3>Moment calme</h3>
-              <p>
-                Prenez une pause et découvrez du contenu relaxant.
-              </p>
-            </div>
-
-            <div class="card">
-              <div class="emoji">🎧</div>
-              <h3>Playlist</h3>
-              <p>
-                Une sélection musicale selon votre humeur.
-              </p>
-              <button onclick="openPage('music')">
-                Ouvrir
-              </button>
-            </div>
-
-            <div class="card">
-              <div class="emoji">💡</div>
-              <h3>Idée inattendue</h3>
-              <p id="ideaText">
-                Cliquez pour découvrir une nouvelle idée.
-              </p>
-              <button onclick="newIdea()">
-                Nouvelle idée
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- CREATE -->
-
-      <section id="create" class="page">
-
-        <h1>Créer une situation</h1>
-
-        <p style="color:var(--soft)">
-          Expliquez simplement ce qui se passe.
-        </p>
-
-        <textarea
-          id="situationText"
-          placeholder="Écrivez votre situation ici..."></textarea>
-
-        <br><br>
-
-        <button class="primary"
-          onclick="saveSituation()">
-          Envoyer ma situation
-        </button>
-
-      </section>
-
-
-      <!-- SITUATIONS -->
-
-      <section id="situations" class="page">
-
-        <div class="section-head">
-          <h1>Mes situations</h1>
-
-          <button class="primary"
-            onclick="openPage('create')">
-            ＋ Ajouter
-          </button>
-        </div>
-
-        <div id="situationsList" class="grid"></div>
-
-      </section>
-
-
-      <!-- MUSIC -->
-
-      <section id="music" class="page">
-
-        <h1>🎵 Musique</h1>
-
-        <p style="color:var(--soft)">
-          Choisissez votre ambiance.
-        </p>
-
-        <div class="categories">
-
-          <button class="active"
-            onclick="filterMusic('all',this)">
-            Tout
-          </button>
-
-          <button onclick="filterMusic('slow',this)">
-            Slow
-          </button>
-
-          <button onclick="filterMusic('pop',this)">
-            Pop
-          </button>
-
-          <button onclick="filterMusic('hiphop',this)">
-            Hip-Hop
-          </button>
-
-          <button onclick="filterMusic('rnb',this)">
-            RNB
-          </button>
-
-          <button onclick="filterMusic('jazz',this)">
-            Jazz
-          </button>
-
-          <button onclick="filterMusic('reggae',this)">
-            Reggae
-          </button>
-
-          <button onclick="filterMusic('afro',this)">
-            Afro Beat
-          </button>
-
-        </div>
-
-        <div class="grid" id="musicGrid">
-
-          <div class="card music-card" data-category="afro">
-            <div class="cover">🌍</div>
-            <h3>Afro Horizon</h3>
-            <p>Afro Beat</p>
-            <button class="play"
-              onclick="playMusic('Afro Horizon','Afro Beat','🌍')">
-              ▶
-            </button>
-          </div>
-
-          <div class="card music-card" data-category="slow">
-            <div class="cover">🌙</div>
-            <h3>Night Slow</h3>
-            <p>Slow</p>
-            <button class="play"
-              onclick="playMusic('Night Slow','Slow','🌙')">
-              ▶
-            </button>
-          </div>
-
-          <div class="card music-card" data-category="hiphop">
-            <div class="cover">🔥</div>
-            <h3>Future Street</h3>
-            <p>Hip-Hop</p>
-            <button class="play"
-              onclick="playMusic('Future Street','Hip-Hop','🔥')">
-              ▶
-            </button>
-          </div>
-
-          <div class="card music-card" data-category="rnb">
-            <div class="cover">💜</div>
-            <h3>Midnight Love</h3>
-            <p>RNB</p>
-            <button class="play"
-              onclick="playMusic('Midnight Love','RNB','💜')">
-              ▶
-            </button>
-          </div>
-
-          <div class="card music-card" data-category="jazz">
-            <div class="cover">🎷</div>
-            <h3>Blue Jazz</h3>
-            <p>Jazz</p>
-            <button class="play"
-              onclick="playMusic('Blue Jazz','Jazz','🎷')">
-              ▶
-            </button>
-          </div>
-
-          <div class="card music-card" data-category="reggae">
-            <div class="cover">🟢</div>
-            <h3>Island Vibe</h3>
-            <p>Reggae</p>
-            <button class="play"
-              onclick="playMusic('Island Vibe','Reggae','🟢')">
-              ▶
-            </button>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- STORIES -->
-
-      <section id="stories" class="page">
-
-        <div class="section-head">
-          <div>
-            <h1>🎬 Stories</h1>
-            <p style="color:var(--soft)">Des stories verticales en vidéo et image.</p>
-          </div>
-          <button class="primary" onclick="openUpload()">＋ Publier</button>
-        </div>
-
-        <div class="story-actions">
-          <button class="secondary" onclick="openUpload()">🎥 Upload vidéo</button>
-          <button class="secondary" onclick="openUpload('image')">🖼️ Upload image</button>
-        </div>
-
-        <div id="storyFeed" class="story-feed">
-          <article class="vertical-story">
-            <div class="story-fallback">🎬</div>
-            <div class="story-progress"><i></i></div>
-            <div class="story-overlay">
-              <div class="story-meta">@INAT • Story test</div>
-              <h3>Un rendez-vous inattendu</h3>
-              <p>Une histoire commence parfois sans prévenir.</p>
-            </div>
-          </article>
-          <article class="vertical-story">
-            <div class="story-fallback">🌆</div>
-            <div class="story-progress"><i></i></div>
-            <div class="story-overlay">
-              <div class="story-meta">@INAT • Vertical</div>
-              <h3>La nuit change tout</h3>
-              <p>Glissez pour découvrir les autres stories.</p>
-            </div>
-          </article>
-        </div>
-
-      </section>
-
-      <!-- READING -->
-
-      <section id="reading" class="page">
-
-        <h1>📖 Lecture</h1>
-
-        <div class="grid">
-
-          <div class="card">
-            <div class="emoji">🧠</div>
-            <h3>Les problèmes invisibles</h3>
-            <p>
-              Certains problèmes humains existent depuis longtemps
-              mais personne ne construit encore les bonnes solutions.
-            </p>
-            <button onclick="readArticle('problems')">
-              Lire
-            </button>
-          </div>
-
-          <div class="card">
-            <div class="emoji">⚙️</div>
-            <h3>Le service humain</h3>
-            <p>
-              La technologie devient utile lorsqu'elle simplifie
-              réellement la vie des personnes.
-            </p>
-            <button onclick="readArticle('service')">
-              Lire
-            </button>
-          </div>
-
-          <div class="card">
-            <div class="emoji">🌌</div>
-            <h3>Le futur inattendu</h3>
-            <p>
-              Les grandes entreprises du futur ne résoudront peut-être
-              pas les problèmes auxquels tout le monde pense aujourd'hui.
-            </p>
-            <button onclick="readArticle('future')">
-              Lire
-            </button>
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- MESSAGES -->
-
-      <section id="messages" class="page">
-
-        <h1>💬 Messages</h1>
-
-        <div class="messages">
-
-          <div class="conversations">
-
-            <button class="conv active">
-              <div class="avatar">I</div>
-
-              <div>
-                <strong>Agent INAT</strong><br>
-                <small style="color:var(--soft)">
-                  Disponible
-                </small>
-              </div>
-            </button>
-
-          </div>
-
-          <div class="chat">
-
-            <div class="chat-header">
-              <strong>Agent de service INAT</strong><br>
-              <small style="color:var(--success)">
-                ● En ligne
-              </small>
-            </div>
-
-            <div class="chat-body" id="chatBody">
-
-              <div class="message">
-                Bonjour 👋 Bienvenue sur INAT.
-                Comment pouvons-nous commencer ?
-              </div>
-
-            </div>
-
-            <div class="chat-input">
-
-              <input
-                id="messageInput"
-                placeholder="Écrivez un message..."
-                onkeypress="if(event.key==='Enter')sendMessage()">
-
-              <button class="send"
-                onclick="sendMessage()">
-                ➤
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- PROFILE -->
-
-      <section id="profile" class="page">
-
-        <h1>👤 Mon profil</h1>
-
-        <div class="profile-box">
-
-          <div class="big-avatar" id="profileLetter">
-            I
-          </div>
-
-          <div>
-            <h2 id="profileName">
-              Utilisateur INAT
-            </h2>
-
-            <p style="color:var(--soft)">
-              Votre espace personnel
-            </p>
-          </div>
-
-        </div>
-
-        <div class="settings">
-
-          <button class="setting"
-            onclick="changeName()">
-            ✏️
-            <span>
-              <strong>Modifier mon nom</strong><br>
-              <small>Personnaliser votre profil</small>
-            </span>
-          </button>
-
-          <button class="setting"
-            onclick="toggleTheme()">
-            🌙
-            <span>
-              <strong>Mode sombre / clair</strong><br>
-              <small>Changer l'apparence</small>
-            </span>
-          </button>
-
-          <button class="setting"
-            onclick="alert('Paramètres disponibles bientôt')">
-            ⚙️
-            <span>
-              <strong>Paramètres</strong><br>
-              <small>Gérer votre compte</small>
-            </span>
-          </button>
-
-          <button class="setting"
-            style="color:var(--danger)"
-            onclick="logout()">
-            🚪
-            <span>
-              <strong>Déconnexion</strong><br>
-              <small>Quitter la session</small>
-            </span>
-          </button>
-
-        </div>
-
-      </section>
-
-
-      <!-- ARTICLE -->
-
-      <section id="article" class="page">
-
-        <button class="secondary"
-          onclick="openPage('reading')">
-          ← Retour
-        </button>
-
-        <br><br>
-
-        <h1 id="articleTitle"></h1>
-
-        <div id="articleText"
-          style="line-height:1.9;color:var(--soft);font-size:17px">
-        </div>
-
-      </section>
-
-
-      <!-- STORY VIEW -->
-
-      <section id="storyView" class="page">
-
-        <button class="secondary"
-          onclick="openPage('stories')">
-          ← Retour
-        </button>
-
-        <br><br>
-
-        <div class="hero">
-
-          <span class="badge">INAT STORY</span>
-
-          <h1 id="storyTitle"></h1>
-
-          <p id="storyText"></p>
-
-        </div>
-
-      </section>
-
-    </div>
-
-  </main>
-
-
-  <!-- RIGHT BAR -->
-
-  <aside class="rightbar">
-
-    <div class="agent-card">
-
-      <div class="avatar">I</div>
-
-      <h3>Agent INAT</h3>
-
-      <p>
-        Un espace simple pour commencer une conversation,
-        une réflexion ou une nouvelle situation.
-      </p>
-
-      <button class="primary"
-        onclick="openPage('messages')">
-        Parler maintenant
-      </button>
-
-    </div>
-
-  </aside>
-
-</div>
-
-
-
-<!-- AUTH -->
-<div id="authModal" class="auth-modal">
-  <div class="auth-card">
-    <button class="auth-close" onclick="closeAuth()">×</button>
-    <h2>Bienvenue sur INAT</h2>
-    <p style="color:var(--soft)">Créez votre espace avec votre numéro de téléphone.</p>
-    <div class="auth-tabs">
-      <button id="registerTab" class="active" onclick="setAuthMode('register')">Créer un compte</button>
-      <button id="loginTab" onclick="setAuthMode('login')">Connexion</button>
-    </div>
-    <input id="authName" placeholder="Votre nom">
-    <div class="phone-row">
-      <select id="countrySelect" onchange="updateDialCode()">
-        <option value="CI" data-code="+225">🇨🇮 Côte d’Ivoire (+225)</option>
-        <option value="SN" data-code="+221">🇸🇳 Sénégal (+221)</option>
-        <option value="ML" data-code="+223">🇲🇱 Mali (+223)</option>
-        <option value="BF" data-code="+226">🇧🇫 Burkina Faso (+226)</option>
-        <option value="GN" data-code="+224">🇬🇳 Guinée (+224)</option>
-        <option value="FR" data-code="+33">🇫🇷 France (+33)</option>
-        <option value="US" data-code="+1">🇺🇸 États-Unis (+1)</option>
-        <option value="OTHER" data-code="+">🌍 Autre pays</option>
-      </select>
-      <input id="phoneInput" type="tel" inputmode="tel" placeholder="Numéro de téléphone">
-    </div>
-    <input id="dialCode" readonly value="+225">
-    <button class="primary" style="width:100%;margin-top:12px" onclick="submitAuth()">Continuer</button>
-    <p class="auth-note">Mode démonstration local : le numéro est enregistré uniquement dans ce navigateur. Pour une vraie connexion par SMS, il faudra connecter Firebase Authentication ou un serveur.</p>
+    <div class="avatar">A</div>
   </div>
-</div>
+</header>
 
-<!-- STORY UPLOAD -->
-<div id="uploadModal" class="upload-modal">
-  <div class="upload-card">
-    <button class="modal-close" onclick="closeUpload()">×</button>
-    <h2>Publier une story</h2>
-    <input id="storyCaption" maxlength="120" placeholder="Titre ou légende">
-    <input id="storyFile" type="file" accept="video/*,image/*" onchange="previewStoryUpload()">
-    <div id="storyPreview" style="margin:14px 0;color:var(--soft)">Choisissez une vidéo ou une image verticale.</div>
-    <button class="primary" style="width:100%" onclick="publishStory()">Publier la story</button>
+<main>
+
+<!-- HOME -->
+<section id="home" class="page active">
+
+  <div class="hero">
+    <h1>INAT</h1>
+    <p>
+      Une nouvelle façon de partager tes histoires,
+      découvrir des situations et trouver des solutions.
+    </p>
+
+    <button class="btn" onclick="showPage('stories')">
+      Découvrir les stories
+    </button>
   </div>
-</div>
 
+  <h2 style="margin:25px 0 12px">À découvrir</h2>
 
-<!-- PLAYER -->
+  <div class="post">
+    <div class="post-head">
+      <div class="post-avatar">I</div>
+      <div>
+        <b>INAT</b><br>
+        <small style="color:#8996b8">Aujourd'hui</small>
+      </div>
+    </div>
 
-<div id="player">
-  <div class="player-cover" id="playerEmoji">🎵</div>
+    <p>
+      Après un rendez-vous inattendu, une nouvelle histoire peut commencer...
+    </p>
 
-  <div class="player-info">
-    <strong id="playerTitle">Aucun morceau</strong><br>
-    <small id="playerCategory">Sélectionnez une musique</small>
-    <div class="player-extra">
+    <div class="actions">
+      <button class="action">♡ J'aime</button>
+      <button class="action">💬 Commenter</button>
+      <button class="action">↗ Partager</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- STORIES -->
+<section id="stories" class="page">
+
+  <h1 class="title">Stories</h1>
+  <p class="subtitle">Partage un moment avec la communauté INAT.</p>
+
+  <div class="add-story">
+
+    <b>Ajouter à ma story</b>
+
+    <p style="color:#9da8c7;margin:8px 0 15px">
+      Photos, vidéos et fichiers.
+    </p>
+
+    <label class="btn upload-label">
+      ＋ Upload fichiers
+      <input
+        id="storyFile"
+        class="file-input"
+        type="file"
+        accept="image/*,video/*"
+        multiple
+        onchange="uploadStory(event)"
+      >
+    </label>
+
+  </div>
+
+  <div id="storyRow" class="story-row">
+
+    <div class="story">
+      <div class="story-ring">
+        <div class="story-inner">
+          <span style="font-size:27px">＋</span>
+        </div>
+      </div>
+      <span>Ma story</span>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SITUATIONS -->
+<section id="situations" class="page">
+
+  <h1 class="title">Situations</h1>
+
+  <p class="subtitle">
+    Décris une situation. L'IA INAT t'aide à réfléchir et à trouver une solution.
+  </p>
+
+  <div class="ai-card">
+
+    <h2>🤖 IA INAT</h2>
+
+    <p style="color:#aab7d8;margin-top:7px">
+      Explique simplement ce qui se passe.
+    </p>
+
+    <textarea
+      id="situationText"
+      placeholder="Exemple : Je dois trouver une solution pour organiser mon travail mais je ne sais pas par où commencer..."
+    ></textarea>
+
+    <button class="btn" onclick="solveSituation()">
+      ✨ Trouver une solution
+    </button>
+
+    <div id="solution" class="solution"></div>
+
+  </div>
+
+  <h2 style="margin:25px 0 12px">Situations populaires</h2>
+
+  <div class="situation">
+    <b>💼 Travail</b>
+    <p style="color:#9da8c7;margin-top:7px">
+      Difficultés professionnelles et organisation.
+    </p>
+  </div>
+
+  <div class="situation">
+    <b>❤️ Relations</b>
+    <p style="color:#9da8c7;margin-top:7px">
+      Comprendre une situation et mieux communiquer.
+    </p>
+  </div>
+
+  <div class="situation">
+    <b>💡 Projet</b>
+    <p style="color:#9da8c7;margin-top:7px">
+      Trouver des idées et organiser les prochaines étapes.
+    </p>
+  </div>
+
+</section>
+
+<!-- MUSIQUE -->
+<section id="music" class="page">
+
+  <h1 class="title">Musique</h1>
+  <p class="subtitle">Écoute ta musique dans INAT.</p>
+
+  <div class="music-card">
+
+    <div class="cover">♪</div>
+
+    <div id="musicTitle" class="music-title">
+      Ma musique
+    </div>
+
+    <div id="musicArtist" class="music-artist">
+      INAT Music
+    </div>
+
+    <input
+      id="progress"
+      class="progress"
+      type="range"
+      min="0"
+      max="100"
+      value="0"
+    >
+
+    <div class="time">
       <span id="currentTime">0:00</span>
-      <input id="musicProgress" class="music-progress" type="range" min="0" max="100" value="0" oninput="seekMusic(this.value)">
-      <span id="durationTime">0:00</span>
+      <span id="duration">0:00</span>
     </div>
+
+    <div class="music-controls">
+
+      <button class="music-btn" onclick="previousSong()">
+        ↶
+      </button>
+
+      <button class="music-btn" onclick="backTen()">
+        −10
+      </button>
+
+      <button
+        id="playButton"
+        class="music-btn main"
+        onclick="toggleMusic()"
+      >
+        ▶
+      </button>
+
+      <button class="music-btn" onclick="forwardTen()">
+        +10
+      </button>
+
+      <button class="music-btn" onclick="nextSong()">
+        ↷
+      </button>
+
+    </div>
+
+    <div class="music-upload">
+
+      <label class="btn secondary upload-label">
+        🎵 Ajouter une musique
+        <input
+          id="musicFile"
+          class="file-input"
+          type="file"
+          accept="audio/*"
+          onchange="loadMusic(event)"
+        >
+      </label>
+
+    </div>
+
   </div>
 
-  <div class="player-controls">
-    <button onclick="previousTrack()">⏮</button>
-    <button onclick="togglePlay()" id="playButton">▶</button>
-    <button onclick="nextTrack()">⏭</button>
-    <button onclick="closePlayer()">✕</button>
+</section>
+
+<!-- PROFIL -->
+<section id="profile" class="page">
+
+  <h1 class="title">Mon profil</h1>
+
+  <div class="post" style="text-align:center">
+
+    <div
+      class="logo-mini"
+      style="margin:auto;width:80px;height:80px;font-size:35px"
+    >
+      A
+    </div>
+
+    <h2 style="margin-top:15px">Utilisateur INAT</h2>
+
+    <p style="color:#9da8c7;margin:8px 0 20px">
+      Bienvenue dans ton espace.
+    </p>
+
+    <button class="btn secondary">
+      Modifier mon profil
+    </button>
+
   </div>
-</div>
 
-<audio id="audioPlayer" preload="metadata"></audio>
+</section>
 
-<!-- MOBILE NAV -->
+</main>
 
-<nav class="mobile-nav">
+<!-- NAVIGATION -->
 
-  <button class="mobilebtn active"
-    onclick="mobilePage('home',this)">
-    🏠<br>Accueil
+<nav>
+
+  <button
+    class="nav-btn active"
+    onclick="showPage('home',this)"
+  >
+    <span>⌂</span>
+    <span>Accueil</span>
   </button>
 
-  <button class="mobilebtn"
-    onclick="mobilePage('situations',this)">
-    ⚡<br>Situations
+  <button
+    class="nav-btn"
+    onclick="showPage('stories',this)"
+  >
+    <span>◉</span>
+    <span>Story</span>
   </button>
 
-  <button class="mobilebtn"
-    onclick="mobilePage('music',this)">
-    🎵<br>Musique
+  <button
+    class="nav-btn"
+    onclick="showPage('situations',this)"
+  >
+    <span>✦</span>
+    <span>Situations</span>
   </button>
 
-  <button class="mobilebtn"
-    onclick="mobilePage('messages',this)">
-    💬<br>Messages
+  <button
+    class="nav-btn"
+    onclick="showPage('music',this)"
+  >
+    <span>♫</span>
+    <span>Musique</span>
   </button>
 
-  <button class="mobilebtn"
-    onclick="mobilePage('account',this)">
-    📱<br>Compte
-  </button>
-
-  <button class="mobilebtn"
-    onclick="mobilePage('profile',this)">
-    👤<br>Profil
+  <button
+    class="nav-btn"
+    onclick="showPage('profile',this)"
+  >
+    <span>●</span>
+    <span>Profil</span>
   </button>
 
 </nav>
 
-<button class="floating"
-  onclick="openPage('create')">
-  +
-</button>
+</div>
 
+<!-- AUDIO -->
+
+<audio id="audio"></audio>
 
 <script>
 
 /* =========================
-   START-UP 2D — 10 SECONDS
-========================= */
-let startupSeconds=10;
-let startupTimer=setInterval(function(){
-  startupSeconds--;
-  const count=document.getElementById("startupCount");
-  if(count) count.textContent="DÉMARRAGE • "+Math.max(0,startupSeconds);
-  if(startupSeconds<=0){
-    clearInterval(startupTimer);
-    finishStartup();
-  }
-},1000);
-
-function finishStartup(){
-  clearInterval(startupTimer);
-  document.getElementById("splash").style.display="none";
-  document.getElementById("app").style.display=window.innerWidth<=800?"block":"grid";
-  openPage(localStorage.getItem("inatAccount")?"home":"account");
-}
-
-/* =========================
-   START APP
+   DÉMARRAGE INAT
 ========================= */
 
-function startApp(){
-  clearInterval(startupTimer);
-  document.getElementById("splash").style.display="none";
-  document.getElementById("app").style.display=window.innerWidth<=800?"block":"grid";
-  openPage(localStorage.getItem("inatAccount")?"home":"account");
+function startINAT(){
+
+  const intro=document.getElementById("intro");
+  const app=document.getElementById("app");
+
+  intro.classList.add("hide");
+
+  setTimeout(()=>{
+    intro.style.display="none";
+    app.style.display="block";
+  },1200);
 }
 
 
 /* =========================
-   PAGES
+   NAVIGATION
 ========================= */
 
-function openPage(page,button){
+function showPage(id,button){
 
-  document.querySelectorAll(".page").forEach(function(p){
-    p.classList.remove("active");
-  });
+  document.querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
 
-  const target=document.getElementById(page);
+  const page=document.getElementById(id);
 
-  if(target){
-    target.classList.add("active");
+  if(page){
+    page.classList.add("active");
+    window.scrollTo({top:0,behavior:"smooth"});
   }
-
-  document.querySelectorAll(".navbtn").forEach(function(btn){
-    btn.classList.remove("active");
-  });
 
   if(button){
+
+    document.querySelectorAll(".nav-btn")
+      .forEach(b=>b.classList.remove("active"));
+
     button.classList.add("active");
+
+  }else{
+
+    document.querySelectorAll(".nav-btn")
+      .forEach(b=>{
+
+        b.classList.remove("active");
+
+        const txt=b.innerText.toLowerCase();
+
+        if(
+          (id==="home" && txt.includes("accueil")) ||
+          (id==="stories" && txt.includes("story")) ||
+          (id==="situations" && txt.includes("situation")) ||
+          (id==="music" && txt.includes("musique")) ||
+          (id==="profile" && txt.includes("profil"))
+        ){
+          b.classList.add("active");
+        }
+
+      });
+
   }
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-
 }
 
-function mobilePage(page,button){
 
-  openPage(page);
+/* =========================
+   STORY UPLOAD
+========================= */
 
-  document.querySelectorAll(".mobilebtn").forEach(function(btn){
-    btn.classList.remove("active");
+function uploadStory(event){
+
+  const files=[...event.target.files];
+  const row=document.getElementById("storyRow");
+
+  files.forEach(file=>{
+
+    const url=URL.createObjectURL(file);
+
+    const story=document.createElement("div");
+    story.className="story";
+
+    const ring=document.createElement("div");
+    ring.className="story-ring";
+
+    const inner=document.createElement("div");
+    inner.className="story-inner";
+
+    let media;
+
+    if(file.type.startsWith("video")){
+
+      media=document.createElement("video");
+      media.src=url;
+      media.muted=true;
+
+    }else{
+
+      media=document.createElement("img");
+      media.src=url;
+
+    }
+
+    inner.appendChild(media);
+    ring.appendChild(inner);
+
+    story.appendChild(ring);
+
+    const name=document.createElement("span");
+    name.textContent=file.name.slice(0,10);
+
+    story.appendChild(name);
+
+    row.appendChild(story);
+
   });
 
-  button.classList.add("active");
+  event.target.value="";
 
 }
 
 
 /* =========================
-   THEME
+   IA SITUATIONS
 ========================= */
 
-function toggleTheme(){
+function solveSituation(){
 
-  document.body.classList.toggle("light");
+  const text=document
+    .getElementById("situationText")
+    .value
+    .trim();
 
-  localStorage.setItem(
-    "inatTheme",
-    document.body.classList.contains("light")
-      ? "light"
-      : "dark"
-  );
-
-}
-
-if(localStorage.getItem("inatTheme")==="light"){
-  document.body.classList.add("light");
-}
-
-
-/* =========================
-   SITUATIONS
-========================= */
-
-let situations=
-  JSON.parse(localStorage.getItem("inatSituations")) || [];
-
-function saveSituation(){
-
-  const text=
-    document.getElementById("situationText").value.trim();
+  const solution=document.getElementById("solution");
 
   if(!text){
-    alert("Écrivez votre situation avant d'envoyer.");
-    return;
-  }
 
-  situations.unshift({
-    id:Date.now(),
-    text:text,
-    date:new Date().toLocaleDateString("fr-FR")
-  });
+    solution.style.display="block";
 
-  localStorage.setItem(
-    "inatSituations",
-    JSON.stringify(situations)
-  );
-
-  document.getElementById("situationText").value="";
-
-  renderSituations();
-
-  alert("Votre situation a été enregistrée.");
-
-  openPage("situations");
-
-}
-
-function renderSituations(){
-
-  const list=
-    document.getElementById("situationsList");
-
-  if(situations.length===0){
-
-    list.innerHTML=`
-      <div class="card">
-        <div class="emoji">✨</div>
-        <h3>Aucune situation</h3>
-        <p>
-          Vous n'avez encore rien ajouté.
-        </p>
-        <button onclick="openPage('create')">
-          Créer maintenant
-        </button>
-      </div>
-    `;
+    solution.innerHTML=
+      "⚠️ Décris d'abord ta situation pour que je puisse t'aider.";
 
     return;
   }
 
-  list.innerHTML="";
+  solution.style.display="block";
 
-  situations.forEach(function(item){
+  solution.innerHTML=`
+    <b>🤖 Analyse INAT</b><br><br>
 
-    const card=document.createElement("div");
+    Ta situation semble demander une approche étape par étape.
+    Voici une méthode simple :<br><br>
 
-    card.className="card";
+    <b>1. Identifier le problème</b><br>
+    Détermine précisément ce qui bloque.<br><br>
 
-    card.innerHTML=`
+    <b>2. Définir ton objectif</b><br>
+    Décide du résultat que tu souhaites obtenir.<br><br>
 
-      <div class="emoji">⚡</div>
+    <b>3. Chercher plusieurs options</b><br>
+    Note au moins trois solutions possibles avant de choisir.<br><br>
 
-      <h3>Situation</h3>
+    <b>4. Commencer par une petite action</b><br>
+    Choisis l'action la plus simple que tu peux réaliser maintenant.<br><br>
 
-      <p>${escapeHTML(item.text)}</p>
+    <b>5. Vérifier le résultat</b><br>
+    Observe ce qui fonctionne puis adapte la suite.
+    <br><br>
 
-      <small style="color:var(--soft)">
-        ${item.date}
-      </small>
-
-      <button onclick="deleteSituation(${item.id})">
-        Supprimer
-      </button>
-
-    `;
-
-    list.appendChild(card);
-
-  });
-
-}
-
-function deleteSituation(id){
-
-  situations=situations.filter(function(item){
-    return item.id!==id;
-  });
-
-  localStorage.setItem(
-    "inatSituations",
-    JSON.stringify(situations)
-  );
-
-  renderSituations();
+    <span style="color:#7da0ff">
+      💡 Conseil : ${escapeHTML(text.slice(0,120))}
+    </span>
+  `;
 
 }
 
-function escapeHTML(text){
+function escapeHTML(str){
 
-  const div=document.createElement("div");
-
-  div.textContent=text;
-
-  return div.innerHTML;
+  return str
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
 
 /* =========================
-   MUSIC — COMPLETE PLAYER
+   MUSIQUE
 ========================= */
 
-const playlist=[
-  {title:"Afro Horizon",category:"Afro Beat",emoji:"🌍",genre:"afro",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"},
-  {title:"Night Slow",category:"Slow",emoji:"🌙",genre:"slow",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"},
-  {title:"Future Street",category:"Hip-Hop / Rap",emoji:"🔥",genre:"hiphop",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"},
-  {title:"Midnight Love",category:"RNB",emoji:"💜",genre:"rnb",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"},
-  {title:"Blue Jazz",category:"Jazz",emoji:"🎷",genre:"jazz",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"},
-  {title:"Island Vibe",category:"Reggae",emoji:"🟢",genre:"reggae",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"},
-  {title:"Pop Motion",category:"Pop",emoji:"✨",genre:"pop",src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3"}
-];
+const audio=document.getElementById("audio");
+const playButton=document.getElementById("playButton");
+const progress=document.getElementById("progress");
 
-let currentTrack=0;
-const audioPlayer=document.getElementById("audioPlayer");
+function loadMusic(event){
 
-function filterMusic(category,button){
-  document.querySelectorAll(".categories button").forEach(btn=>btn.classList.remove("active"));
-  button.classList.add("active");
-  document.querySelectorAll(".music-card").forEach(card=>{
-    card.style.display=(category==="all"||card.dataset.category===category)?"block":"none";
-  });
-}
+  const file=event.target.files[0];
 
-function findTrack(title,category,emoji){
-  let i=playlist.findIndex(t=>t.title===title);
-  if(i===-1){
-    i=playlist.length;
-    playlist.push({title,category,emoji,src:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"});
-  }
-  return i;
-}
-
-function playMusic(title,category,emoji){
-  currentTrack=findTrack(title,category,emoji);
-  loadTrack(currentTrack,true);
-}
-
-function loadTrack(index,autoplay=false){
-  const track=playlist[index];
-  document.getElementById("player").style.display="flex";
-  document.getElementById("playerTitle").textContent=track.title;
-  document.getElementById("playerCategory").textContent=track.category;
-  document.getElementById("playerEmoji").textContent=track.emoji;
-  if(audioPlayer.src!==track.src) audioPlayer.src=track.src;
-  if(autoplay){
-    audioPlayer.play().then(()=>document.getElementById("playButton").textContent="⏸").catch(()=>{
-      document.getElementById("playButton").textContent="▶";
-    });
-  }
-}
-
-function togglePlay(){
-  if(!audioPlayer.src) loadTrack(currentTrack,true);
-  else if(audioPlayer.paused) audioPlayer.play();
-  else audioPlayer.pause();
-}
-
-function previousTrack(){
-  currentTrack=(currentTrack-1+playlist.length)%playlist.length;
-  loadTrack(currentTrack,true);
-}
-
-function nextTrack(){
-  currentTrack=(currentTrack+1)%playlist.length;
-  loadTrack(currentTrack,true);
-}
-
-function closePlayer(){
-  audioPlayer.pause();
-  document.getElementById("player").style.display="none";
-}
-
-function seekMusic(value){
-  if(audioPlayer.duration) audioPlayer.currentTime=(value/100)*audioPlayer.duration;
-}
-
-function formatTime(sec){
-  if(!isFinite(sec)) return "0:00";
-  const m=Math.floor(sec/60), s=Math.floor(sec%60);
-  return m+":"+(s<10?"0":"")+s;
-}
-
-audioPlayer.addEventListener("play",()=>document.getElementById("playButton").textContent="⏸");
-audioPlayer.addEventListener("pause",()=>document.getElementById("playButton").textContent="▶");
-audioPlayer.addEventListener("loadedmetadata",()=>document.getElementById("durationTime").textContent=formatTime(audioPlayer.duration));
-audioPlayer.addEventListener("timeupdate",()=>{
-  document.getElementById("currentTime").textContent=formatTime(audioPlayer.currentTime);
-  document.getElementById("musicProgress").value=audioPlayer.duration?(audioPlayer.currentTime/audioPlayer.duration)*100:0;
-});
-audioPlayer.addEventListener("ended",nextTrack);
-
-/* =========================
-   IDEAS
-========================= */
-
-const ideas=[
-
-  "Le meilleur service est parfois celui qui arrive avant que vous demandiez de l'aide.",
-
-  "Les grandes entreprises peuvent naître d'un petit problème que tout le monde ignore.",
-
-  "Le futur ne sera pas seulement technologique : il devra être plus simple.",
-
-  "Une bonne idée devient puissante lorsqu'elle facilite réellement la vie.",
-
-  "L'inattendu peut devenir une nouvelle manière de créer des services."
-
-];
-
-function newIdea(){
-
-  const random=
-    ideas[Math.floor(Math.random()*ideas.length)];
-
-  document.getElementById("ideaText").textContent=random;
-
-}
-
-
-/* =========================
-   CHAT
-========================= */
-
-function sendMessage(){
-
-  const input=
-    document.getElementById("messageInput");
-
-  const text=input.value.trim();
-
-  if(!text){
-    return;
-  }
-
-  addMessage(text,"me");
-
-  input.value="";
-
-  setTimeout(function(){
-
-    let reply=
-
-      "Merci pour votre message. INAT a bien reçu votre demande.";
-
-    const lower=text.toLowerCase();
-
-    if(lower.includes("bonjour")){
-      reply="Bonjour 👋 Ravi de vous accueillir sur INAT.";
-    }
-
-    if(lower.includes("musique")){
-      reply="Vous pouvez ouvrir la section Musique pour découvrir les différentes catégories.";
-    }
-
-    if(lower.includes("aide")){
-      reply="Expliquez simplement votre situation. Nous allons commencer par comprendre votre besoin.";
-    }
-
-    addMessage(reply,"agent");
-
-  },700);
-
-}
-
-function addMessage(text,type){
-
-  const body=
-    document.getElementById("chatBody");
-
-  const message=
-    document.createElement("div");
-
-  message.className=
-    type==="me"
-      ? "message me"
-      : "message";
-
-  message.textContent=text;
-
-  body.appendChild(message);
-
-  body.scrollTop=body.scrollHeight;
-
-}
-
-
-/* =========================
-   STORIES
-========================= */
-
-function showStory(title){
-
-  const stories={
-
-    "Le monde demain":
-      "Le futur pourrait être moins compliqué que nous l'imaginons. Les meilleures solutions ne seront pas toujours les plus grandes technologies. Elles seront peut-être simplement celles qui permettront à une personne de résoudre rapidement un problème réel.",
-
-    "Une idée en 1986":
-      "En 1986, personne n'avait encore les smartphones actuels. Pourtant, les besoins humains existaient déjà : communiquer, être compris, trouver une solution et gagner du temps. Une entreprise du futur commence souvent par observer ces besoins simples.",
-
-    "L inattendu":
-      "L'inattendu commence lorsqu'une personne décide de regarder un problème autrement. INAT représente cette idée : créer un espace où une situation peut devenir le début d'une nouvelle solution."
-
-  };
-
-  document.getElementById("storyTitle").textContent=title;
-
-  document.getElementById("storyText").textContent=
-    stories[title] ||
-    "Une nouvelle histoire arrive bientôt.";
-
-  openPage("storyView");
-
-}
-
-
-/* =========================
-   ARTICLES
-========================= */
-
-function readArticle(type){
-
-  const data={
-
-    problems:{
-      title:"Les problèmes invisibles",
-      text:`
-        <p>
-        Beaucoup de problèmes humains restent invisibles parce qu'ils semblent trop petits pour créer une entreprise.
-        Pourtant, certaines des plus grandes innovations commencent par une difficulté quotidienne.
-        </p>
-
-        <p>
-        Les personnes perdent du temps, ne savent pas à qui parler, cherchent des informations ou rencontrent des situations qu'elles ne savent pas expliquer.
-        Un nouveau service peut commencer simplement en écoutant ces situations.
-        </p>
-      `
-    },
-
-    service:{
-      title:"Le service humain",
-      text:`
-        <p>
-        La technologie seule ne suffit pas. Un service devient réellement utile lorsqu'il réduit la confusion et permet à une personne d'avancer facilement.
-        </p>
-
-        <p>
-        Le futur pourrait appartenir aux entreprises capables de combiner intelligence numérique, simplicité et compréhension humaine.
-        </p>
-      `
-    },
-
-    future:{
-      title:"Le futur inattendu",
-      text:`
-        <p>
-        Nous imaginons souvent le futur avec des robots et des villes intelligentes.
-        Mais une autre révolution peut être plus discrète : améliorer les services simples que les humains utilisent chaque jour.
-        </p>
-
-        <p>
-        INAT part de cette réflexion. Et si l'inattendu devenait le point de départ d'un nouveau type d'entreprise numérique ?
-        </p>
-      `
-    }
-
-  };
-
-  document.getElementById("articleTitle").textContent=
-    data[type].title;
-
-  document.getElementById("articleText").innerHTML=
-    data[type].text;
-
-  openPage("article");
-
-}
-
-
-/* =========================
-   PROFILE
-========================= */
-
-function changeName(){
-
-  const current=
-    document.getElementById("profileName").textContent;
-
-  const name=
-    prompt("Entrez votre nom :",current);
-
-  if(name && name.trim()){
-
-    const finalName=name.trim();
-
-    document.getElementById("profileName").textContent=
-      finalName;
-
-    document.getElementById("profileLetter").textContent=
-      finalName.charAt(0).toUpperCase();
-
-    localStorage.setItem(
-      "inatName",
-      finalName
-    );
-
-  }
-
-}
-
-function loadProfile(){
-
-  const saved=
-    localStorage.getItem("inatName");
-
-  if(saved){
-
-    document.getElementById("profileName").textContent=saved;
-
-    document.getElementById("profileLetter").textContent=
-      saved.charAt(0).toUpperCase();
-
-  }
-
-}
-
-function logout(){
-
-  if(confirm("Voulez-vous quitter INAT ?")){
-
-    document.getElementById("app").style.display="none";
-
-    document.getElementById("splash").style.display="flex";
-
-  }
-
-}
-
-
-/* =========================
-   AUTH — LOCAL DEMO
-========================= */
-let authMode="register";
-
-function openAuth(){document.getElementById("authModal").style.display="flex";autoSelectCountry();}
-function closeAuth(){document.getElementById("authModal").style.display="none";}
-function setAuthMode(mode){
-  authMode=mode;
-  document.getElementById("registerTab").classList.toggle("active",mode==="register");
-  document.getElementById("loginTab").classList.toggle("active",mode==="login");
-  document.getElementById("authName").style.display=mode==="register"?"block":"none";
-}
-function autoSelectCountry(){
-  const guessed=(Intl.DateTimeFormat().resolvedOptions().locale.split("-")[1]||"CI").toUpperCase();
-  const select=document.getElementById("countrySelect");
-  if([...select.options].some(o=>o.value===guessed)) select.value=guessed;
-  updateDialCode();
-}
-function updateDialCode(){
-  const select=document.getElementById("countrySelect");
-  document.getElementById("dialCode").value=select.options[select.selectedIndex].dataset.code||"+";
-}
-function submitAuth(){
-  const phone=document.getElementById("phoneInput").value.replace(/\s+/g,"");
-  const name=document.getElementById("authName").value.trim()||"Utilisateur INAT";
-  if(!phone || phone.length<5){alert("Entrez un numéro de téléphone valide.");return;}
-  const account={name:name,phone:document.getElementById("dialCode").value+phone,country:document.getElementById("countrySelect").value};
-  if(authMode==="register") localStorage.setItem("inatAccount",JSON.stringify(account));
-  const saved=JSON.parse(localStorage.getItem("inatAccount")||"null");
-  if(authMode==="login" && (!saved || saved.phone!==account.phone)){alert("Aucun compte local trouvé avec ce numéro.");return;}
-  localStorage.setItem("inatName",authMode==="login"?saved.name:account.name);
-  loadProfile();
-  closeAuth();
-  startApp();
-}
-function checkAccountUI(){
-  const account=JSON.parse(localStorage.getItem("inatAccount")||"null");
-  if(account) document.getElementById("profileName").textContent=account.name;
-}
-
-/* =========================
-   VERTICAL STORIES UPLOAD
-========================= */
-let selectedStoryURL=null, selectedStoryType=null;
-function openUpload(type){
-  document.getElementById("uploadModal").style.display="flex";
-  if(type==="image") document.getElementById("storyFile").accept="image/*";
-  else document.getElementById("storyFile").accept="video/*,image/*";
-}
-function closeUpload(){document.getElementById("uploadModal").style.display="none";}
-function previewStoryUpload(){
-  const file=document.getElementById("storyFile").files[0];
-  const preview=document.getElementById("storyPreview");
   if(!file)return;
-  if(selectedStoryURL)URL.revokeObjectURL(selectedStoryURL);
-  selectedStoryURL=URL.createObjectURL(file);
-  selectedStoryType=file.type.startsWith("video")?"video":"image";
-  preview.innerHTML=selectedStoryType==="video"
-    ? `<video src="${selectedStoryURL}" controls muted style="width:100%;max-height:360px;border-radius:18px"></video>`
-    : `<img src="${selectedStoryURL}" style="width:100%;max-height:360px;object-fit:cover;border-radius:18px">`;
+
+  audio.src=URL.createObjectURL(file);
+
+  document.getElementById("musicTitle")
+    .textContent=file.name;
+
+  document.getElementById("musicArtist")
+    .textContent="Fichier local";
+
+  audio.play();
+
+  playButton.textContent="❚❚";
+
 }
-function publishStory(){
-  const file=document.getElementById("storyFile").files[0];
-  if(!file||!selectedStoryURL){alert("Choisissez une vidéo ou une image.");return;}
-  const caption=document.getElementById("storyCaption").value.trim()||"Nouvelle story INAT";
-  const story=document.createElement("article");
-  story.className="vertical-story";
-  const media=selectedStoryType==="video"
-    ? `<video src="${selectedStoryURL}" controls playsinline></video>`
-    : `<img src="${selectedStoryURL}" alt="Story publiée">`;
-  story.innerHTML=`${media}<div class="story-progress"><i></i></div><div class="story-overlay"><div class="story-meta">@Vous • Maintenant</div><h3>${escapeHTML(caption)}</h3><p>Story publiée en mode test.</p></div>`;
-  document.getElementById("storyFeed").prepend(story);
-  document.getElementById("storyCaption").value="";
-  document.getElementById("storyFile").value="";
-  closeUpload();
+
+function toggleMusic(){
+
+  if(!audio.src){
+
+    alert("Ajoute d'abord une musique.");
+
+    return;
+  }
+
+  if(audio.paused){
+
+    audio.play();
+
+    playButton.textContent="❚❚";
+
+  }else{
+
+    audio.pause();
+
+    playButton.textContent="▶";
+
+  }
+
+}
+
+function backTen(){
+
+  audio.currentTime=Math.max(
+    0,
+    audio.currentTime-10
+  );
+
+}
+
+function forwardTen(){
+
+  audio.currentTime=Math.min(
+    audio.duration || 0,
+    audio.currentTime+10
+  );
+
+}
+
+function previousSong(){
+
+  audio.currentTime=0;
+
+}
+
+function nextSong(){
+
+  audio.currentTime=audio.duration || 0;
+
+}
+
+audio.addEventListener("loadedmetadata",()=>{
+
+  document.getElementById("duration")
+    .textContent=formatTime(audio.duration);
+
+});
+
+audio.addEventListener("timeupdate",()=>{
+
+  if(audio.duration){
+
+    progress.value=
+      (audio.currentTime/audio.duration)*100;
+
+    document.getElementById("currentTime")
+      .textContent=formatTime(audio.currentTime);
+
+  }
+
+});
+
+progress.addEventListener("input",()=>{
+
+  if(audio.duration){
+
+    audio.currentTime=
+      (progress.value/100)*audio.duration;
+
+  }
+
+});
+
+audio.addEventListener("play",()=>{
+  playButton.textContent="❚❚";
+});
+
+audio.addEventListener("pause",()=>{
+  playButton.textContent="▶";
+});
+
+function formatTime(seconds){
+
+  if(!isFinite(seconds))return "0:00";
+
+  const m=Math.floor(seconds/60);
+  const s=Math.floor(seconds%60)
+    .toString()
+    .padStart(2,"0");
+
+  return `${m}:${s}`;
+
 }
 
 
 /* =========================
-   INITIALISATION
+   RACCOURCI CLAVIER
 ========================= */
 
-renderSituations();
+document.addEventListener("keydown",e=>{
 
-loadProfile();
-checkAccountUI();
-autoSelectCountry();
+  if(e.code==="Space" &&
+     document.activeElement.tagName!=="TEXTAREA"){
+
+    e.preventDefault();
+    toggleMusic();
+
+  }
+
+});
 
 </script>
 
