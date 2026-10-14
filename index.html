@@ -3,1333 +3,2252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<meta name="theme-color" content="#1746d1">
-<title>INAT — Situations • Stories • Musique</title>
+<meta name="theme-color" content="#5f01d1">
+<title>INAT — Le portail nouvelle génération</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%235f01d1'/><text x='50' y='72' font-size='60' font-weight='bold' text-anchor='middle' fill='white'>i</text></svg>">
 
 <style>
 :root{
-  --blue:#1746d1;
-  --blue2:#2868ff;
-  --dark:#050816;
-  --dark2:#0b1228;
-  --white:#fff;
-  --muted:#9da8c7;
-  --card:rgba(255,255,255,.08);
-  --line:rgba(255,255,255,.12);
-  --green:#22d69b;
-  --red:#ff4d67;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-  font-family:Arial,Helvetica,sans-serif;
-}
-
-body{
-  background:
-    radial-gradient(circle at 50% -10%,#173b9b 0,#07102b 35%,#03050d 80%);
-  color:white;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-
-/* =========================
-   INTRO CINÉMATIQUE 3D
-========================= */
-
-#intro{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  background:#02030a;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  transition:opacity 1.2s,visibility 1.2s;
-}
-
-#intro.hide{
-  opacity:0;
-  visibility:hidden;
-}
-
-.intro-stars{
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(circle at 20% 30%,rgba(42,92,255,.4),transparent 2px),
-    radial-gradient(circle at 80% 60%,rgba(255,255,255,.5),transparent 2px);
-  background-size:90px 90px,130px 130px;
-  animation:stars 8s linear infinite;
-}
-
-@keyframes stars{
-  from{transform:scale(1) rotate(0)}
-  to{transform:scale(1.3) rotate(3deg)}
-}
-
-.cinema{
-  position:relative;
-  z-index:2;
-  text-align:center;
-  perspective:1000px;
-}
-
-.inat3d{
-  font-size:clamp(70px,22vw,180px);
-  font-weight:1000;
-  letter-spacing:18px;
-  color:#fff;
-  text-shadow:
-    0 2px 0 #a9bfff,
-    0 5px 0 #5379ed,
-    0 10px 25px rgba(0,0,0,.9),
-    0 0 35px #2868ff;
-  transform:rotateX(15deg) rotateY(-12deg);
-  animation:logoCinema 3s ease-in-out infinite alternate;
-}
-
-@keyframes logoCinema{
-  from{
-    transform:rotateX(18deg) rotateY(-18deg) scale(.9);
-  }
-  to{
-    transform:rotateX(-8deg) rotateY(15deg) scale(1.04);
-  }
-}
-
-.intro-line{
-  height:2px;
-  width:0;
-  margin:22px auto;
-  background:linear-gradient(90deg,transparent,#fff,#2868ff,transparent);
-  animation:lineIn 2s forwards 1s;
-}
-
-@keyframes lineIn{
-  to{width:75vw}
-}
-
-.intro-text{
-  font-size:14px;
-  letter-spacing:5px;
-  color:#b8c8ff;
-  text-transform:uppercase;
-  opacity:0;
-  animation:textIn 2s forwards 1.4s;
-}
-
-@keyframes textIn{
-  to{opacity:1}
-}
-
-.intro-start{
-  margin-top:35px;
-  border:1px solid rgba(255,255,255,.3);
-  background:rgba(23,70,209,.3);
-  color:white;
-  padding:14px 28px;
-  border-radius:50px;
-  font-weight:bold;
-  cursor:pointer;
-  opacity:0;
-  animation:textIn 1s forwards 2.2s;
-}
-
-/* =========================
-   APP
-========================= */
-
-#app{
-  display:none;
-  min-height:100vh;
-}
-
-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  padding:13px 16px;
-  backdrop-filter:blur(20px);
-  background:rgba(3,6,17,.78);
-  border-bottom:1px solid var(--line);
-}
-
-.header-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.logo-mini{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  font-weight:1000;
-  font-size:20px;
-  color:white;
-  background:linear-gradient(135deg,#1746d1,#5b7fff);
-  box-shadow:0 8px 25px rgba(23,70,209,.45);
-  transform:rotate(-6deg);
-  animation:pivot 4s ease-in-out infinite;
-}
-
-@keyframes pivot{
-  0%,100%{transform:rotate(-6deg) rotateY(0)}
-  50%{transform:rotate(6deg) rotateY(180deg)}
-}
-
-.brand strong{
-  font-size:21px;
-  letter-spacing:2px;
-}
-
-.avatar{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#fff,#7395ff);
-  color:#143aab;
-  display:grid;
-  place-items:center;
-  font-weight:bold;
-}
-
-/* =========================
-   NAV
-========================= */
-
-nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:500;
-  height:72px;
-  background:rgba(4,8,20,.94);
-  backdrop-filter:blur(18px);
-  border-top:1px solid var(--line);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-}
-
-.nav-btn{
-  border:0;
-  background:none;
-  color:#8e9abc;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-  font-size:11px;
-  cursor:pointer;
-}
-
-.nav-btn span:first-child{
-  font-size:22px;
-}
-
-.nav-btn.active{
-  color:#fff;
-}
-
-.nav-btn.active span:first-child{
-  filter:drop-shadow(0 0 8px #2868ff);
-}
-
-/* =========================
-   PAGES
-========================= */
-
-main{
-  max-width:850px;
-  margin:auto;
-  padding:20px 15px 100px;
-}
-
-.page{
-  display:none;
-  animation:pageIn .35s ease;
-}
-
-.page.active{
-  display:block;
-}
-
-@keyframes pageIn{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-.title{
-  font-size:30px;
-  margin:10px 0 6px;
-}
-
-.subtitle{
-  color:var(--muted);
-  margin-bottom:20px;
-}
-
-/* =========================
-   BOUTONS MODERNES
-========================= */
-
-.btn{
-  border:0;
-  cursor:pointer;
-  color:white;
-  font-weight:bold;
-  padding:13px 18px;
-  border-radius:16px;
-  background:linear-gradient(135deg,#1746d1,#2868ff);
-  box-shadow:0 9px 25px rgba(23,70,209,.25);
-  transition:.2s;
-}
-
-.btn:active{
-  transform:scale(.94);
-}
-
-.btn.secondary{
-  background:rgba(255,255,255,.08);
-  border:1px solid var(--line);
-  box-shadow:none;
-}
-
-.btn.green{
-  background:linear-gradient(135deg,#159b70,#24dca2);
-}
-
-.btn.red{
-  background:linear-gradient(135deg,#bd2947,#ff526e);
-}
-
-/* =========================
-   HOME
-========================= */
-
-.hero{
-  min-height:330px;
-  border:1px solid var(--line);
-  border-radius:30px;
-  padding:30px 20px;
-  background:
-    linear-gradient(145deg,rgba(23,70,209,.3),rgba(255,255,255,.03)),
-    radial-gradient(circle at 80% 20%,rgba(67,113,255,.3),transparent 35%);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  overflow:hidden;
-  position:relative;
-}
-
-.hero:after{
-  content:"INAT";
-  position:absolute;
-  right:-30px;
-  bottom:-60px;
-  font-size:160px;
-  font-weight:1000;
-  color:rgba(255,255,255,.025);
-  transform:rotate(-15deg);
-}
-
-.hero h1{
-  font-size:clamp(40px,12vw,75px);
-  position:relative;
-  z-index:2;
-}
-
-.hero p{
-  color:#bbc6e5;
-  max-width:500px;
-  line-height:1.6;
-  margin:15px 0 25px;
-  position:relative;
-  z-index:2;
-}
-
-/* =========================
-   STORY
-========================= */
-
-.story-row{
-  display:flex;
-  gap:14px;
-  overflow-x:auto;
-  padding:5px 0 20px;
-}
-
-.story{
-  min-width:72px;
-  text-align:center;
-  font-size:11px;
-  color:#b4bed8;
-}
-
-.story-ring{
-  width:68px;
-  height:68px;
-  border-radius:50%;
-  padding:3px;
-  background:linear-gradient(135deg,#1746d1,#63a1ff,#fff);
-  margin:auto auto 5px;
-}
-
-.story-inner{
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  background:#101a39;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
-}
-
-.story-inner img,
-.story-inner video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.add-story{
-  width:100%;
-  margin:10px 0 20px;
-  padding:20px;
-  border:1px dashed #5274d8;
-  background:rgba(23,70,209,.08);
-  border-radius:22px;
-}
-
-.file-input{
-  display:none;
-}
-
-.upload-label{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  cursor:pointer;
-}
-
-/* =========================
-   SITUATIONS + IA
-========================= */
-
-.ai-card{
-  border-radius:25px;
-  padding:20px;
-  background:linear-gradient(145deg,rgba(23,70,209,.2),rgba(255,255,255,.05));
-  border:1px solid rgba(66,104,220,.35);
-}
-
-textarea{
-  width:100%;
-  min-height:130px;
-  resize:vertical;
-  border:1px solid var(--line);
-  outline:none;
-  border-radius:18px;
-  background:rgba(0,0,0,.22);
-  color:white;
-  padding:15px;
-  margin:12px 0;
-  font-size:15px;
-}
-
-.solution{
-  display:none;
-  margin-top:18px;
-  padding:18px;
-  border-radius:18px;
-  background:rgba(0,0,0,.2);
-  border-left:4px solid var(--blue2);
-  line-height:1.6;
-}
-
-.situation{
-  margin-top:15px;
-  padding:17px;
-  border:1px solid var(--line);
-  border-radius:20px;
-  background:var(--card);
-}
-
-/* =========================
-   MUSIQUE
-========================= */
-
-.music-card{
-  padding:25px 20px;
-  border-radius:28px;
-  background:
-    linear-gradient(145deg,#0e2e9b,#06112d);
-  border:1px solid rgba(90,130,255,.35);
-  box-shadow:0 20px 50px rgba(0,0,0,.3);
-}
-
-.cover{
-  width:190px;
-  height:190px;
-  margin:5px auto 25px;
-  border-radius:28px;
-  display:grid;
-  place-items:center;
-  font-size:55px;
-  font-weight:1000;
-  background:
-    radial-gradient(circle at 30% 20%,#83a1ff,#1746d1 45%,#050b20 90%);
-  box-shadow:0 15px 50px rgba(0,0,0,.5);
-}
-
-.music-title{
-  text-align:center;
-  font-size:22px;
-  font-weight:bold;
-}
-
-.music-artist{
-  text-align:center;
-  color:#aab8e2;
-  margin:6px 0 20px;
-}
-
-.progress{
-  width:100%;
-  accent-color:#2868ff;
-}
-
-.time{
-  display:flex;
-  justify-content:space-between;
-  color:#a9b6da;
-  font-size:12px;
-  margin-top:6px;
-}
-
-.music-controls{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:15px;
-  margin-top:20px;
-}
-
-.music-btn{
-  width:52px;
-  height:52px;
-  border:0;
-  border-radius:18px;
-  background:#1746d1;
-  color:white;
-  font-size:20px;
-  cursor:pointer;
-  box-shadow:0 8px 20px rgba(23,70,209,.35);
-}
-
-.music-btn.main{
-  width:66px;
-  height:66px;
-  border-radius:23px;
-  background:#2868ff;
-  font-size:25px;
-}
-
-.music-upload{
-  margin-top:20px;
-  text-align:center;
-}
-
-/* =========================
-   FEED
-========================= */
-
-.post{
-  padding:18px;
-  border-radius:24px;
-  background:var(--card);
-  border:1px solid var(--line);
-  margin-bottom:15px;
-}
-
-.post-head{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.post-avatar{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#2868ff,#fff);
-  display:grid;
-  place-items:center;
-  color:#123aa5;
-  font-weight:bold;
-}
-
-.post p{
-  margin:15px 0;
-  line-height:1.6;
-  color:#d8def0;
-}
-
-.actions{
-  display:flex;
-  gap:8px;
-}
-
-.action{
-  border:0;
-  background:rgba(255,255,255,.07);
-  color:#dbe4ff;
-  padding:9px 13px;
-  border-radius:13px;
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.modal-box{
-  width:min(500px,100%);
-  background:#0a1229;
-  border:1px solid var(--line);
-  border-radius:25px;
-  padding:25px;
-}
-
-.close{
-  float:right;
-  border:0;
-  background:none;
-  color:white;
-  font-size:25px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(min-width:800px){
-  nav{
-    left:50%;
-    transform:translateX(-50%);
-    max-width:700px;
-    border-radius:25px 25px 0 0;
-  }
+  --purple:#5f01d1;
+  --purple-light:#8a2be2;
+  --purple-dark:#3a0080;
+  --blue:#0f69ff;
+  --orange:#ff5c00;
+  --red:#e02020;
+  --green:#00b964;
+  --yellow:#ffd700;
+  --white:#ffffff;
+  --bg:#f7f5fa;
+  --text:#1a1a2e;
+  --muted:#6b6b80;
+  --light:#9b9bb0;
+  --border:#e8e4f0;
+  --shadow-sm:0 1px 3px rgba(95,1,209,.06);
+  --shadow-md:0 4px 12px rgba(95,1,209,.08);
+  --shadow-lg:0 12px 32px rgba(95,1,209,.12);
+  --shadow-purple:0 8px 24px rgba(95,1,209,.25);
+  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-full:999px;
+  --term-bg:#0a0a14;
+  --term-green:#00ff9d;
+  --term-cyan:#00e5ff;
+  --term-yellow:#ffd700;
+  --term-orange:#ff7b00;
+  --term-red:#ff3355;
+  --term-purple:#b366ff;
+  --term-blue:#4a9bff;
+  --term-gray:#6b7280;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Helvetica Neue','Segoe UI',Arial,sans-serif;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.5}
+
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#eee}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--purple-light)}
+
+/* ============ SPLASH ============ */
+#intro{position:fixed;inset:0;z-index:9000;background:linear-gradient(135deg,#5f01d1 0%,#8a2be2 50%,#3a0080 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .6s,visibility .6s}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.intro-bubbles{position:absolute;inset:0;overflow:hidden}
+.intro-bubbles span{position:absolute;border-radius:50%;background:rgba(255,255,255,.08);animation:float 15s infinite ease-in-out}
+.intro-bubbles span:nth-child(1){width:120px;height:120px;top:10%;left:8%}
+.intro-bubbles span:nth-child(2){width:80px;height:80px;top:70%;left:15%;animation-delay:2s}
+.intro-bubbles span:nth-child(3){width:200px;height:200px;top:20%;right:10%;animation-delay:4s}
+.intro-bubbles span:nth-child(4){width:60px;height:60px;bottom:15%;right:25%;animation-delay:1s}
+.intro-bubbles span:nth-child(5){width:140px;height:140px;bottom:5%;left:40%;animation-delay:3s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-40px) scale(1.1)}}
+.cinema{position:relative;z-index:2;text-align:center;padding:20px}
+.inat-logo-splash{font-size:clamp(70px,22vw,150px);font-weight:900;color:white;letter-spacing:-6px;line-height:1;text-shadow:0 8px 32px rgba(0,0,0,.3);margin-bottom:8px}
+.inat-logo-splash .dot{color:var(--orange);font-size:1.2em}
+.inat-exclaim{display:inline-block;transform:rotate(-12deg) translateY(-10px);color:var(--orange);animation:wobble 2s infinite ease-in-out}
+@keyframes wobble{0%,100%{transform:rotate(-12deg) translateY(-10px)}50%{transform:rotate(-8deg) translateY(-16px)}}
+.intro-tagline{font-size:15px;color:rgba(255,255,255,.9);letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:30px;opacity:0;animation:fadeUp .8s forwards .6s}
+.intro-start{background:white;color:var(--purple);border:0;padding:16px 36px;border-radius:var(--r-full);font-weight:700;font-size:15px;cursor:pointer;letter-spacing:.5px;box-shadow:0 12px 40px rgba(0,0,0,.25);transition:.2s;opacity:0;animation:fadeUp .8s forwards .9s}
+.intro-start:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.35)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.intro-badge{margin-top:26px;font-size:11px;color:rgba(255,255,255,.6);letter-spacing:3px;text-transform:uppercase;opacity:0;animation:fadeUp .8s forwards 1.2s}
+
+/* ============ APP ============ */
+#app{display:none;min-height:100vh;padding-bottom:80px}
+
+header{background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
+.header-top{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px;max-width:1400px;margin:auto}
+.brand{display:flex;align-items:center;gap:10px;cursor:pointer}
+.brand-logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#5f01d1,#8a2be2);display:grid;place-items:center;color:white;font-weight:900;font-size:20px;box-shadow:var(--shadow-purple)}
+.brand-name{font-size:24px;font-weight:900;color:var(--purple);letter-spacing:-1px}
+.brand-name .dot{color:var(--orange);font-size:1.1em}
+
+.search-bar{flex:1;max-width:500px;position:relative;display:flex}
+.search-bar input{width:100%;padding:11px 45px 11px 18px;border:2px solid var(--border);border-radius:var(--r-full);font-size:14px;outline:none;transition:.2s;background:#faf8fd;color:var(--text)}
+.search-bar input:focus{border-color:var(--purple);background:white;box-shadow:0 0 0 4px rgba(95,1,209,.1)}
+.search-bar button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:0;background:var(--purple);color:white;cursor:pointer;font-size:15px}
+
+.header-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:0;background:#f2eefb;color:var(--purple);cursor:pointer;font-size:16px;transition:.2s;display:grid;place-items:center}
+.icon-btn:hover{background:var(--purple);color:white}
+.user-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ff5c00,#e02020);color:white;display:grid;place-items:center;font-weight:700;cursor:pointer;font-size:14px;position:relative}
+.user-avatar::after{content:"";position:absolute;bottom:0;right:0;width:10px;height:10px;background:var(--green);border:2px solid white;border-radius:50%}
+
+.header-nav{border-top:1px solid var(--border);background:white;overflow-x:auto;scrollbar-width:none}
+.header-nav::-webkit-scrollbar{display:none}
+.header-nav-inner{max-width:1400px;margin:auto;display:flex;gap:4px;padding:0 20px;white-space:nowrap}
+.header-nav a{padding:12px 16px;color:var(--muted);text-decoration:none;font-size:14px;font-weight:600;border-bottom:3px solid transparent;transition:.2s;cursor:pointer;white-space:nowrap;display:inline-block}
+.header-nav a:hover{color:var(--purple)}
+.header-nav a.active{color:var(--purple);border-bottom-color:var(--purple)}
+
+.chip-bar{background:linear-gradient(90deg,#faf8fd,#f2eefb);border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;padding:8px 20px;font-size:11px;color:var(--muted)}
+.chip-bar::-webkit-scrollbar{display:none}
+.chip-bar-inner{max-width:1400px;margin:auto;display:flex;gap:8px}
+.chip-metric{display:flex;align-items:center;gap:5px;padding:4px 11px;background:white;border-radius:var(--r-full);border:1px solid var(--border);white-space:nowrap;font-weight:500}
+.chip-metric b{color:var(--purple);font-weight:700}
+.chip-led{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:led 1.5s infinite}
+@keyframes led{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ============ PORTAL ============ */
+.portal{max-width:1400px;margin:auto;padding:20px;display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:960px){.portal{grid-template-columns:1fr 340px}}
+.main-col{min-width:0}
+.side-col{display:flex;flex-direction:column;gap:18px}
+
+.card{background:white;border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;transition:.2s;box-shadow:var(--shadow-sm)}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-title{font-size:15px;font-weight:800;color:var(--purple);letter-spacing:-.3px;display:flex;align-items:center;gap:8px;text-transform:uppercase}
+.card-title .bar{width:4px;height:16px;background:var(--purple);border-radius:2px}
+.card-title .orange{background:var(--orange)}
+.card-title .red{background:var(--red)}
+.card-title .blue{background:var(--blue)}
+.card-title .green{background:var(--green)}
+.card-link{font-size:12px;color:var(--blue);text-decoration:none;font-weight:600;cursor:pointer;background:none;border:0;font-family:inherit;padding:4px 8px;border-radius:6px;transition:.2s}
+.card-link:hover{background:#f2eefb;text-decoration:underline}
+.card-body{padding:18px}
+
+.hero-yahoo{border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(135deg,#5f01d1 0%,#8a2be2 60%,#b43fff 100%);color:white;padding:40px 30px;position:relative;box-shadow:var(--shadow-lg)}
+.hero-yahoo::before{content:"";position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,.15),transparent 70%);border-radius:50%}
+.hero-yahoo::after{content:"INAT!";position:absolute;right:-10px;bottom:-40px;font-size:140px;font-weight:900;color:rgba(255,255,255,.05);letter-spacing:-8px;pointer-events:none}
+.hero-content{position:relative;z-index:2;max-width:600px}
+.hero-badge{display:inline-block;padding:6px 14px;background:rgba(255,255,255,.2);border-radius:var(--r-full);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;backdrop-filter:blur(10px)}
+.hero-h1{font-size:clamp(34px,6vw,52px);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:14px}
+.hero-h1 span{color:var(--orange)}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.85);margin-bottom:22px;max-width:480px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+
+.btn{border:0;cursor:pointer;font-weight:700;font-size:14px;padding:12px 22px;border-radius:var(--r-full);transition:.2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;letter-spacing:.3px;font-family:inherit}
+.btn-primary{background:var(--purple);color:white;box-shadow:var(--shadow-purple)}
+.btn-primary:hover{background:var(--purple-light);transform:translateY(-2px);box-shadow:0 12px 32px rgba(95,1,209,.35)}
+.btn-white{background:white;color:var(--purple);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.btn-white:hover{transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--purple);border:2px solid var(--purple)}
+.btn-outline:hover{background:var(--purple);color:white}
+.btn-orange{background:var(--orange);color:white}
+.btn-orange:hover{background:#ff7722;transform:translateY(-2px)}
+.btn-full{width:100%;justify-content:center}
+
+.news-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:700px){.news-grid{grid-template-columns:1fr 1fr}.news-grid .featured{grid-column:1/-1}}
+.news-card{background:white;border-radius:var(--r-md);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:.2s;display:flex;flex-direction:column}
+.news-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--purple)}
+.news-img{height:150px;background:linear-gradient(135deg,#5f01d1,#8a2be2);display:grid;place-items:center;font-size:48px;color:rgba(255,255,255,.4)}
+.news-img.blue{background:linear-gradient(135deg,#0f69ff,#4a9bff)}
+.news-img.orange{background:linear-gradient(135deg,#ff5c00,#ff8844)}
+.news-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column}
+.news-tag{font-size:10px;font-weight:800;color:var(--purple);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.news-title{font-size:16px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:8px;letter-spacing:-.3px}
+.news-desc{font-size:13px;color:var(--muted);line-height:1.45;margin-bottom:10px;flex:1}
+.news-meta{font-size:11px;color:var(--light);display:flex;gap:10px;font-weight:500}
+
+.post-yahoo{background:white;border-radius:var(--r-md);border:1px solid var(--border);padding:16px;margin-bottom:12px;transition:.2s}
+.post-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.post-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#5f01d1,#8a2be2);display:grid;place-items:center;color:white;font-weight:800;flex-shrink:0}
+.post-info strong{display:block;font-size:14px;font-weight:800;color:var(--text)}
+.post-info small{color:var(--light);font-size:11px}
+.post-content{font-size:14px;color:var(--text);line-height:1.55;margin-bottom:12px}
+.post-actions{display:flex;gap:6px;padding-top:12px;border-top:1px solid var(--border)}
+.action-btn{flex:1;padding:8px;border:0;background:transparent;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;border-radius:var(--r-sm);transition:.2s;font-family:inherit}
+.action-btn:hover{background:#f2eefb;color:var(--purple)}
+.action-btn.liked{color:var(--red);background:#ffeaea}
+
+.trending-list{display:flex;flex-direction:column}
+.trending-item{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:.2s}
+.trending-item:last-child{border-bottom:0}
+.trending-item:hover{background:#faf8fd}
+.trend-num{font-size:20px;font-weight:900;color:var(--purple);line-height:1;min-width:24px}
+.trend-info strong{display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
+.trend-info small{font-size:11px;color:var(--light)}
+
+.weather-card{background:linear-gradient(135deg,#0f69ff,#5f01d1);color:white;padding:22px;border-radius:var(--r-lg);position:relative;overflow:hidden}
+.weather-card::after{content:"☀️";position:absolute;right:-10px;bottom:-20px;font-size:90px;opacity:.2}
+.weather-temp{font-size:44px;font-weight:900;letter-spacing:-2px;line-height:1}
+.weather-city{font-size:13px;color:rgba(255,255,255,.85);margin-top:4px;margin-bottom:14px}
+.weather-detail{font-size:12px;color:rgba(255,255,255,.9)}
+
+.stories-row{display:flex;gap:12px;overflow-x:auto;padding:4px 0 8px;scrollbar-width:none}
+.stories-row::-webkit-scrollbar{display:none}
+.story-card{min-width:100px;height:150px;border-radius:var(--r-md);overflow:hidden;position:relative;cursor:pointer;flex-shrink:0;background:linear-gradient(135deg,#5f01d1,#8a2be2);border:2px solid var(--purple);transition:.2s}
+.story-card.add{background:#f2eefb;border:2px dashed var(--purple);display:grid;place-items:center;color:var(--purple);font-size:28px}
+.story-card:hover{transform:scale(1.04)}
+.story-card img,.story-card video{width:100%;height:100%;object-fit:cover}
+.story-label{position:absolute;bottom:6px;left:6px;right:6px;font-size:10px;color:white;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.7);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.ai-yahoo{background:linear-gradient(135deg,#faf8fd,#f2eefb);border:2px solid var(--purple);border-radius:var(--r-lg);padding:22px}
+.ai-yahoo h2{font-size:18px;font-weight:900;color:var(--purple);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.ai-yahoo p{font-size:13px;color:var(--muted);margin-bottom:14px}
+textarea{width:100%;min-height:120px;resize:vertical;border:2px solid var(--border);outline:none;border-radius:var(--r-md);background:white;color:var(--text);padding:14px;font-size:14px;font-family:inherit;transition:.2s}
+textarea:focus{border-color:var(--purple);box-shadow:0 0 0 4px rgba(95,1,209,.1)}
+.solution-box{display:none;margin-top:18px;padding:18px;border-radius:var(--r-md);background:white;border-left:4px solid var(--purple);line-height:1.65;font-size:14px;animation:fadeIn .4s}
+.solution-box h3{color:var(--purple);font-size:14px;margin:14px 0 8px;font-weight:800}
+.solution-box h3:first-child{margin-top:0}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.situation-item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:.2s}
+.situation-item:hover{background:#faf8fd}
+.situation-item:last-child{border-bottom:0}
+.situation-item strong{display:block;font-size:14px;color:var(--text);margin-bottom:4px;font-weight:800}
+.situation-item p{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:6px}
+.situation-item small{font-size:11px;color:var(--purple);font-weight:700}
+
+.player-yahoo{background:linear-gradient(135deg,#1a1a2e,#2a1a4e);color:white;border-radius:var(--r-lg);padding:28px 22px;position:relative;overflow:hidden}
+.player-yahoo::before{content:"";position:absolute;top:-50%;left:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(138,43,226,.3),transparent 70%);border-radius:50%}
+.cover-yahoo{width:170px;height:170px;margin:0 auto 20px;border-radius:var(--r-md);background:linear-gradient(135deg,#5f01d1,#ff5c00);display:grid;place-items:center;font-size:60px;box-shadow:0 20px 50px rgba(0,0,0,.5);position:relative;z-index:2;transition:.3s}
+.cover-yahoo.playing{border-radius:50%;animation:spinCover 8s linear infinite}
+@keyframes spinCover{to{transform:rotate(360deg)}}
+.music-title{text-align:center;font-size:19px;font-weight:800;position:relative;z-index:2}
+.music-artist{text-align:center;font-size:13px;color:rgba(255,255,255,.7);margin:6px 0 18px;position:relative;z-index:2}
+.progress{width:100%;accent-color:var(--orange);position:relative;z-index:2}
+.time{display:flex;justify-content:space-between;color:rgba(255,255,255,.6);font-size:11px;margin-top:4px;position:relative;z-index:2}
+.player-controls{display:flex;justify-content:center;align-items:center;gap:12px;margin-top:20px;position:relative;z-index:2}
+.pc-btn{width:46px;height:46px;border:0;border-radius:50%;background:rgba(255,255,255,.1);color:white;font-size:16px;cursor:pointer;transition:.2s;display:grid;place-items:center;font-family:inherit}
+.pc-btn:hover{background:rgba(255,255,255,.2)}
+.pc-btn.main{width:60px;height:60px;background:var(--orange);font-size:22px;box-shadow:0 8px 24px rgba(255,92,0,.4)}
+.pc-btn.main:hover{background:#ff7722;transform:scale(1.05)}
+.visualizer-yahoo{display:flex;justify-content:center;align-items:flex-end;gap:3px;height:36px;margin:16px 0 6px;position:relative;z-index:2}
+.visualizer-yahoo span{width:4px;background:linear-gradient(180deg,var(--orange),var(--purple));border-radius:2px;height:10%;transition:height .15s}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.kpi{background:white;padding:14px;border-radius:var(--r-md);border:1px solid var(--border);transition:.2s}
+.kpi:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-value{font-size:24px;font-weight:900;color:var(--purple);letter-spacing:-1px;line-height:1}
+.kpi-label{font-size:10px;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-top:6px;font-weight:700}
+
+footer{background:#1a1a2e;color:rgba(255,255,255,.7);padding:30px 20px 100px;text-align:center;font-size:12px}
+footer a{color:var(--orange);text-decoration:none}
+.footer-brand{color:white;font-size:22px;font-weight:900;letter-spacing:-1px;margin-bottom:12px}
+.footer-brand .dot{color:var(--orange)}
+
+nav.mobile-nav{position:fixed;bottom:0;left:0;right:0;z-index:500;height:64px;background:white;border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;box-shadow:0 -4px 20px rgba(95,1,209,.08)}
+@media(min-width:960px){nav.mobile-nav{display:none}footer{padding-bottom:30px}}
+.nav-btn{border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:600;cursor:pointer;transition:.2s;padding:6px 12px;border-radius:var(--r-sm);font-family:inherit}
+.nav-btn span:first-child{font-size:20px}
+.nav-btn.active{color:var(--purple)}
+.nav-btn.active span:first-child{transform:scale(1.15)}
+
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--purple);color:white;padding:12px 22px;border-radius:var(--r-full);font-size:13px;font-weight:700;z-index:9500;opacity:0;transition:.3s;box-shadow:var(--shadow-purple);max-width:90vw;text-align:center;pointer-events:none}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.tag-pill{display:inline-block;padding:3px 10px;border-radius:var(--r-full);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.tag-purple{background:#f2eefb;color:var(--purple)}
+.tag-orange{background:#fff2ea;color:var(--orange)}
+.tag-green{background:#e6f9f0;color:var(--green)}
+.tag-red{background:#ffeaea;color:var(--red)}
+
+/* ============ CONSOLE ============ */
+.console-wrapper{position:fixed;bottom:0;left:0;right:0;z-index:8000;transform:translateY(calc(100% - 42px));transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:70vh;display:flex;flex-direction:column;box-shadow:0 -12px 40px rgba(0,0,0,.3);font-family:'SF Mono','Monaco','Courier New',monospace}
+.console-wrapper.open{transform:translateY(0)}
+.console-tabbar{background:#0a0a14;border-top:2px solid var(--purple);height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;cursor:pointer;user-select:none;flex-shrink:0}
+.console-tabbar-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.console-dots{display:flex;gap:6px}
+.console-dot{width:12px;height:12px;border-radius:50%}
+.console-dot.red{background:#ff5f57}
+.console-dot.yellow{background:#ffbd2e}
+.console-dot.green{background:#28ca42}
+.console-title{color:#e0e0e0;font-size:12px;font-weight:600;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.console-title .prompt{color:var(--term-green)}
+.console-title .path{color:var(--term-cyan)}
+.console-tabbar-right{display:flex;align-items:center;gap:6px}
+.console-btn{background:rgba(255,255,255,.06);border:0;color:#b0b0c0;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;transition:.2s}
+.console-btn:hover{background:rgba(255,255,255,.15);color:white}
+.console-body{background:var(--term-bg);flex:1;overflow-y:auto;padding:12px 14px;font-size:13px;line-height:1.6;color:#d0d0e0;scrollbar-width:thin;scrollbar-color:var(--purple) var(--term-bg);min-height:200px}
+.console-body::-webkit-scrollbar{width:10px}
+.console-body::-webkit-scrollbar-track{background:var(--term-bg)}
+.console-body::-webkit-scrollbar-thumb{background:#2a2a3e;border-radius:5px}
+.console-body::-webkit-scrollbar-thumb:hover{background:var(--purple)}
+.console-line{white-space:pre-wrap;word-break:break-word;margin-bottom:2px}
+.console-line.input-line{color:#e0e0e0}
+.console-line .prompt-user{color:var(--term-green);font-weight:bold}
+.console-line .prompt-path{color:var(--term-cyan)}
+.console-line .prompt-symbol{color:var(--term-purple)}
+.console-line.output{color:#b8b8c8}
+.console-line.ok{color:var(--term-green)}
+.console-line.warn{color:var(--term-yellow)}
+.console-line.err{color:var(--term-red)}
+.console-line.info{color:var(--term-blue)}
+.console-line.dim{color:var(--term-gray)}
+.console-line.highlight{color:var(--term-cyan)}
+.console-line.accent{color:var(--term-purple)}
+.console-input-line{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#0a0a14;border-top:1px solid #1a1a2e;flex-shrink:0;position:relative}
+.console-input-line .prompt-user{color:var(--term-green);font-weight:bold;font-size:13px}
+.console-input-line .prompt-path{color:var(--term-cyan);font-size:13px}
+.console-input-line .prompt-symbol{color:var(--term-purple);font-size:13px}
+.console-input{flex:1;background:transparent;border:0;outline:none;color:#e0e0e0;font-family:inherit;font-size:13px;caret-color:var(--term-green)}
+.console-hint{font-size:10px;color:var(--term-gray);padding:0 14px 8px;background:#0a0a14;display:flex;gap:16px;flex-wrap:wrap}
+.console-hint kbd{background:#1a1a2e;padding:1px 6px;border-radius:4px;color:var(--term-cyan);font-family:inherit;font-size:10px}
+.console-autocomplete{position:absolute;bottom:100%;left:14px;background:#12121e;border:1px solid #2a2a3e;border-radius:8px;padding:6px 0;min-width:280px;max-height:220px;overflow-y:auto;display:none;margin-bottom:6px;box-shadow:0 -8px 24px rgba(0,0,0,.5);z-index:10}
+.console-autocomplete.show{display:block}
+.autocomplete-item{padding:6px 14px;cursor:pointer;font-size:12px;color:#d0d0e0;display:flex;justify-content:space-between;gap:10px}
+.autocomplete-item:hover,.autocomplete-item.selected{background:var(--purple);color:white}
+.autocomplete-item .desc{color:#6b7280;font-size:11px}
+.autocomplete-item.selected .desc,.autocomplete-item:hover .desc{color:rgba(255,255,255,.7)}
+
+@media(max-width:600px){
+  .console-wrapper{transform:translateY(calc(100% - 38px))}
+  .console-tabbar{height:38px;padding:0 10px}
+  .console-title{font-size:11px}
+  .console-btn{padding:3px 7px;font-size:10px}
+  .console-body{font-size:11.5px;padding:8px 10px}
+  .console-input-line{padding:6px 10px}
+  .console-input{font-size:11.5px}
+  .console-hint{font-size:9px;padding:0 10px 6px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= INTRO ================= -->
-
+<!-- SPLASH -->
 <section id="intro">
-  <div class="intro-stars"></div>
-
+  <div class="intro-bubbles"><span></span><span></span><span></span><span></span><span></span></div>
   <div class="cinema">
-    <div class="intro-text">Une histoire commence...</div>
-    <div class="intro-line"></div>
-
-    <div class="inat3d">INAT</div>
-
-    <div class="intro-text">
-      Des situations. Des rencontres. Des solutions.
-    </div>
-
-    <button class="intro-start" onclick="startINAT()">
-      ENTRER DANS INAT
-    </button>
+    <div class="inat-logo-splash">i<span class="dot">N</span>at<span class="inat-exclaim">!</span></div>
+    <div class="intro-tagline">Le portail de ta vie numérique</div>
+    <button class="intro-start" onclick="startINAT()">⚡ Découvrir INAT</button>
+    <div class="intro-badge">Situations · Stories · Musique · IA · Console</div>
   </div>
 </section>
 
-<!-- ================= APP ================= -->
-
+<!-- APP -->
 <div id="app">
 
 <header>
-  <div class="header-row">
-    <div class="brand">
-      <div class="logo-mini">I</div>
-      <strong>INAT</strong>
+  <div class="header-top">
+    <div class="brand" onclick="App.go('home')">
+      <div class="brand-logo">i</div>
+      <div class="brand-name">INAT<span class="dot">!</span></div>
     </div>
 
-    <div class="avatar">A</div>
+    <div class="search-bar">
+      <input type="text" id="globalSearch" placeholder="Rechercher sur INAT..." onkeydown="if(event.key==='Enter')App.smartSearch(this.value)">
+      <button onclick="App.smartSearch(document.getElementById('globalSearch').value)">🔍</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="Console.toggle()" title="Ouvrir la console">⌨️</button>
+      <button class="icon-btn" onclick="App.toast('Notifications')" title="Notifications">🔔</button>
+      <div class="user-avatar" id="userAvatar" onclick="App.go('profile')">A</div>
+    </div>
+  </div>
+
+  <nav class="header-nav">
+    <div class="header-nav-inner" id="headerNav">
+      <a class="active" data-page="home" onclick="App.go('home')">Accueil</a>
+      <a data-page="stories" onclick="App.go('stories')">Stories</a>
+      <a data-page="situations" onclick="App.go('situations')">Situations</a>
+      <a data-page="music" onclick="App.go('music')">Musique</a>
+      <a data-page="profile" onclick="App.go('profile')">Profil</a>
+      <a onclick="Console.toggle(true)">Console</a>
+    </div>
+  </nav>
+
+  <div class="chip-bar">
+    <div class="chip-bar-inner">
+      <div class="chip-metric"><span class="chip-led"></span>CPU <b id="cpuLoad">0%</b></div>
+      <div class="chip-metric"><span class="chip-led" style="background:#0f69ff;box-shadow:0 0 8px #0f69ff"></span>RAM <b id="ramLoad">0 Mo</b></div>
+      <div class="chip-metric"><span class="chip-led" style="background:#ffd700;box-shadow:0 0 8px #ffd700"></span>FPS <b id="fpsCounter">60</b></div>
+      <div class="chip-metric"><span class="chip-led" style="background:#8a2be2;box-shadow:0 0 8px #8a2be2"></span>IA <b id="iaStatus">—</b></div>
+      <div class="chip-metric"><span class="chip-led" style="background:#00b964;box-shadow:0 0 8px #00b964"></span>API <b id="apiStatus">—</b></div>
+      <div class="chip-metric"><span class="chip-led" style="background:#ff5c00;box-shadow:0 0 8px #ff5c00"></span>DB <b id="dbStatus">—</b></div>
+      <div class="chip-metric"><span class="chip-led" style="background:#e02020;box-shadow:0 0 8px #e02020"></span>Uptime <b id="uptime">0s</b></div>
+    </div>
   </div>
 </header>
 
-<main>
-
-<!-- HOME -->
-<section id="home" class="page active">
-
-  <div class="hero">
-    <h1>INAT</h1>
-    <p>
-      Une nouvelle façon de partager tes histoires,
-      découvrir des situations et trouver des solutions.
-    </p>
-
-    <button class="btn" onclick="showPage('stories')">
-      Découvrir les stories
-    </button>
-  </div>
-
-  <h2 style="margin:25px 0 12px">À découvrir</h2>
-
-  <div class="post">
-    <div class="post-head">
-      <div class="post-avatar">I</div>
-      <div>
-        <b>INAT</b><br>
-        <small style="color:#8996b8">Aujourd'hui</small>
-      </div>
-    </div>
-
-    <p>
-      Après un rendez-vous inattendu, une nouvelle histoire peut commencer...
-    </p>
-
-    <div class="actions">
-      <button class="action">♡ J'aime</button>
-      <button class="action">💬 Commenter</button>
-      <button class="action">↗ Partager</button>
-    </div>
-  </div>
-
-</section>
-
-<!-- STORIES -->
-<section id="stories" class="page">
-
-  <h1 class="title">Stories</h1>
-  <p class="subtitle">Partage un moment avec la communauté INAT.</p>
-
-  <div class="add-story">
-
-    <b>Ajouter à ma story</b>
-
-    <p style="color:#9da8c7;margin:8px 0 15px">
-      Photos, vidéos et fichiers.
-    </p>
-
-    <label class="btn upload-label">
-      ＋ Upload fichiers
-      <input
-        id="storyFile"
-        class="file-input"
-        type="file"
-        accept="image/*,video/*"
-        multiple
-        onchange="uploadStory(event)"
-      >
-    </label>
-
-  </div>
-
-  <div id="storyRow" class="story-row">
-
-    <div class="story">
-      <div class="story-ring">
-        <div class="story-inner">
-          <span style="font-size:27px">＋</span>
-        </div>
-      </div>
-      <span>Ma story</span>
-    </div>
-
-  </div>
-
-</section>
-
-<!-- SITUATIONS -->
-<section id="situations" class="page">
-
-  <h1 class="title">Situations</h1>
-
-  <p class="subtitle">
-    Décris une situation. L'IA INAT t'aide à réfléchir et à trouver une solution.
-  </p>
-
-  <div class="ai-card">
-
-    <h2>🤖 IA INAT</h2>
-
-    <p style="color:#aab7d8;margin-top:7px">
-      Explique simplement ce qui se passe.
-    </p>
-
-    <textarea
-      id="situationText"
-      placeholder="Exemple : Je dois trouver une solution pour organiser mon travail mais je ne sais pas par où commencer..."
-    ></textarea>
-
-    <button class="btn" onclick="solveSituation()">
-      ✨ Trouver une solution
-    </button>
-
-    <div id="solution" class="solution"></div>
-
-  </div>
-
-  <h2 style="margin:25px 0 12px">Situations populaires</h2>
-
-  <div class="situation">
-    <b>💼 Travail</b>
-    <p style="color:#9da8c7;margin-top:7px">
-      Difficultés professionnelles et organisation.
-    </p>
-  </div>
-
-  <div class="situation">
-    <b>❤️ Relations</b>
-    <p style="color:#9da8c7;margin-top:7px">
-      Comprendre une situation et mieux communiquer.
-    </p>
-  </div>
-
-  <div class="situation">
-    <b>💡 Projet</b>
-    <p style="color:#9da8c7;margin-top:7px">
-      Trouver des idées et organiser les prochaines étapes.
-    </p>
-  </div>
-
-</section>
-
-<!-- MUSIQUE -->
-<section id="music" class="page">
-
-  <h1 class="title">Musique</h1>
-  <p class="subtitle">Écoute ta musique dans INAT.</p>
-
-  <div class="music-card">
-
-    <div class="cover">♪</div>
-
-    <div id="musicTitle" class="music-title">
-      Ma musique
-    </div>
-
-    <div id="musicArtist" class="music-artist">
-      INAT Music
-    </div>
-
-    <input
-      id="progress"
-      class="progress"
-      type="range"
-      min="0"
-      max="100"
-      value="0"
-    >
-
-    <div class="time">
-      <span id="currentTime">0:00</span>
-      <span id="duration">0:00</span>
-    </div>
-
-    <div class="music-controls">
-
-      <button class="music-btn" onclick="previousSong()">
-        ↶
-      </button>
-
-      <button class="music-btn" onclick="backTen()">
-        −10
-      </button>
-
-      <button
-        id="playButton"
-        class="music-btn main"
-        onclick="toggleMusic()"
-      >
-        ▶
-      </button>
-
-      <button class="music-btn" onclick="forwardTen()">
-        +10
-      </button>
-
-      <button class="music-btn" onclick="nextSong()">
-        ↷
-      </button>
-
-    </div>
-
-    <div class="music-upload">
-
-      <label class="btn secondary upload-label">
-        🎵 Ajouter une musique
-        <input
-          id="musicFile"
-          class="file-input"
-          type="file"
-          accept="audio/*"
-          onchange="loadMusic(event)"
-        >
-      </label>
-
-    </div>
-
-  </div>
-
-</section>
-
-<!-- PROFIL -->
-<section id="profile" class="page">
-
-  <h1 class="title">Mon profil</h1>
-
-  <div class="post" style="text-align:center">
-
-    <div
-      class="logo-mini"
-      style="margin:auto;width:80px;height:80px;font-size:35px"
-    >
-      A
-    </div>
-
-    <h2 style="margin-top:15px">Utilisateur INAT</h2>
-
-    <p style="color:#9da8c7;margin:8px 0 20px">
-      Bienvenue dans ton espace.
-    </p>
-
-    <button class="btn secondary">
-      Modifier mon profil
-    </button>
-
-  </div>
-
-</section>
-
-</main>
-
-<!-- NAVIGATION -->
-
-<nav>
-
-  <button
-    class="nav-btn active"
-    onclick="showPage('home',this)"
-  >
-    <span>⌂</span>
-    <span>Accueil</span>
-  </button>
-
-  <button
-    class="nav-btn"
-    onclick="showPage('stories',this)"
-  >
-    <span>◉</span>
-    <span>Story</span>
-  </button>
-
-  <button
-    class="nav-btn"
-    onclick="showPage('situations',this)"
-  >
-    <span>✦</span>
-    <span>Situations</span>
-  </button>
-
-  <button
-    class="nav-btn"
-    onclick="showPage('music',this)"
-  >
-    <span>♫</span>
-    <span>Musique</span>
-  </button>
-
-  <button
-    class="nav-btn"
-    onclick="showPage('profile',this)"
-  >
-    <span>●</span>
-    <span>Profil</span>
-  </button>
-
+<main id="main-content"></main>
+
+<footer>
+  <div class="footer-brand">INAT<span class="dot">!</span></div>
+  <p style="margin-bottom:14px">Le portail de ta vie numérique — Situations · Stories · Musique · IA · Console</p>
+  <p style="font-size:11px">© 2025 INAT — Appuie <kbd style="background:#2a2a3e;padding:2px 6px;border-radius:4px;color:#00e5ff">Ctrl</kbd>+<kbd style="background:#2a2a3e;padding:2px 6px;border-radius:4px;color:#00e5ff">`</kbd> pour la console</p>
+</footer>
+
+<nav class="mobile-nav" id="mobileNav">
+  <button class="nav-btn active" data-page="home" onclick="App.go('home',this)"><span>🏠</span><span>Accueil</span></button>
+  <button class="nav-btn" data-page="stories" onclick="App.go('stories',this)"><span>📸</span><span>Stories</span></button>
+  <button class="nav-btn" data-page="situations" onclick="App.go('situations',this)"><span>🤖</span><span>IA</span></button>
+  <button class="nav-btn" data-page="music" onclick="App.go('music',this)"><span>🎵</span><span>Musique</span></button>
+  <button class="nav-btn" onclick="Console.toggle(true)"><span>⌨️</span><span>Console</span></button>
 </nav>
 
 </div>
 
-<!-- AUDIO -->
-
 <audio id="audio"></audio>
+<div id="toast"></div>
+
+<!-- CONSOLE -->
+<div class="console-wrapper" id="consoleWrapper">
+  <div class="console-tabbar" onclick="Console.toggle()">
+    <div class="console-tabbar-left">
+      <div class="console-dots">
+        <div class="console-dot red"></div>
+        <div class="console-dot yellow"></div>
+        <div class="console-dot green"></div>
+      </div>
+      <div class="console-title">
+        <span class="prompt">user@inat</span>:<span class="path" id="titlePath">~</span>
+      </div>
+    </div>
+    <div class="console-tabbar-right" onclick="event.stopPropagation()">
+      <button class="console-btn" onclick="Console.help()" title="Aide">?</button>
+      <button class="console-btn" onclick="Console.clear()" title="Effacer">⌫</button>
+      <button class="console-btn" onclick="Console.toggle()" title="Fermer">✕</button>
+    </div>
+  </div>
+
+  <div class="console-body" id="consoleBody"></div>
+
+  <div class="console-input-line">
+    <span class="prompt-user">user@inat</span>
+    <span class="prompt-path" id="consolePath">~</span>
+    <span class="prompt-symbol">$</span>
+    <input class="console-input" id="consoleInput" autocomplete="off" spellcheck="false"
+           placeholder="Tapez une commande... (help pour la liste)"
+           onkeydown="Console.handleKey(event)"
+           oninput="Console.handleInput()">
+    <div class="console-autocomplete" id="consoleAutocomplete"></div>
+  </div>
+
+  <div class="console-hint">
+    <span><kbd>↑</kbd> <kbd>↓</kbd> historique</span>
+    <span><kbd>Tab</kbd> autocomplétion</span>
+    <span><kbd>Ctrl</kbd>+<kbd>L</kbd> clear</span>
+    <span><kbd>Entrée</kbd> exécuter</span>
+  </div>
+</div>
 
 <script>
+"use strict";
 
-/* =========================
-   DÉMARRAGE INAT
-========================= */
+/* =====================================================================
+   IA ENGINE
+===================================================================== */
+const IAEngine = (() => {
+  const CATEGORIES = {
+    travail:{label:"💼 Travail",keywords:["travail","boulot","job","patron","collegue","bureau","reunion","deadline","projet pro","entreprise","manager","carriere"],advice:"Structure ta journee en blocs de 90 min. Priorise avec la matrice d'Eisenhower."},
+    relations:{label:"❤️ Relations",keywords:["amour","couple","relation","ami","famille","dispute","conflit","communiquer","sentiments","rupture"],advice:"Communication non-violente : Observation, Sentiment, Besoin, Demande."},
+    stress:{label:"😰 Stress",keywords:["stress","anxiete","angoisse","panique","peur","inquiet","pression","burnout","deborde","epuise"],advice:"Respiration 4-7-8. Reduis la cafeine. 3 sessions de 5 min par jour."},
+    argent:{label:"💰 Finance",keywords:["argent","finance","budget","dette","salaire","economiser","depense","facture","loyer"],advice:"Regle 50/30/20 : 50% besoins, 30% envies, 20% epargne."},
+    projet:{label:"💡 Projet",keywords:["projet","idee","lancer","creer","entreprendre","startup","business","objectif"],advice:"MVP en 30 jours : jalons hebdomadaires."},
+    sante:{label:"💪 Santé",keywords:["sante","maladie","douleur","medecin","sport","sommeil","fatigue","regime"],advice:"3 piliers : 7h sommeil, 30 min activite, alimentation equilibree."},
+    etude:{label:"📚 Étude",keywords:["etude","examen","ecole","universite","reviser","cours","memoire","these"],advice:"Methode Feynman + repetition espacee (Anki)."},
+    decision:{label:"🧭 Décision",keywords:["choisir","decision","hesiter","dilemme","option","alternative"],advice:"Matrice de decision ponderee."},
+    objectif:{label:"🎯 Objectif",keywords:["objectif","but","reve","ambition","reussir","motivation","atteindre"],advice:"Rends ton objectif SMART."}
+  };
+  const URGENCY = {high:["urgent","maintenant","tout de suite","demain","crise","grave"],medium:["bientot","cette semaine","important","rapidement"],low:["un jour","quand je peux","peut-etre"]};
 
-function startINAT(){
+  function detectCategories(text){
+    const t=text.toLowerCase();const scores={};
+    for(const[key,cat]of Object.entries(CATEGORIES)){let s=0;for(const kw of cat.keywords){if(t.includes(kw))s+=2;}if(s>0)scores[key]=s;}
+    return Object.entries(scores).sort((a,b)=>b[1]-a[1]).map(([key,score])=>({key,score,...CATEGORIES[key]}));
+  }
+  function detectUrgency(text){const t=text.toLowerCase();for(const[l,w]of Object.entries(URGENCY)){if(w.some(x=>t.includes(x)))return l;}return"normal";}
+  function extractEntities(text){const n=text.match(/\d+/g)||[];const d=text.match(/\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche|janvier|fevrier|mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre)\b/gi)||[];return{numbers:[...new Set(n)],dates:[...new Set(d)]};}
+  function generateSolution(text,categories,urgency){
+    let s="";const p=categories[0],sec=categories[1];
+    if(p)s+=`<h3>${p.label}</h3><p>${p.advice}</p>`;else s+=`<h3>🔍 Analyse générale</h3><p>Aucun domaine specifique detecte.</p>`;
+    if(sec)s+=`<h3>Complément ${sec.label}</h3><p>${sec.advice}</p>`;
+    s+=`<h3>📋 Plan d'action</h3><p><b>1. Clarifier</b> — Une phrase sur ce qui bloque.<br><b>2. Objectif</b> — Resultat souhaite.<br><b>3. Options</b> — 3 actions possibles.<br><b>4. Action immediate</b> — La plus petite maintenant.<br><b>5. Evaluation</b> — Dans 24h.</p>`;
+    if(urgency==="high")s+=`<p style="color:#e02020;margin-top:12px"><b>⚡ Urgence élevée</b></p>`;
+    else if(urgency==="low")s+=`<p style="color:#00b964;margin-top:12px"><b>🌱 Priorité basse</b></p>`;
+    const e=extractEntities(text);
+    if(e.numbers.length||e.dates.length){s+=`<h3>🔎 Éléments détectés</h3><p>`;if(e.numbers.length)s+=`<b>Nombres :</b> ${e.numbers.join(", ")}<br>`;if(e.dates.length)s+=`<b>Dates :</b> ${e.dates.join(", ")}`;s+=`</p>`;}
+    return s;
+  }
+  function analyze(text){const c=detectCategories(text);const u=detectUrgency(text);const e=extractEntities(text);return{categories:c.map(x=>({key:x.key,label:x.label,score:x.score})),primary:c[0]?.key||"general",urgency:u,entities:e,solution:generateSolution(text,c,u),confidence:Math.min(100,(c[0]?.score||0)*10),analyzedAt:new Date().toISOString()};}
+  return{analyze,detectCategories,detectUrgency,CATEGORIES};
+})();
 
-  const intro=document.getElementById("intro");
-  const app=document.getElementById("app");
+/* =====================================================================
+   DATABASE (mémoire + localStorage fallback)
+===================================================================== */
+const Database = (() => {
+  const stores = { users:[], stories:[], situations:[], music:[] };
+  let nextIds = { users:1, stories:1, situations:1, music:1 };
+  const LS_KEY = "inat_data_v3";
 
-  intro.classList.add("hide");
+  function load(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(raw){ const d = JSON.parse(raw); Object.assign(stores, d.stores||{}); Object.assign(nextIds, d.nextIds||{}); }
+    }catch(e){ console.warn("Load error:", e); }
+  }
+  function save(){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify({ stores, nextIds })); }catch(e){ console.warn("Save error:", e); }
+  }
+  load();
 
-  setTimeout(()=>{
-    intro.style.display="none";
-    app.style.display="block";
-  },1200);
-}
+  return {
+    async init(){ return this; },
+    async add(store, data){
+      if(!stores[store]) stores[store] = [];
+      const id = nextIds[store]++;
+      const record = { ...data, id };
+      stores[store].push(record);
+      save();
+      return record;
+    },
+    async put(store, data){
+      if(!stores[store]) stores[store] = [];
+      const i = stores[store].findIndex(r => r.id === data.id);
+      if(i >= 0) stores[store][i] = data; else stores[store].push(data);
+      save();
+      return data;
+    },
+    async get(store, id){ return (stores[store]||[]).find(r => r.id === id) || null; },
+    async getAll(store){ return [...(stores[store]||[])]; },
+    async delete(store, id){
+      if(!stores[store]) return;
+      stores[store] = stores[store].filter(r => r.id !== id);
+      save();
+    },
+    async findBy(store, field, value){ return (stores[store]||[]).find(r => r[field] === value) || null; },
+    async clear(store){ stores[store] = []; save(); }
+  };
+})();
 
+/* =====================================================================
+   AUTH
+===================================================================== */
+const Auth = (() => {
+  const SECRET = "inat-yahoo-secret-v3";
+  async function sha256(str){
+    try{
+      const buf = new TextEncoder().encode(str);
+      const hash = await crypto.subtle.digest("SHA-256", buf);
+      return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("");
+    }catch(e){
+      // Fallback simple hash
+      let h = 0;
+      for(let i = 0; i < str.length; i++){ h = ((h << 5) - h) + str.charCodeAt(i); h |= 0; }
+      return Math.abs(h).toString(16);
+    }
+  }
+  async function sign(payload){
+    const h = btoa(JSON.stringify({alg:"HS256",typ:"JWT"}));
+    const b = btoa(JSON.stringify(payload));
+    const sig = await sha256(h + "." + b + SECRET);
+    return h + "." + b + "." + sig.slice(0, 32);
+  }
+  async function verify(token){
+    if(!token) return null;
+    try{
+      const parts = token.split(".");
+      if(parts.length !== 3) return null;
+      const [h, b, s] = parts;
+      const expected = (await sha256(h + "." + b + SECRET)).slice(0, 32);
+      if(s !== expected) return null;
+      const payload = JSON.parse(atob(b));
+      if(payload.exp && payload.exp < Date.now()) return null;
+      return payload;
+    }catch(e){ return null; }
+  }
+  return { sign, verify, sha256 };
+})();
 
-/* =========================
-   NAVIGATION
-========================= */
+/* =====================================================================
+   WEBSOCKET (BroadcastChannel)
+===================================================================== */
+const WS = (() => {
+  let channel = null;
+  const listeners = {};
+  try {
+    channel = new BroadcastChannel("inat_realtime");
+    channel.onmessage = (e) => {
+      const { event, data } = e.data;
+      (listeners[event] || []).forEach(fn => { try { fn(data); } catch(err){} });
+    };
+  } catch(e){ console.warn("BroadcastChannel non disponible"); }
+  return {
+    emit(event, data){
+      if(channel) try { channel.postMessage({event, data}); } catch(e){}
+      (listeners[event] || []).forEach(fn => { try { fn(data); } catch(err){} });
+    },
+    on(event, fn){ (listeners[event] = listeners[event] || []).push(fn); }
+  };
+})();
 
-function showPage(id,button){
+/* =====================================================================
+   SYSTEM
+===================================================================== */
+const System = (() => {
+  const state = { boot: Date.now(), ops: 0, fps: 60, cpu: 0, ram: 0, iaCalls: 0, uploads: 0, commands: 0 };
+  const cache = new Map();
+  const cacheStats = { hits: 0, miss: 0 };
 
-  document.querySelectorAll(".page")
-    .forEach(p=>p.classList.remove("active"));
+  let last = performance.now(), frames = 0;
+  (function loop(){
+    frames++;
+    const now = performance.now();
+    if(now - last >= 1000){ state.fps = frames; frames = 0; last = now; }
+    requestAnimationFrame(loop);
+  })();
 
-  const page=document.getElementById(id);
+  function tick(){
+    const up = Math.floor((Date.now() - state.boot) / 1000);
+    state.cpu = Math.min(100, Math.round((state.ops % 100) * 0.6 + 4 + Math.random() * 8));
+    state.ram = Math.round(25 + state.ops * 0.05);
+    const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+    set("cpuLoad", state.cpu + "%");
+    set("ramLoad", state.ram + " Mo");
+    set("fpsCounter", state.fps);
+    set("uptime", up < 60 ? up + "s" : Math.floor(up / 60) + "m");
+    set("iaStatus", "prêt");
+  }
+  setInterval(tick, 1000);
 
-  if(page){
-    page.classList.add("active");
-    window.scrollTo({top:0,behavior:"smooth"});
+  return {
+    state,
+    cache: {
+      get(k){ if(cache.has(k)){ cacheStats.hits++; return cache.get(k); } cacheStats.miss++; return null; },
+      set(k, v){ cache.set(k, v); if(cache.size > 100) cache.delete(cache.keys().next().value); },
+      has(k){ return cache.has(k); },
+      clear(){ cache.clear(); },
+      size(){ return cache.size; },
+      hits: () => cacheStats.hits,
+      miss: () => cacheStats.miss
+    }
+  };
+})();
+
+/* =====================================================================
+   BACKEND
+===================================================================== */
+const Backend = (() => {
+  const authAPI = {
+    async register(u, e, p){
+      if(!u || !e || !p) throw new Error("Champs manquants");
+      if(p.length < 6) throw new Error("Mot de passe trop court");
+      const ex = await Database.findBy("users", "email", e);
+      if(ex) throw new Error("Email deja utilise");
+      const hash = await Auth.sha256(p + "inat_salt");
+      const user = { username:u, email:e, password_hash:hash, avatar:u[0].toUpperCase(), bio:"", created_at:new Date().toISOString() };
+      const saved = await Database.add("users", user);
+      const token = await Auth.sign({ id:saved.id, username:u, exp: Date.now() + 7*24*3600*1000 });
+      return { user:{ id:saved.id, username:u, email:e, avatar:user.avatar, bio:"" }, token };
+    },
+    async login(e, p){
+      const user = await Database.findBy("users", "email", e);
+      if(!user) throw new Error("Identifiants invalides");
+      const hash = await Auth.sha256(p + "inat_salt");
+      if(hash !== user.password_hash) throw new Error("Identifiants invalides");
+      const token = await Auth.sign({ id:user.id, username:user.username, exp: Date.now() + 7*24*3600*1000 });
+      return { user:{ id:user.id, username:user.username, email:user.email, avatar:user.avatar, bio:user.bio }, token };
+    },
+    async me(token){
+      const payload = await Auth.verify(token);
+      if(!payload) throw new Error("Non authentifie");
+      const u = await Database.get("users", payload.id);
+      if(!u) throw new Error("Utilisateur introuvable");
+      return { id:u.id, username:u.username, email:u.email, avatar:u.avatar, bio:u.bio };
+    }
+  };
+
+  const storiesAPI = {
+    async list(){
+      const all = await Database.getAll("stories");
+      const now = Date.now();
+      return all.filter(s => new Date(s.expires_at).getTime() > now).sort((a,b) => (b.created_at||"").localeCompare(a.created_at||""));
+    },
+    async create(file, caption, userId){
+      const dataUrl = await fileToDataURL(file);
+      const story = {
+        user_id:userId || 1, username:"Moi", media_url:dataUrl,
+        media_type: file.type.startsWith("video") ? "video" : "image",
+        caption: caption || "",
+        expires_at: new Date(Date.now() + 24*3600*1000).toISOString(),
+        created_at: new Date().toISOString()
+      };
+      const saved = await Database.add("stories", story);
+      System.state.uploads++;
+      WS.emit("story:new", saved);
+      return saved;
+    }
+  };
+
+  const situationsAPI = {
+    async list(category){
+      let all = await Database.getAll("situations");
+      if(category) all = all.filter(s => s.category === category);
+      all.sort((a,b) => (b.created_at||"").localeCompare(a.created_at||""));
+      return all.slice(0, 50);
+    },
+    async create(title, content, userId){
+      const analysis = IAEngine.analyze(content);
+      System.state.iaCalls++;
+      const situation = {
+        user_id:userId || 1, title:title || content.slice(0, 50),
+        content, category: analysis.primary, solution: analysis.solution,
+        likes: 0, created_at: new Date().toISOString()
+      };
+      const saved = await Database.add("situations", situation);
+      return { situation:saved, analysis };
+    },
+    async analyze(content){
+      System.state.iaCalls++;
+      return IAEngine.analyze(content);
+    }
+  };
+
+  const musicAPI = {
+    async list(){
+      return (await Database.getAll("music")).sort((a,b) => (b.created_at||"").localeCompare(a.created_at||""));
+    },
+    async create(file, title, artist){
+      const dataUrl = await fileToDataURL(file);
+      const track = {
+        user_id:1, title:title || file.name, artist:artist || "Inconnu",
+        file_url:dataUrl, duration:0, plays:0,
+        created_at:new Date().toISOString()
+      };
+      const saved = await Database.add("music", track);
+      System.state.uploads++;
+      return saved;
+    }
+  };
+
+  const systemAPI = {
+    async stats(){
+      const [users, stories, situations, music] = await Promise.all([
+        Database.getAll("users"),
+        Database.getAll("stories"),
+        Database.getAll("situations"),
+        Database.getAll("music")
+      ]);
+      return {
+        users: users.length, stories: stories.length,
+        situations: situations.length, music: music.length,
+        iaCalls: System.state.iaCalls,
+        cacheHits: System.cache.hits(),
+        cacheSize: System.cache.size()
+      };
+    }
+  };
+
+  function fileToDataURL(file){
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(file);
+    });
   }
 
-  if(button){
+  return { auth:authAPI, stories:storiesAPI, situations:situationsAPI, music:musicAPI, system:systemAPI };
+})();
 
-    document.querySelectorAll(".nav-btn")
-      .forEach(b=>b.classList.remove("active"));
+/* =====================================================================
+   CONSOLE SYSTÈME
+===================================================================== */
+const Console = (() => {
+  const state = {
+    history: [], historyIndex: -1, draft: "",
+    cwd: "~", autocompleteIndex: -1, autocompleteList: [],
+    open: false, vars: {}, aliases: {}, env: { USER:"user", HOME:"~", SHELL:"/bin/inat", VERSION:"3.0.0", LANG:"fr_FR.UTF-8", PWD:"~", THEME:"yahoo" }
+  };
 
-    button.classList.add("active");
+  /* DOM helpers */
+  const body = () => document.getElementById("consoleBody");
+  const input = () => document.getElementById("consoleInput");
+  const wrapper = () => document.getElementById("consoleWrapper");
+  const autocompleteEl = () => document.getElementById("consoleAutocomplete");
 
-  }else{
+  function escapeHtml(s){
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  }
 
-    document.querySelectorAll(".nav-btn")
-      .forEach(b=>{
+  function print(text, type){
+    type = type || "output";
+    const el = document.createElement("div");
+    el.className = "console-line " + type;
+    el.textContent = text;
+    const b = body();
+    if(!b) return;
+    b.appendChild(el);
+    while(b.children.length > 500) b.removeChild(b.firstChild);
+    b.scrollTop = b.scrollHeight;
+  }
 
-        b.classList.remove("active");
+  function renderInputLine(text){
+    const el = document.createElement("div");
+    el.className = "console-line input-line";
+    el.innerHTML = '<span class="prompt-user">user@inat</span>:<span class="prompt-path">' + escapeHtml(state.cwd) + '</span><span class="prompt-symbol">$</span> ' + escapeHtml(text);
+    const b = body();
+    if(b){ b.appendChild(el); b.scrollTop = b.scrollHeight; }
+  }
 
-        const txt=b.innerText.toLowerCase();
+  /* ============ COMMANDS ============ */
+  const commands = {};
 
-        if(
-          (id==="home" && txt.includes("accueil")) ||
-          (id==="stories" && txt.includes("story")) ||
-          (id==="situations" && txt.includes("situation")) ||
-          (id==="music" && txt.includes("musique")) ||
-          (id==="profile" && txt.includes("profil"))
-        ){
-          b.classList.add("active");
-        }
-
+  commands.help = {
+    desc: "Affiche l'aide", usage: "help [commande]", category: "Système",
+    run(args){
+      if(args && args[0]){
+        const cmd = commands[args[0]];
+        if(!cmd){ print("Commande inconnue : " + args[0], "err"); return; }
+        print("╭─ " + args[0] + " " + "─".repeat(Math.max(1, 40 - args[0].length)), "accent");
+        print("│ " + cmd.desc, "output");
+        print("│ Usage : " + cmd.usage, "info");
+        if(cmd.examples) cmd.examples.forEach(e => print("│ Exemple : " + e, "dim"));
+        print("╰" + "─".repeat(42), "accent");
+        return;
+      }
+      print("╔══════════════════════════════════════════════╗", "accent");
+      print("║   INAT Console — Commandes disponibles        ║", "accent");
+      print("╚══════════════════════════════════════════════╝", "accent");
+      const cats = {};
+      Object.keys(commands).forEach(name => {
+        const cmd = commands[name];
+        const c = cmd.category || "Divers";
+        if(!cats[c]) cats[c] = [];
+        cats[c].push({ name, desc: cmd.desc });
       });
+      Object.keys(cats).forEach(cat => {
+        print("");
+        print("▸ " + cat, "highlight");
+        cats[cat].forEach(item => {
+          print("  " + item.name.padEnd(16) + " " + item.desc, "output");
+        });
+      });
+      print("");
+      print("💡 Tapez \"help <commande>\" pour plus de détails.", "dim");
+      print("   Total : " + Object.keys(commands).length + " commandes disponibles.", "dim");
+    }
+  };
 
+  commands.man = { desc:"Manuel d'une commande", usage:"man <commande>", category:"Système", run:(a) => commands.help.run(a) };
+
+  commands.clear = {
+    desc:"Efface la console", usage:"clear", category:"Système",
+    run(){ const b = body(); if(b) b.innerHTML = ""; print("Console effacée ✓", "dim"); }
+  };
+
+  commands.echo = {
+    desc:"Affiche un texte", usage:"echo [texte...]", category:"Système",
+    run(args){
+      let text = args.join(" ");
+      text = text.replace(/\$(\w+)/g, (_, v) => state.env[v] || state.vars[v] || "");
+      print(text, "output");
+    }
+  };
+
+  commands.whoami = { desc:"Utilisateur actuel", usage:"whoami", category:"Système", run(){ print(state.env.USER, "ok"); } };
+
+  commands.date = { desc:"Date et heure", usage:"date", category:"Système", run(){ print(new Date().toLocaleString("fr-FR",{dateStyle:"full",timeStyle:"medium"}), "ok"); } };
+
+  commands.uptime = {
+    desc:"Duree depuis le demarrage", usage:"uptime", category:"Système",
+    run(){
+      const up = Math.floor((Date.now() - System.state.boot) / 1000);
+      const h = Math.floor(up/3600), m = Math.floor((up%3600)/60), s = up%60;
+      print("Session active : " + h + "h " + m + "m " + s + "s", "ok");
+      print("Commandes executees : " + System.state.commands, "info");
+      print("Operations totales : " + System.state.ops, "info");
+    }
+  };
+
+  commands.version = {
+    desc:"Version d'INAT", usage:"version", category:"Système",
+    run(){
+      print("╭────────────────────────────────╮", "accent");
+      print("│  INAT! — Portail v3.0           │", "accent");
+      print("│  Shell : inat-sh 3.0.0          │", "accent");
+      print("│  Runtime : Browser (Vanilla JS) │", "accent");
+      print("╰────────────────────────────────╯", "accent");
+    }
+  };
+
+  commands.sysinfo = {
+    desc:"Informations systeme", usage:"sysinfo", category:"Diagnostic",
+    run(){
+      print("╭─ Informations systeme ────────────", "accent");
+      print("│ Navigateur : " + navigator.userAgent.split(") ")[0].split("(")[0], "output");
+      print("│ Plateforme : " + navigator.platform, "output");
+      print("│ Langue : " + navigator.language, "output");
+      print("│ Coeurs CPU : " + (navigator.hardwareConcurrency || "N/A"), "output");
+      print("│ Ecran : " + screen.width + "×" + screen.height, "output");
+      print("│ FPS actuel : " + System.state.fps, "output");
+      print("│ CPU (simule) : " + System.state.cpu + "%", "output");
+      print("╰───────────────────────────────────", "accent");
+    }
+  };
+
+  commands.ps = {
+    desc:"Processus actifs", usage:"ps", category:"Diagnostic",
+    run(){
+      print("  PID  NOM                 ETAT", "highlight");
+      print("  ────────────────────────────────", "dim");
+      print("  1    inat-kernel         running", "output");
+      print("  2    inat-shell          running", "output");
+      print("  3    ia-engine           ready", "output");
+      print("  4    websocket           active", "output");
+      print("  5    db-localstorage     ready", "output");
+      print("  6    cache               " + System.cache.size() + " items", "output");
+    }
+  };
+
+  commands.df = {
+    desc:"Espace disque (localStorage)", usage:"df", category:"Diagnostic",
+    run(){
+      try{
+        let total = 0;
+        for(const k in localStorage){ if(localStorage.hasOwnProperty(k)) total += (localStorage[k] || "").length + k.length; }
+        const usedKo = (total / 1024).toFixed(2);
+        const maxMo = 5;
+        const pct = ((total / 1024 / 1024 / maxMo) * 100).toFixed(2);
+        print("Filesystem       Utilise    Quota    %", "highlight");
+        print("─────────────────────────────────────", "dim");
+        print("localStorage     " + usedKo + " Ko   " + maxMo + " Mo    " + pct + "%", "output");
+      }catch(e){ print("Erreur : " + e.message, "err"); }
+    }
+  };
+
+  commands.mem = {
+    desc:"Utilisation memoire JS", usage:"mem", category:"Diagnostic",
+    run(){
+      if(performance.memory){
+        const m = performance.memory;
+        print("Memoire JS utilisee : " + (m.usedJSHeapSize/1024/1024).toFixed(2) + " Mo", "ok");
+        print("Limite heap         : " + (m.jsHeapSizeLimit/1024/1024).toFixed(2) + " Mo", "info");
+      } else {
+        print("API performance.memory non disponible sur ce navigateur.", "warn");
+      }
+    }
+  };
+
+  commands.bench = {
+    desc:"Test de performance", usage:"bench [n]", category:"Diagnostic",
+    run(args){
+      const n = parseInt(args[0]) || 1000;
+      print("Lancement benchmark (" + n + " iterations)...", "info");
+      const start = performance.now();
+      let sum = 0;
+      for(let i = 0; i < n; i++) sum += Math.sqrt(i);
+      const end = performance.now();
+      print("Temps total : " + (end - start).toFixed(3) + " ms", "ok");
+      print("Par operation : " + ((end - start) / n * 1000).toFixed(3) + " µs", "info");
+    }
+  };
+
+  commands.cache = {
+    desc:"Statistiques du cache", usage:"cache [stats|clear]", category:"Diagnostic",
+    run(args){
+      const sub = args[0] || "stats";
+      if(sub === "stats"){
+        print("╭─ Cache ─────────────────────────", "accent");
+        print("│ Taille   : " + System.cache.size(), "output");
+        print("│ Hits     : " + System.cache.hits(), "ok");
+        print("│ Miss     : " + System.cache.miss(), "warn");
+        print("╰─────────────────────────────────", "accent");
+      } else if(sub === "clear"){ System.cache.clear(); print("Cache vide ✓", "warn"); }
+    }
+  };
+
+  commands.db = {
+    desc:"Statistiques base de donnees", usage:"db [stats|list|clear|export]", category:"Base de données",
+    async run(args){
+      const sub = args[0] || "stats";
+      try{
+        if(sub === "stats"){
+          const stats = await Backend.system.stats();
+          print("╭─ Statistiques DB ──────────────", "accent");
+          print("│ Utilisateurs  : " + stats.users, "output");
+          print("│ Stories       : " + stats.stories, "output");
+          print("│ Situations    : " + stats.situations, "output");
+          print("│ Musiques      : " + stats.music, "output");
+          print("│ Analyses IA   : " + stats.iaCalls, "info");
+          print("│ Cache hits    : " + stats.cacheHits, "info");
+          print("╰───────────────────────────────", "accent");
+        } else if(sub === "list"){
+          const store = args[1] || "situations";
+          const rows = await Database.getAll(store);
+          if(!rows.length){ print("Table \"" + store + "\" vide.", "dim"); return; }
+          print("▸ " + rows.length + " ligne(s) dans \"" + store + "\" :", "highlight");
+          rows.slice(0, 20).forEach((r, i) => {
+            const preview = JSON.stringify(r).slice(0, 100);
+            print("  " + (i+1) + ". " + preview + (preview.length >= 100 ? "..." : ""), "output");
+          });
+        } else if(sub === "clear"){
+          if(!args[1]){ print("Usage : db clear <table>", "err"); return; }
+          await Database.clear(args[1]);
+          print("Table \"" + args[1] + "\" videe.", "warn");
+        } else if(sub === "export"){
+          const [users, stories, situations, music] = await Promise.all([
+            Database.getAll("users"), Database.getAll("stories"),
+            Database.getAll("situations"), Database.getAll("music")
+          ]);
+          const data = { exportedAt: new Date().toISOString(), users, stories, situations, music };
+          const json = JSON.stringify(data, null, 2);
+          const blob = new Blob([json], { type:"application/json" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url; a.download = "inat-export-" + Date.now() + ".json";
+          a.click();
+          print("Export cree : " + (blob.size/1024).toFixed(1) + " Ko", "ok");
+        } else {
+          print("Sous-commande inconnue : " + sub, "err");
+        }
+      }catch(e){ print("Erreur : " + e.message, "err"); }
+    }
+  };
+
+  commands.users = {
+    desc:"Liste utilisateurs", usage:"users", category:"Base de données",
+    async run(){
+      const list = await Database.getAll("users");
+      if(!list.length){ print("Aucun utilisateur.", "dim"); return; }
+      print("▸ " + list.length + " utilisateur(s) :", "highlight");
+      list.forEach(u => print("  #" + u.id + " " + u.username + " <" + u.email + ">", "output"));
+    }
+  };
+
+  commands.stories = {
+    desc:"Liste stories actives", usage:"stories", category:"Base de données",
+    async run(){
+      const list = await Backend.stories.list();
+      if(!list.length){ print("Aucune story active.", "dim"); return; }
+      print("▸ " + list.length + " story(ies) :", "highlight");
+      list.forEach(s => print("  #" + s.id + " [" + s.media_type + "] par " + s.username, "output"));
+    }
+  };
+
+  commands.situations = {
+    desc:"Liste situations", usage:"situations [categorie]", category:"Base de données",
+    async run(args){
+      const list = await Backend.situations.list(args[0]);
+      if(!list.length){ print("Aucune situation.", "dim"); return; }
+      print("▸ " + list.length + " situation(s) :", "highlight");
+      list.forEach(s => print("  #" + s.id + " " + (s.title||"").slice(0, 60) + " (" + s.category + ")", "output"));
+    }
+  };
+
+  commands.music = {
+    desc:"Liste musiques", usage:"music", category:"Base de données",
+    async run(){
+      const list = await Backend.music.list();
+      if(!list.length){ print("Aucune musique.", "dim"); return; }
+      print("▸ " + list.length + " musique(s) :", "highlight");
+      list.forEach(t => print("  #" + t.id + " " + t.title + " — " + t.artist, "output"));
+    }
+  };
+
+  commands.ia = {
+    desc:"Analyse IA directe", usage:"ia <texte>", category:"IA",
+    examples:["ia Je stresse pour mon travail"],
+    run(args){
+      const text = args.join(" ");
+      if(!text){ print("Usage : ia <texte>", "err"); return; }
+      print("🤖 Analyse en cours...", "info");
+      setTimeout(() => {
+        try{
+          const r = IAEngine.analyze(text);
+          print("▸ Domaine : " + r.primary, "highlight");
+          print("▸ Categories : " + (r.categories.map(c => c.label).join(", ") || "aucune"), "output");
+          print("▸ Urgence : " + r.urgency, "output");
+          print("▸ Confiance : " + r.confidence + "%", "ok");
+          if(r.categories[0]) print("▸ Conseil : " + r.categories[0].advice, "output");
+        }catch(e){ print("Erreur : " + e.message, "err"); }
+      }, 300);
+    }
+  };
+
+  commands.query = { desc:"Alias de ia", usage:"query <texte>", category:"IA", run:(a) => commands.ia.run(a) };
+
+  commands.ws = {
+    desc:"Statut WebSocket", usage:"ws [status|test]", category:"Réseau",
+    run(args){
+      const sub = args[0] || "status";
+      if(sub === "status"){
+        print("╭─ WebSocket Status ──────────────", "accent");
+        print("│ Canal   : inat_realtime", "output");
+        print("│ Etat    : ● actif", "ok");
+        print("│ Type    : BroadcastChannel", "info");
+        print("╰─────────────────────────────────", "accent");
+      } else if(sub === "test"){
+        WS.emit("console:test", { at: Date.now() });
+        print("Message test envoye ✓", "ok");
+      }
+    }
+  };
+
+  commands.ping = {
+    desc:"Test de latence", usage:"ping [hote]", category:"Réseau",
+    run(args){
+      const host = args[0] || "localhost";
+      print("PING " + host + " ...", "info");
+      let i = 0;
+      const interval = setInterval(() => {
+        const ms = (Math.random() * 15 + 1).toFixed(1);
+        print("  64 octets depuis " + host + " : temps=" + ms + " ms", "output");
+        if(++i >= 4){
+          clearInterval(interval);
+          print("", "dim");
+          print("--- " + host + " statistiques ---", "dim");
+          print("4 paquets transmis, 4 recus, 0% perte", "ok");
+        }
+      }, 400);
+    }
+  };
+
+  commands.set = {
+    desc:"Definir une variable", usage:"set VAR=valeur", category:"Environnement",
+    examples:["set NAME=Alice", "echo $NAME"],
+    run(args){
+      const part = args[0] ? args[0].split("=") : null;
+      if(!part || part.length < 2){ print("Usage : set VAR=valeur", "err"); return; }
+      const k = part[0];
+      const v = part.slice(1).join("=");
+      state.vars[k] = v;
+      print(k + " = " + v, "ok");
+    }
+  };
+
+  commands.env = {
+    desc:"Variables d'environnement", usage:"env", category:"Environnement",
+    run(){
+      Object.keys(state.env).forEach(k => print(k + "=" + state.env[k], "output"));
+      if(Object.keys(state.vars).length){
+        print("");
+        print("▸ Variables utilisateur :", "highlight");
+        Object.keys(state.vars).forEach(k => print(k + "=" + state.vars[k], "info"));
+      }
+    }
+  };
+
+  commands.unset = {
+    desc:"Supprimer variable", usage:"unset <VAR>", category:"Environnement",
+    run(args){
+      if(!args[0]){ print("Usage : unset <VAR>", "err"); return; }
+      delete state.vars[args[0]];
+      print("Variable " + args[0] + " supprimee", "warn");
+    }
+  };
+
+  commands.alias = {
+    desc:"Creer un alias", usage:"alias nom='cmd'", category:"Environnement",
+    run(args){
+      if(!args[0]){
+        const keys = Object.keys(state.aliases);
+        if(!keys.length){ print("Aucun alias.", "dim"); return; }
+        keys.forEach(k => print("alias " + k + "='" + state.aliases[k] + "'", "output"));
+        return;
+      }
+      const full = args.join(" ");
+      const m = full.match(/^(\w+)=['"]?(.+?)['"]?$/);
+      if(!m){ print("Usage : alias nom='commande'", "err"); return; }
+      state.aliases[m[1]] = m[2];
+      print("Alias cree : " + m[1] + " → " + m[2], "ok");
+    }
+  };
+
+  commands.history = {
+    desc:"Historique des commandes", usage:"history [clear]", category:"Système",
+    run(args){
+      if(args[0] === "clear"){ state.history = []; state.historyIndex = -1; print("Historique efface ✓", "warn"); return; }
+      if(!state.history.length){ print("Historique vide.", "dim"); return; }
+      state.history.forEach((h, i) => print("  " + String(i+1).padStart(3) + "  " + h, "output"));
+    }
+  };
+
+  commands.ls = {
+    desc:"Liste fichiers virtuels", usage:"ls", category:"Fichiers",
+    run(){
+      print("▸ Contenu de ~/ :", "highlight");
+      print("  📁 stories/      (base de donnees)", "output");
+      print("  📁 situations/   (base de donnees)", "output");
+      print("  📁 music/        (base de donnees)", "output");
+      print("  📁 users/        (base de donnees)", "output");
+      print("  📄 config.json   (parametres)", "output");
+    }
+  };
+
+  commands.pwd = { desc:"Repertoire courant", usage:"pwd", category:"Fichiers", run(){ print(state.cwd === "~" ? "/home/user" : state.cwd, "ok"); } };
+
+  commands.cd = {
+    desc:"Changer dossier", usage:"cd <dossier>", category:"Fichiers",
+    run(args){
+      const dir = args[0] || "~";
+      state.cwd = dir;
+      const p = document.getElementById("consolePath"); if(p) p.textContent = dir;
+      const tp = document.getElementById("titlePath"); if(tp) tp.textContent = dir;
+      state.env.PWD = dir;
+      print("Dossier courant : " + dir, "ok");
+    }
+  };
+
+  commands.cat = {
+    desc:"Afficher fichier", usage:"cat <fichier>", category:"Fichiers",
+    run(args){
+      const f = args[0];
+      if(!f){ print("Usage : cat <fichier>", "err"); return; }
+      if(f === "config.json"){
+        print(JSON.stringify({ theme:"yahoo", lang:"fr", version:"3.0.0", features:["ia","stories","situations","music","console"] }, null, 2), "output");
+      } else if(f === ".env"){
+        print("USER=user\nHOME=~\nSHELL=/bin/inat\nVERSION=3.0.0", "output");
+      } else {
+        print("Fichier introuvable : " + f, "err");
+      }
+    }
+  };
+
+  commands.touch = {
+    desc:"Creer fichier virtuel", usage:"touch <nom>", category:"Fichiers",
+    run(args){
+      if(!args[0]){ print("Usage : touch <nom>", "err"); return; }
+      print("Fichier virtuel cree : " + args[0], "ok");
+    }
+  };
+
+  commands.eval = {
+    desc:"Evalue du JavaScript", usage:"eval <code>", category:"Avancé",
+    run(args){
+      const code = args.join(" ");
+      if(!code){ print("Usage : eval <code>", "err"); return; }
+      try{
+        const result = eval(code);
+        print("→ " + (typeof result === "object" ? JSON.stringify(result) : result), "ok");
+      }catch(e){ print("Erreur : " + e.message, "err"); }
+    }
+  };
+
+  commands.exit = { desc:"Fermer la console", usage:"exit", category:"Système", run(){ toggle(false); print("Bye ! 👋", "dim"); } };
+
+  commands.inat = {
+    desc:"Logo ASCII INAT", usage:"inat", category:"Fun",
+    run(){
+      print("  ╔═══════════════════════════════════╗", "accent");
+      print("  ║    ██╗███╗   ██╗ █████╗ ████████╗ ║", "accent");
+      print("  ║    ██║████╗  ██║██╔══██╗╚══██╔══╝ ║", "accent");
+      print("  ║    ██║██╔██╗ ██║███████║   ██║    ║", "accent");
+      print("  ║    ██║██║╚██╗██║██╔══██║   ██║    ║", "accent");
+      print("  ║    ██║██║ ╚████║██║  ██║   ██║    ║", "accent");
+      print("  ║    ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝   ╚═╝    ║", "accent");
+      print("  ║                                   ║", "accent");
+      print("  ║           INAT!  v3.0             ║", "accent");
+      print("  ╚═══════════════════════════════════╝", "accent");
+    }
+  };
+
+  commands.matrix = {
+    desc:"Effet Matrix", usage:"matrix", category:"Fun",
+    run(){
+      let count = 0;
+      const chars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン01";
+      const interval = setInterval(() => {
+        let line = "";
+        for(let i = 0; i < 40; i++) line += chars[Math.floor(Math.random() * chars.length)];
+        print(line, "ok");
+        if(++count >= 10) clearInterval(interval);
+      }, 100);
+    }
+  };
+
+  commands.coffee = {
+    desc:"Un cafe ?", usage:"coffee", category:"Fun",
+    run(){
+      print("☕ Preparation du cafe...", "info");
+      setTimeout(() => print("☕ Cafe pret ! Bonne session !", "ok"), 800);
+    }
+  };
+
+  commands.sudo = {
+    desc:"Mode super-utilisateur", usage:"sudo <commande>", category:"Fun",
+    run(args){
+      if(!args.length){ print("Usage : sudo <commande>", "err"); return; }
+      print("🔓 Acces root accorde (simulation).", "warn");
+      execute(args.join(" "), true);
+    }
+  };
+
+  /* ============ PARSE & EXECUTE ============ */
+  function parse(input){
+    const tokens = [];
+    let cur = "", quote = null;
+    for(let i = 0; i < input.length; i++){
+      const c = input[i];
+      if(quote){
+        if(c === quote) quote = null;
+        else cur += c;
+      } else if(c === '"' || c === "'"){
+        quote = c;
+      } else if(c === " " || c === "\t"){
+        if(cur){ tokens.push(cur); cur = ""; }
+      } else {
+        cur += c;
+      }
+    }
+    if(cur) tokens.push(cur);
+    return tokens;
   }
-}
 
+  async function execute(rawInput, silent){
+    const raw = String(rawInput || "").trim();
+    if(!raw) return;
 
-/* =========================
-   STORY UPLOAD
-========================= */
+    if(!silent) renderInputLine(raw);
+    state.history.push(raw);
+    state.historyIndex = state.history.length;
+    System.state.commands++;
+    System.state.ops++;
 
-function uploadStory(event){
-
-  const files=[...event.target.files];
-  const row=document.getElementById("storyRow");
-
-  files.forEach(file=>{
-
-    const url=URL.createObjectURL(file);
-
-    const story=document.createElement("div");
-    story.className="story";
-
-    const ring=document.createElement("div");
-    ring.className="story-ring";
-
-    const inner=document.createElement("div");
-    inner.className="story-inner";
-
-    let media;
-
-    if(file.type.startsWith("video")){
-
-      media=document.createElement("video");
-      media.src=url;
-      media.muted=true;
-
-    }else{
-
-      media=document.createElement("img");
-      media.src=url;
-
+    let input = raw;
+    const firstWord = input.split(/\s+/)[0];
+    if(state.aliases[firstWord]){
+      input = input.replace(firstWord, state.aliases[firstWord]);
     }
 
-    inner.appendChild(media);
-    ring.appendChild(inner);
+    const pipes = input.split("|").map(s => s.trim());
 
-    story.appendChild(ring);
+    for(let p = 0; p < pipes.length; p++){
+      const part = pipes[p];
+      if(!part) continue;
+      const tokens = parse(part);
+      if(!tokens.length) continue;
 
-    const name=document.createElement("span");
-    name.textContent=file.name.slice(0,10);
+      const cmdName = tokens[0].toLowerCase();
+      const args = tokens.slice(1);
+      const cmd = commands[cmdName];
 
-    story.appendChild(name);
+      if(!cmd){
+        print("Commande introuvable : " + cmdName, "err");
+        print("Tapez \"help\" pour la liste des commandes.", "dim");
+        return;
+      }
+      try{
+        await cmd.run(args);
+      }catch(e){
+        print("Erreur : " + e.message, "err");
+      }
+    }
+  }
 
-    row.appendChild(story);
+  /* ============ AUTOCOMPLETE ============ */
+  function showAutocomplete(prefix){
+    const list = Object.keys(commands)
+      .filter(name => name.startsWith(prefix))
+      .slice(0, 10)
+      .map(name => ({ name, desc: commands[name].desc }));
 
+    state.autocompleteList = list;
+    state.autocompleteIndex = -1;
+
+    const el = autocompleteEl();
+    if(!el) return;
+    if(!list.length){ el.classList.remove("show"); return; }
+
+    el.innerHTML = list.map((item, i) =>
+      '<div class="autocomplete-item" data-index="' + i + '"><span>' + item.name + '</span><span class="desc">' + item.desc + '</span></div>'
+    ).join("");
+    el.classList.add("show");
+
+    el.querySelectorAll(".autocomplete-item").forEach(item => {
+      item.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        pickAutocomplete(parseInt(item.dataset.index));
+      });
+    });
+  }
+
+  function pickAutocomplete(i){
+    const item = state.autocompleteList[i];
+    if(!item) return;
+    const inp = input();
+    if(inp){ inp.value = item.name + " "; inp.focus(); }
+    hideAutocomplete();
+  }
+
+  function hideAutocomplete(){
+    const el = autocompleteEl();
+    if(el) el.classList.remove("show");
+    state.autocompleteList = [];
+    state.autocompleteIndex = -1;
+  }
+
+  /* ============ KEY HANDLER ============ */
+  function handleKey(e){
+    const ac = autocompleteEl();
+    const isAcOpen = ac && ac.classList.contains("show");
+
+    if(e.ctrlKey && (e.key === "l" || e.key === "L")){
+      e.preventDefault();
+      commands.clear.run();
+      return;
+    }
+
+    if(e.key === "Enter"){
+      e.preventDefault();
+      if(isAcOpen && state.autocompleteIndex >= 0){
+        pickAutocomplete(state.autocompleteIndex);
+        return;
+      }
+      hideAutocomplete();
+      const inp = input();
+      const value = inp.value;
+      inp.value = "";
+      execute(value);
+      return;
+    }
+
+    if(e.key === "ArrowUp"){
+      e.preventDefault();
+      if(isAcOpen){
+        state.autocompleteIndex = Math.max(0, state.autocompleteIndex - 1);
+        updateAcSelection();
+        return;
+      }
+      if(state.history.length){
+        if(state.historyIndex === state.history.length) state.draft = input().value;
+        state.historyIndex = Math.max(0, state.historyIndex - 1);
+        input().value = state.history[state.historyIndex] || "";
+      }
+      return;
+    }
+
+    if(e.key === "ArrowDown"){
+      e.preventDefault();
+      if(isAcOpen){
+        state.autocompleteIndex = Math.min(state.autocompleteList.length - 1, state.autocompleteIndex + 1);
+        updateAcSelection();
+        return;
+      }
+      if(state.historyIndex < state.history.length){
+        state.historyIndex++;
+        input().value = state.historyIndex === state.history.length ? state.draft : state.history[state.historyIndex];
+      }
+      return;
+    }
+
+    if(e.key === "Tab"){
+      e.preventDefault();
+      if(isAcOpen){
+        if(state.autocompleteIndex < 0) state.autocompleteIndex = 0;
+        pickAutocomplete(state.autocompleteIndex);
+      } else {
+        const val = input().value.trim();
+        if(val && !val.includes(" ")) showAutocomplete(val);
+      }
+      return;
+    }
+
+    if(e.key === "Escape") hideAutocomplete();
+  }
+
+  function updateAcSelection(){
+    const el = autocompleteEl();
+    if(!el) return;
+    el.querySelectorAll(".autocomplete-item").forEach((item, i) => {
+      item.classList.toggle("selected", i === state.autocompleteIndex);
+    });
+  }
+
+  function handleInput(){
+    const inp = input();
+    if(!inp) return;
+    const val = inp.value;
+    if(val && !val.includes(" ") && !val.includes("|")){
+      showAutocomplete(val.trim());
+    } else {
+      hideAutocomplete();
+    }
+  }
+
+  /* ============ TOGGLE ============ */
+  function toggle(force){
+    const w = wrapper();
+    if(!w) return;
+    const isOpen = w.classList.contains("open");
+    const shouldOpen = force !== undefined ? !!force : !isOpen;
+    if(shouldOpen){
+      w.classList.add("open");
+      state.open = true;
+      setTimeout(() => { const i = input(); if(i) i.focus(); }, 350);
+    } else {
+      w.classList.remove("open");
+      state.open = false;
+    }
+  }
+
+  function clear(){ commands.clear.run(); }
+  function help(){ commands.help.run([]); }
+
+  /* ============ INIT ============ */
+  function init(){
+    print("╔═══════════════════════════════════════════════╗", "accent");
+    print("║   INAT Console v3.0                           ║", "accent");
+    print("║   Tapez \"help\" pour la liste des commandes    ║", "accent");
+    print("║   " + Object.keys(commands).length + " commandes disponibles                       ║", "accent");
+    print("╚═══════════════════════════════════════════════╝", "accent");
+    print("");
+    print("▸ Session demarree le " + new Date().toLocaleString("fr-FR"), "info");
+    print("▸ Tapez \"help\" ou \"man <cmd>\" pour l'aide.", "dim");
+    print("");
+  }
+
+  return {
+    init, toggle, clear, help, print,
+    handleKey, handleInput, pickAutocomplete, hideAutocomplete,
+    execute,
+    commands, state
+  };
+})();
+
+/* =====================================================================
+   APP FRONTEND
+===================================================================== */
+const App = (() => {
+  const state = {
+    user: null,
+    token: localStorage.getItem("inat_token") || null,
+    currentPage: "home",
+    stories: [],
+    situations: [],
+    tracks: []
+  };
+
+  let toastTimer;
+  function toast(msg){
+    const t = document.getElementById("toast");
+    if(!t) return;
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+  }
+
+  async function autoAuth(){
+    if(state.token){
+      try{
+        state.user = await Backend.auth.me(state.token);
+        return;
+      }catch(e){
+        state.token = null;
+        localStorage.removeItem("inat_token");
+      }
+    }
+    try{
+      const email = "demo_" + Date.now() + "@inat.local";
+      const res = await Backend.auth.register("Utilisateur", email, "demo123456");
+      state.token = res.token;
+      state.user = res.user;
+      localStorage.setItem("inat_token", res.token);
+    }catch(e){
+      console.warn("Auth:", e.message);
+    }
+  }
+
+  function renderPage(page){
+    state.currentPage = page;
+    const main = document.getElementById("main-content");
+    if(!main) return;
+    const renders = { home:renderHome, stories:renderStories, situations:renderSituations, music:renderMusic, profile:renderProfile };
+    const fn = renders[page] || renderHome;
+    main.innerHTML = fn();
+
+    document.querySelectorAll(".header-nav a[data-page]").forEach(a => a.classList.toggle("active", a.dataset.page === page));
+    document.querySelectorAll(".mobile-nav .nav-btn[data-page]").forEach(b => b.classList.toggle("active", b.dataset.page === page));
+
+    if(page === "stories") loadStories();
+    if(page === "situations") loadSituations();
+    if(page === "music"){ loadTracks(); initViz(); }
+    if(page === "home") loadStats();
+
+    System.state.ops++;
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+
+  function renderHome(){
+    return `
+      <div class="portal">
+        <div class="main-col">
+          <div class="hero-yahoo">
+            <div class="hero-content">
+              <div class="hero-badge">✨ Nouvelle génération</div>
+              <div class="hero-h1">Bienvenue sur <span>INAT!</span></div>
+              <p class="hero-sub">Le portail qui rassemble tes situations, stories et musique. IA embarquée + console système moderne intégrée.</p>
+              <div class="hero-btns">
+                <button class="btn btn-white" onclick="App.go('stories')">📸 Voir les stories</button>
+                <button class="btn btn-outline" style="border-color:white;color:white" onclick="Console.toggle(true)">⌨️ Ouvrir la console</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px">
+            <div class="card-header">
+              <div class="card-title"><span class="bar orange"></span>En direct</div>
+              <button class="card-link" onclick="App.refreshStats()">Actualiser</button>
+            </div>
+            <div class="card-body">
+              <div class="kpi-grid">
+                <div class="kpi"><div class="kpi-value" id="statUsers">0</div><div class="kpi-label">Utilisateurs</div></div>
+                <div class="kpi"><div class="kpi-value" id="statStories">0</div><div class="kpi-label">Stories</div></div>
+                <div class="kpi"><div class="kpi-value" id="statSit">0</div><div class="kpi-label">Situations</div></div>
+                <div class="kpi"><div class="kpi-value" id="statMusic">0</div><div class="kpi-label">Musiques</div></div>
+                <div class="kpi"><div class="kpi-value" id="statIA">0</div><div class="kpi-label">Analyses IA</div></div>
+                <div class="kpi"><div class="kpi-value" id="statCache">0</div><div class="kpi-label">Cache hits</div></div>
+                <div class="kpi"><div class="kpi-value" id="statCmds">0</div><div class="kpi-label">Commandes</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px">
+            <div class="card-header">
+              <div class="card-title"><span class="bar blue"></span>Console système</div>
+              <button class="card-link" onclick="Console.toggle(true)">Ouvrir →</button>
+            </div>
+            <div class="card-body">
+              <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:14px">
+                Un terminal interactif complet est intégré : <b>${Object.keys(Console.commands).length} commandes</b>, historique, auto-complétion, alias, variables.
+              </p>
+              <div style="background:#0a0a14;border-radius:10px;padding:14px;font-family:'SF Mono','Courier New',monospace;font-size:12px;color:#00ff9d;line-height:1.7">
+                <div><span style="color:#00e5ff">user@inat</span>:<span style="color:#4a9bff">~</span><span style="color:#b366ff">$</span> help</div>
+                <div style="color:#b8b8c8">▸ ${Object.keys(Console.commands).length} commandes disponibles...</div>
+                <div><span style="color:#00e5ff">user@inat</span>:<span style="color:#4a9bff">~</span><span style="color:#b366ff">$</span> <span style="color:#ffd700">ia</span> Je stresse</div>
+                <div style="color:#b366ff">▸ Domaine : stress · Confiance : 60%</div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap">
+                <button class="btn btn-primary" onclick="Console.toggle(true)">⌨️ Ouvrir la console</button>
+                <button class="btn btn-outline" onclick="Console.print('Demo : tapez \\'help\\' pour commencer !','ok');Console.toggle(true)">✨ Démo rapide</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px">
+            <div class="card-header">
+              <div class="card-title"><span class="bar blue"></span>À la une</div>
+            </div>
+            <div class="card-body">
+              <div class="news-grid">
+                <div class="news-card featured" onclick="App.go('situations')">
+                  <div class="news-img">🤖</div>
+                  <div class="news-body">
+                    <div class="news-tag">IA · Innovation</div>
+                    <div class="news-title">Découvre le moteur IA d'INAT : analyse tes situations en 1 clic</div>
+                    <div class="news-desc">9 domaines détectés automatiquement + plan d'action personnalisé.</div>
+                    <div class="news-meta">⚡ Nouveau · Lecture 2 min</div>
+                  </div>
+                </div>
+                <div class="news-card" onclick="Console.toggle(true)">
+                  <div class="news-img orange">⌨️</div>
+                  <div class="news-body">
+                    <div class="news-tag">Console · Dev</div>
+                    <div class="news-title">Console système complète</div>
+                    <div class="news-desc">40+ commandes, historique, alias, variables.</div>
+                    <div class="news-meta">🔥 Nouveau</div>
+                  </div>
+                </div>
+                <div class="news-card" onclick="App.go('music')">
+                  <div class="news-img blue">🎵</div>
+                  <div class="news-body">
+                    <div class="news-tag">Musique · Audio</div>
+                    <div class="news-title">Écoute ta musique sur INAT</div>
+                    <div class="news-desc">Player avec visualiseur animé.</div>
+                    <div class="news-meta">🎧 Populaire</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px">
+            <div class="card-header">
+              <div class="card-title"><span class="bar red"></span>Communauté</div>
+            </div>
+            <div class="card-body">
+              <div class="post-yahoo">
+                <div class="post-head">
+                  <div class="post-avatar">I</div>
+                  <div class="post-info"><strong>INAT</strong><small>Aujourd'hui · Officiel</small></div>
+                </div>
+                <div class="post-content">Bienvenue sur INAT. Décris une situation, partage une story, écoute ta musique. Et explore la console système pour les power-users !</div>
+                <div class="post-actions">
+                  <button class="action-btn" onclick="App.likePost(this)">♡ J'aime</button>
+                  <button class="action-btn">💬 Commenter</button>
+                  <button class="action-btn" onclick="App.sharePost()">↗ Partager</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="side-col">
+          <div class="weather-card">
+            <div class="weather-temp">23°</div>
+            <div class="weather-city">📍 Abidjan · Ensoleillé</div>
+            <div class="weather-detail">Vent 12 km/h · Humidité 65%</div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="bar orange"></span>Commandes populaires</div>
+            </div>
+            <div class="trending-list">
+              <div class="trending-item" onclick="Console.toggle(true);Console.print('Tapez help pour la liste','info')">
+                <div class="trend-num">1</div>
+                <div class="trend-info"><strong>help</strong><small>Toutes les commandes</small></div>
+              </div>
+              <div class="trending-item" onclick="Console.toggle(true);Console.execute('sysinfo')">
+                <div class="trend-num">2</div>
+                <div class="trend-info"><strong>sysinfo</strong><small>Infos système</small></div>
+              </div>
+              <div class="trending-item" onclick="Console.toggle(true)">
+                <div class="trend-num">3</div>
+                <div class="trend-info"><strong>ia</strong><small>Analyse IA directe</small></div>
+              </div>
+              <div class="trending-item" onclick="Console.toggle(true);Console.execute('db stats')">
+                <div class="trend-num">4</div>
+                <div class="trend-info"><strong>db stats</strong><small>Base de données</small></div>
+              </div>
+              <div class="trending-item" onclick="Console.toggle(true);Console.execute('matrix')">
+                <div class="trend-num">5</div>
+                <div class="trend-info"><strong>matrix</strong><small>Easter egg 🟢</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body" style="text-align:center">
+              <div style="font-size:44px;margin-bottom:8px">⌨️</div>
+              <h3 style="font-size:16px;color:var(--purple);margin-bottom:6px">Console système</h3>
+              <p style="font-size:13px;color:var(--muted);margin-bottom:14px">${Object.keys(Console.commands).length} commandes · historique · auto-complétion</p>
+              <button class="btn btn-orange btn-full" onclick="Console.toggle(true)">Ouvrir la console</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    `;
+  }
+
+  async function loadStats(){
+    try{
+      const stats = await Backend.system.stats();
+      const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+      set("statUsers", stats.users);
+      set("statStories", stats.stories);
+      set("statSit", stats.situations);
+      set("statMusic", stats.music);
+      set("statIA", stats.iaCalls);
+      set("statCache", stats.cacheHits);
+      set("statCmds", System.state.commands);
+    }catch(e){ console.warn(e); }
+  }
+
+  function refreshStats(){ loadStats(); toast("Statistiques actualisées"); }
+
+  function renderStories(){
+    return `
+      <div class="portal" style="grid-template-columns:1fr">
+        <div class="main-col">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="bar"></span>Stories</div>
+              <label class="card-link" style="cursor:pointer">
+                ＋ Ajouter
+                <input type="file" accept="image/*,video/*" style="display:none" onchange="App.uploadStory(event)">
+              </label>
+            </div>
+            <div class="card-body">
+              <div class="stories-row" id="storyRow">
+                <div class="story-card add" onclick="document.querySelector('#storyRow').parentElement.parentElement.querySelector('input[type=file]')?.click()">＋</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  async function loadStories(){
+    try{
+      const stories = await Backend.stories.list();
+      state.stories = stories;
+      const row = document.getElementById("storyRow");
+      if(!row) return;
+      while(row.children.length > 1) row.removeChild(row.lastChild);
+      stories.forEach(s => {
+        const el = document.createElement("div");
+        el.className = "story-card";
+        const media = s.media_type === "video"
+          ? '<video src="' + s.media_url + '" muted autoplay loop></video>'
+          : '<img src="' + s.media_url + '" alt="">';
+        el.innerHTML = media + '<div class="story-label">' + escapeHTML((s.username||"Anon").slice(0,10)) + '</div>';
+        row.appendChild(el);
+      });
+    }catch(e){ console.warn(e); }
+  }
+
+  async function uploadStory(ev){
+    const file = ev.target.files[0];
+    if(!file) return;
+    try{
+      toast("Traitement...");
+      await Backend.stories.create(file, "", state.user ? state.user.id : 1);
+      toast("Story publiée ✓");
+      await loadStories();
+    }catch(e){ toast("Erreur : " + e.message); }
+  }
+
+  function renderSituations(){
+    return `
+      <div class="portal">
+        <div class="main-col">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title"><span class="bar"></span>IA INAT · Analyse</div>
+              <span class="tag-pill tag-green">● Actif</span>
+            </div>
+            <div class="card-body">
+              <div class="ai-yahoo">
+                <h2>🤖 Décris ta situation</h2>
+                <p>L'IA analyse ton texte et te propose un plan d'action. Ou tape <code style="background:#f2eefb;padding:2px 6px;border-radius:4px;color:var(--purple);font-weight:bold">ia &lt;texte&gt;</code> dans la console.</p>
+                <textarea id="situationText" placeholder="Exemple : Je stresse pour mon travail, plusieurs deadlines approchent..." oninput="App.liveAnalyze(this.value)"></textarea>
+                <div id="livePreview" style="font-size:12px;color:var(--purple);min-height:18px;margin:10px 0;font-weight:600"></div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn btn-primary" onclick="App.solveSituation()">✨ Analyser avec l'IA</button>
+                  <button class="btn btn-outline" onclick="App.clearSituation()">🗑️ Effacer</button>
+                </div>
+                <div id="solution" class="solution-box"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:20px">
+            <div class="card-header"><div class="card-title"><span class="bar orange"></span>Situations populaires</div></div>
+            <div id="situationList"><div class="situation-item" style="text-align:center;color:var(--light);padding:30px">Chargement...</div></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function liveAnalyze(text){
+    const preview = document.getElementById("livePreview");
+    if(!preview) return;
+    if(text.length < 4){ preview.textContent = ""; return; }
+    const cats = IAEngine.detectCategories(text);
+    preview.textContent = cats.length ? "Détection : " + cats.map(c => c.label).join(" · ") : "Analyse en cours...";
+  }
+
+  async function solveSituation(){
+    const text = (document.getElementById("situationText") || {}).value;
+    const sol = document.getElementById("solution");
+    if(!text || !text.trim()){ toast("Décris ta situation"); return; }
+    sol.style.display = "block";
+    sol.innerHTML = "<em>Analyse en cours...</em>";
+    try{
+      const result = await Backend.situations.analyze(text);
+      sol.innerHTML = `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <span class="tag-pill tag-purple">🤖 Analyse IA</span>
+          <span class="tag-pill tag-green">Confiance ${result.confidence}%</span>
+          <span class="tag-pill tag-orange">Urgence ${result.urgency}</span>
+        </div>${result.solution}`;
+      await Backend.situations.create(text.slice(0,50), text, state.user ? state.user.id : 1);
+      toast("Analyse terminée ✨");
+    }catch(e){
+      sol.innerHTML = '<span style="color:#e02020">Erreur : ' + e.message + '</span>';
+    }
+  }
+
+  function clearSituation(){
+    const ta = document.getElementById("situationText"); if(ta) ta.value = "";
+    const p = document.getElementById("livePreview"); if(p) p.textContent = "";
+    const sol = document.getElementById("solution"); if(sol){ sol.style.display = "none"; sol.innerHTML = ""; }
+  }
+
+  async function loadSituations(){
+    const list = document.getElementById("situationList");
+    if(!list) return;
+    try{
+      const situations = await Backend.situations.list();
+      state.situations = situations;
+      if(!situations.length){
+        list.innerHTML = '<div class="situation-item" style="text-align:center;color:var(--light);padding:30px">Aucune situation. Sois le premier !</div>';
+        return;
+      }
+      list.innerHTML = situations.map(s => `
+        <div class="situation-item" onclick="App.quickSit(${JSON.stringify(s.content.slice(0,80)).replace(/"/g,'&quot;')})">
+          <strong>${escapeHTML(s.title)}</strong>
+          <p>${escapeHTML(s.content.slice(0,100))}...</p>
+          <small>❤️ ${s.likes || 0} · ${s.category}</small>
+        </div>
+      `).join("");
+    }catch(e){ console.warn(e); }
+  }
+
+  function quickSit(text){
+    const ta = document.getElementById("situationText");
+    if(ta){ ta.value = text; solveSituation(); }
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+
+  function renderMusic(){
+    return `
+      <div class="portal">
+        <div class="main-col">
+          <div class="card">
+            <div class="card-header"><div class="card-title"><span class="bar"></span>Player INAT</div></div>
+            <div class="card-body" style="padding:0">
+              <div class="player-yahoo">
+                <div class="cover-yahoo" id="cover">♪</div>
+                <div class="music-title" id="musicTitle">Ma musique</div>
+                <div class="music-artist" id="musicArtist">INAT Music</div>
+                <div class="visualizer-yahoo" id="visualizer"></div>
+                <input id="progress" class="progress" type="range" min="0" max="100" value="0">
+                <div class="time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+                <div class="player-controls">
+                  <button class="pc-btn" onclick="App.prev()">↶</button>
+                  <button class="pc-btn" onclick="App.back10()">−10</button>
+                  <button class="pc-btn main" id="playButton" onclick="App.toggleMusic()">▶</button>
+                  <button class="pc-btn" onclick="App.fwd10()">+10</button>
+                  <button class="pc-btn" onclick="App.next()">↷</button>
+                </div>
+                <div style="text-align:center;margin-top:20px;position:relative;z-index:2">
+                  <label class="btn btn-white" style="cursor:pointer">
+                    🎵 Ajouter une musique
+                    <input type="file" accept="audio/*" style="display:none" onchange="App.uploadTrack(event)">
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:20px">
+            <div class="card-header"><div class="card-title"><span class="bar orange"></span>Bibliothèque</div></div>
+            <div id="trackList"><div class="situation-item" style="text-align:center;color:var(--light);padding:30px">Chargement...</div></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  let vizInt = null;
+  function initViz(){
+    const viz = document.getElementById("visualizer");
+    if(!viz || viz.children.length) return;
+    for(let i = 0; i < 20; i++){
+      const b = document.createElement("span");
+      b.style.height = "10%";
+      viz.appendChild(b);
+    }
+  }
+
+  function startViz(){
+    initViz();
+    const bars = document.querySelectorAll("#visualizer span");
+    clearInterval(vizInt);
+    const audio = document.getElementById("audio");
+    vizInt = setInterval(() => {
+      bars.forEach((b, i) => {
+        b.style.height = audio.paused ? "5%" : (20 + Math.random() * 80 * Math.abs(Math.sin(Date.now() / 300 + i))) + "%";
+      });
+    }, 100);
+  }
+
+  async function uploadTrack(ev){
+    const file = ev.target.files[0];
+    if(!file) return;
+    try{
+      toast("Chargement...");
+      const track = await Backend.music.create(file, file.name, "Artiste local");
+      toast("Musique ajoutée ✓");
+      playTrack(track);
+      await loadTracks();
+    }catch(e){ toast("Erreur : " + e.message); }
+  }
+
+  function playTrack(t){
+    const audio = document.getElementById("audio");
+    audio.src = t.file_url;
+    document.getElementById("musicTitle").textContent = t.title;
+    document.getElementById("musicArtist").textContent = t.artist;
+    audio.play().catch(e => console.warn(e));
+    document.getElementById("playButton").textContent = "❚❚";
+    document.getElementById("cover").classList.add("playing");
+    startViz();
+  }
+
+  async function loadTracks(){
+    const list = document.getElementById("trackList");
+    if(!list) return;
+    try{
+      const tracks = await Backend.music.list();
+      state.tracks = tracks;
+      if(!tracks.length){
+        list.innerHTML = '<div class="situation-item" style="text-align:center;color:var(--light);padding:30px">Aucune musique.</div>';
+        return;
+      }
+      list.innerHTML = tracks.map((t, i) => `
+        <div class="situation-item" onclick="App.playTrackByIndex(${i})">
+          <strong>🎵 ${escapeHTML(t.title)}</strong>
+          <p>${escapeHTML(t.artist)} · ${t.plays || 0} écoutes</p>
+        </div>
+      `).join("");
+    }catch(e){ console.warn(e); }
+  }
+
+  function playTrackByIndex(i){ if(state.tracks[i]) playTrack(state.tracks[i]); }
+
+  function toggleMusic(){
+    const audio = document.getElementById("audio");
+    if(!audio.src){ toast("Ajoute une musique"); return; }
+    if(audio.paused){
+      audio.play();
+      document.getElementById("playButton").textContent = "❚❚";
+      document.getElementById("cover").classList.add("playing");
+      startViz();
+    } else {
+      audio.pause();
+      document.getElementById("playButton").textContent = "▶";
+      document.getElementById("cover").classList.remove("playing");
+    }
+  }
+  const back10 = () => { const a = document.getElementById("audio"); a.currentTime = Math.max(0, a.currentTime - 10); };
+  const fwd10 = () => { const a = document.getElementById("audio"); a.currentTime = Math.min(a.duration || 0, a.currentTime + 10); };
+  const prev = () => { const a = document.getElementById("audio"); a.currentTime = 0; };
+  const next = () => { const a = document.getElementById("audio"); a.currentTime = a.duration || 0; };
+
+  function renderProfile(){
+    const u = state.user || { username:"Invité", avatar:"A", email:"" };
+    return `
+      <div class="portal" style="grid-template-columns:1fr">
+        <div class="main-col">
+          <div class="card">
+            <div class="card-body" style="text-align:center;padding:40px 20px">
+              <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#5f01d1,#ff5c00);color:white;display:grid;place-items:center;font-size:42px;font-weight:900;margin:0 auto 18px;box-shadow:var(--shadow-purple)">
+                ${(u.avatar || "A").toUpperCase()}
+              </div>
+              <h2 style="font-size:24px;color:var(--purple);margin-bottom:6px">${escapeHTML(u.username || "Utilisateur")}</h2>
+              <p style="color:var(--muted);font-size:14px;margin-bottom:20px">${escapeHTML(u.email || "Session locale")}</p>
+              <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+                <button class="btn btn-primary">✏️ Modifier</button>
+                <button class="btn btn-outline" onclick="App.logout()">Déconnexion</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px">
+            <div class="card-header"><div class="card-title"><span class="bar"></span>Informations système</div></div>
+            <div class="card-body">
+              <div class="kpi-grid">
+                <div class="kpi"><div class="kpi-value" id="sessionTime">—</div><div class="kpi-label">Session</div></div>
+                <div class="kpi"><div class="kpi-value" id="opsCount">0</div><div class="kpi-label">Opérations</div></div>
+                <div class="kpi"><div class="kpi-value" id="cacheSize">0</div><div class="kpi-label">Cache</div></div>
+                <div class="kpi"><div class="kpi-value" id="memUsed">—</div><div class="kpi-label">Mémoire</div></div>
+                <div class="kpi"><div class="kpi-value" id="cmdCount">0</div><div class="kpi-label">Commandes</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px">
+            <div class="card-header"><div class="card-title"><span class="bar red"></span>Zone de danger</div></div>
+            <div class="card-body">
+              <p style="font-size:13px;color:var(--muted);margin-bottom:14px">Efface toutes les données locales. Action irréversible.</p>
+              <button class="btn" style="background:#e02020;color:white" onclick="App.clearAllData()">🗑️ Effacer toutes les données</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function logout(){
+    state.user = null;
+    state.token = null;
+    localStorage.removeItem("inat_token");
+    toast("Déconnecté");
+    autoAuth().then(() => App.go("home"));
+  }
+
+  function clearAllData(){
+    if(!confirm("Effacer toutes les données ? Irréversible.")) return;
+    try{
+      localStorage.clear();
+      toast("Données effacées");
+      setTimeout(() => location.reload(), 800);
+    }catch(e){ toast("Erreur : " + e.message); }
+  }
+
+  function escapeHTML(str){
+    return String(str == null ? "" : str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function likePost(btn){ btn.classList.toggle("liked"); System.state.ops++; }
+
+  function sharePost(){
+    if(navigator.share){
+      navigator.share({ title:"INAT", text:"Découvre INAT !", url: location.href }).catch(() => {});
+    } else if(navigator.clipboard){
+      navigator.clipboard.writeText(location.href);
+      toast("Lien copié 📋");
+    } else {
+      toast("Partage non disponible");
+    }
+  }
+
+  function smartSearch(q){
+    if(!q) return;
+    const firstWord = q.split(" ")[0].toLowerCase();
+    if(Console.commands[firstWord]){
+      Console.toggle(true);
+      Console.print("> " + q, "info");
+      Console.execute(q);
+      return;
+    }
+    toast('Recherche : "' + q + '"');
+  }
+
+  function go(page, btn){
+    renderPage(page);
+    if(btn){
+      document.querySelectorAll(".mobile-nav .nav-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+  }
+
+  setInterval(() => {
+    const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+    const up = Math.floor((Date.now() - System.state.boot) / 1000);
+    set("sessionTime", up < 60 ? up + "s" : Math.floor(up/60) + "m");
+    set("opsCount", System.state.ops);
+    set("cacheSize", System.cache.size());
+    set("memUsed", (System.state.ram || 0) + " Mo");
+    set("cmdCount", System.state.commands);
+  }, 1000);
+
+  function fmt(s){
+    if(!isFinite(s)) return "0:00";
+    const m = Math.floor(s/60), sec = Math.floor(s%60).toString().padStart(2, "0");
+    return m + ":" + sec;
+  }
+
+  document.addEventListener("input", e => {
+    if(e.target.id === "progress"){
+      const audio = document.getElementById("audio");
+      if(audio.duration) audio.currentTime = (e.target.value / 100) * audio.duration;
+    }
   });
 
-  event.target.value="";
+  document.addEventListener("keydown", e => {
+    if(e.code === "Space" && e.target.tagName !== "TEXTAREA" && e.target.tagName !== "INPUT" && e.target.tagName !== "BODY"){
+      e.preventDefault();
+      toggleMusic();
+    }
+  });
 
-}
+  WS.on("story:new", () => { if(state.currentPage === "stories") loadStories(); });
 
+  async function init(){
+    Console.init();
+    await Database.init();
+    await autoAuth();
+    if(state.user){
+      const a = document.getElementById("userAvatar");
+      if(a) a.textContent = (state.user.avatar || state.user.username[0] || "A").toUpperCase();
+    }
+    const apiEl = document.getElementById("apiStatus"); if(apiEl) apiEl.textContent = "local";
+    const dbEl = document.getElementById("dbStatus"); if(dbEl) dbEl.textContent = "ok";
+    go("home");
 
-/* =========================
-   IA SITUATIONS
-========================= */
-
-function solveSituation(){
-
-  const text=document
-    .getElementById("situationText")
-    .value
-    .trim();
-
-  const solution=document.getElementById("solution");
-
-  if(!text){
-
-    solution.style.display="block";
-
-    solution.innerHTML=
-      "⚠️ Décris d'abord ta situation pour que je puisse t'aider.";
-
-    return;
+    // Audio setup
+    const audio = document.getElementById("audio");
+    if(audio){
+      audio.addEventListener("loadedmetadata", () => {
+        const el = document.getElementById("duration");
+        if(el) el.textContent = fmt(audio.duration);
+      });
+      audio.addEventListener("timeupdate", () => {
+        if(audio.duration){
+          const p = document.getElementById("progress");
+          const c = document.getElementById("currentTime");
+          if(p) p.value = (audio.currentTime / audio.duration) * 100;
+          if(c) c.textContent = fmt(audio.currentTime);
+        }
+      });
+      audio.addEventListener("play", () => {
+        const b = document.getElementById("playButton"); if(b) b.textContent = "❚❚";
+        const c = document.getElementById("cover"); if(c) c.classList.add("playing");
+      });
+      audio.addEventListener("pause", () => {
+        const b = document.getElementById("playButton"); if(b) b.textContent = "▶";
+        const c = document.getElementById("cover"); if(c) c.classList.remove("playing");
+      });
+    }
   }
 
-  solution.style.display="block";
+  return {
+    init, go, smartSearch, refreshStats,
+    uploadStory, uploadTrack, solveSituation, clearSituation,
+    quickSit, liveAnalyze, toggleMusic, back10, fwd10, prev, next,
+    playTrack, playTrackByIndex, logout, clearAllData,
+    toast, likePost, sharePost, state
+  };
+})();
 
-  solution.innerHTML=`
-    <b>🤖 Analyse INAT</b><br><br>
-
-    Ta situation semble demander une approche étape par étape.
-    Voici une méthode simple :<br><br>
-
-    <b>1. Identifier le problème</b><br>
-    Détermine précisément ce qui bloque.<br><br>
-
-    <b>2. Définir ton objectif</b><br>
-    Décide du résultat que tu souhaites obtenir.<br><br>
-
-    <b>3. Chercher plusieurs options</b><br>
-    Note au moins trois solutions possibles avant de choisir.<br><br>
-
-    <b>4. Commencer par une petite action</b><br>
-    Choisis l'action la plus simple que tu peux réaliser maintenant.<br><br>
-
-    <b>5. Vérifier le résultat</b><br>
-    Observe ce qui fonctionne puis adapte la suite.
-    <br><br>
-
-    <span style="color:#7da0ff">
-      💡 Conseil : ${escapeHTML(text.slice(0,120))}
-    </span>
-  `;
-
-}
-
-function escapeHTML(str){
-
-  return str
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-
-/* =========================
-   MUSIQUE
-========================= */
-
-const audio=document.getElementById("audio");
-const playButton=document.getElementById("playButton");
-const progress=document.getElementById("progress");
-
-function loadMusic(event){
-
-  const file=event.target.files[0];
-
-  if(!file)return;
-
-  audio.src=URL.createObjectURL(file);
-
-  document.getElementById("musicTitle")
-    .textContent=file.name;
-
-  document.getElementById("musicArtist")
-    .textContent="Fichier local";
-
-  audio.play();
-
-  playButton.textContent="❚❚";
-
-}
-
-function toggleMusic(){
-
-  if(!audio.src){
-
-    alert("Ajoute d'abord une musique.");
-
-    return;
+/* =====================================================================
+   START
+===================================================================== */
+function startINAT(){
+  const intro = document.getElementById("intro");
+  if(intro){
+    intro.classList.add("hide");
+    setTimeout(() => {
+      intro.style.display = "none";
+      const app = document.getElementById("app");
+      if(app) app.style.display = "block";
+      App.init();
+    }, 600);
   }
-
-  if(audio.paused){
-
-    audio.play();
-
-    playButton.textContent="❚❚";
-
-  }else{
-
-    audio.pause();
-
-    playButton.textContent="▶";
-
-  }
-
 }
 
-function backTen(){
+window.App = App;
+window.Console = Console;
+window.startINAT = startINAT;
 
-  audio.currentTime=Math.max(
-    0,
-    audio.currentTime-10
-  );
-
-}
-
-function forwardTen(){
-
-  audio.currentTime=Math.min(
-    audio.duration || 0,
-    audio.currentTime+10
-  );
-
-}
-
-function previousSong(){
-
-  audio.currentTime=0;
-
-}
-
-function nextSong(){
-
-  audio.currentTime=audio.duration || 0;
-
-}
-
-audio.addEventListener("loadedmetadata",()=>{
-
-  document.getElementById("duration")
-    .textContent=formatTime(audio.duration);
-
-});
-
-audio.addEventListener("timeupdate",()=>{
-
-  if(audio.duration){
-
-    progress.value=
-      (audio.currentTime/audio.duration)*100;
-
-    document.getElementById("currentTime")
-      .textContent=formatTime(audio.currentTime);
-
-  }
-
-});
-
-progress.addEventListener("input",()=>{
-
-  if(audio.duration){
-
-    audio.currentTime=
-      (progress.value/100)*audio.duration;
-
-  }
-
-});
-
-audio.addEventListener("play",()=>{
-  playButton.textContent="❚❚";
-});
-
-audio.addEventListener("pause",()=>{
-  playButton.textContent="▶";
-});
-
-function formatTime(seconds){
-
-  if(!isFinite(seconds))return "0:00";
-
-  const m=Math.floor(seconds/60);
-  const s=Math.floor(seconds%60)
-    .toString()
-    .padStart(2,"0");
-
-  return `${m}:${s}`;
-
-}
-
-
-/* =========================
-   RACCOURCI CLAVIER
-========================= */
-
-document.addEventListener("keydown",e=>{
-
-  if(e.code==="Space" &&
-     document.activeElement.tagName!=="TEXTAREA"){
-
+/* Global keyboard shortcuts */
+document.addEventListener("keydown", e => {
+  // Ctrl + ` (backtick) : toggle console
+  if(e.ctrlKey && (e.key === "`" || e.code === "Backquote")){
     e.preventDefault();
-    toggleMusic();
-
+    Console.toggle();
   }
-
+  // Ctrl + Shift + C : open console
+  if(e.ctrlKey && e.shiftKey && e.code === "KeyC"){
+    e.preventDefault();
+    Console.toggle(true);
+  }
+  // Escape : close console
+  if(e.key === "Escape" && Console.state.open){
+    Console.toggle(false);
+  }
 });
 
+console.log(
+  "%c iNat! %c Console système v3.0 — Opérationnel ",
+  "background:#5f01d1;color:#fff;font-weight:900;padding:6px 10px;border-radius:6px 0 0 6px;font-size:14px",
+  "background:#ff5c00;color:#fff;padding:6px 10px;border-radius:0 6px 6px 0;font-size:12px;font-weight:700"
+);
+console.log("%c Ctrl + ` pour ouvrir la console ", "color:#5f01d1;font-size:12px;font-weight:700");
+console.log("%c Tapez 'help' dans la console pour voir les commandes. ", "color:#6b6b80;font-size:11px;font-style:italic");
 </script>
 
 </body>
